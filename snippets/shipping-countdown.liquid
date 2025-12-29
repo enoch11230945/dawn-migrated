@@ -3,29 +3,71 @@
   Displays deadline for guaranteed arrival (Valentine's Day, Mother's Day, etc.)
   
   Usage: {% render 'shipping-countdown', deadline_date: '2026-02-07', occasion_name: "Valentine's Day" %}
-{%- endcomment -%}
+{% comment %}
+  FIXED (Linus A11y): Countdown is aria-hidden to prevent DDoS attack on screen readers
+  Static fallback text provided for accessible experience
+{% endcomment %}
 
 {%- assign deadline = deadline_date | default: '' -%}
 {%- assign occasion = occasion_name | default: 'the occasion' -%}
 
-{%- if deadline != blank -%}
-<div class="shipping-countdown" data-deadline="{{ deadline }}">
-  <div class="countdown-inner">
-    <svg class="countdown-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <circle cx="12" cy="12" r="10"/>
-      <path d="M12 6v6l4 2"/>
-    </svg>
-    <div class="countdown-text">
-      <span class="countdown-label">Order by <strong class="countdown-date"></strong> for guaranteed {{ occasion }} delivery</span>
-      <span class="countdown-timer">
-        <span class="days"></span>d 
-        <span class="hours"></span>h 
-        <span class="minutes"></span>m 
-        <span class="seconds"></span>s
-      </span>
+{%- if deadline_date != blank -%}
+  {%- assign deadline_parts = deadline_date | split: '-' -%}
+  {%- assign deadline_year = deadline_parts[0] | times: 1 -%}
+  {%- assign deadline_month = deadline_parts[1] | times: 1 -%}
+  {%- assign deadline_day = deadline_parts[2] | times: 1 -%}
+  
+  <div class="shipping-countdown-wrapper">
+    {%- comment -%} Screen reader friendly static text {%- endcomment -%}
+    <div class="visually-hidden" role="status" aria-live="polite">
+      Order by 2PM for next day delivery. Guaranteed delivery before {{ occasion_name | default: 'your special date' }}.
+    </div>
+    
+    {%- comment -%} Visual countdown (hidden from screen readers) {%- endcomment -%}
+    <div 
+      class="shipping-countdown" 
+      data-deadline="{{ deadline_date }}"
+      data-initialized="false"
+      aria-hidden="true"
+    >
+      <div class="countdown-header">
+        <svg class="countdown-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <span class="countdown-title">Order within</span>
+      </div>
+      
+      <div class="countdown-timer">
+        <div class="countdown-unit">
+          <span class="countdown-value days">0</span>
+          <span class="countdown-label">days</span>
+        </div>
+        <span class="countdown-separator">:</span>
+        <div class="countdown-unit">
+          <span class="countdown-value hours">00</span>
+          <span class="countdown-label">hrs</span>
+        </div>
+        <span class="countdown-separator">:</span>
+        <div class="countdown-unit">
+          <span class="countdown-value minutes">00</span>
+          <span class="countdown-label">min</span>
+        </div>
+        <span class="countdown-separator">:</span>
+        <div class="countdown-unit">
+          <span class="countdown-value seconds">00</span>
+          <span class="countdown-label">sec</span>
+        </div>
+      </div>
+      
+      <div class="countdown-occasion">
+        To receive by <strong class="countdown-date">{{ deadline_date }}</strong>
+        {% if occasion_name != blank %}
+          <span class="countdown-occasion-name">({{ occasion_name }})</span>
+        {% endif %}
+      </div>
     </div>
   </div>
-</div>
 
 <style>
 .shipping-countdown {

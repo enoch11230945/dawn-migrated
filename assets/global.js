@@ -132,54 +132,9 @@ function trapFocus(container, elementToFocus = container) {
   }
 }
 
-// Here run the querySelector to figure out if the browser supports :focus-visible or not and run code based on it.
-try {
-  document.querySelector(':focus-visible');
-} catch (e) {
-  focusVisiblePolyfill();
-}
-
-function focusVisiblePolyfill() {
-  const navKeys = [
-    'ARROWUP',
-    'ARROWDOWN',
-    'ARROWLEFT',
-    'ARROWRIGHT',
-    'TAB',
-    'ENTER',
-    'SPACE',
-    'ESCAPE',
-    'HOME',
-    'END',
-    'PAGEUP',
-    'PAGEDOWN',
-  ];
-  let currentFocusedElement = null;
-  let mouseClick = null;
-
-  window.addEventListener('keydown', (event) => {
-    if (navKeys.includes(event.code.toUpperCase())) {
-      mouseClick = false;
-    }
-  });
-
-  window.addEventListener('mousedown', (event) => {
-    mouseClick = true;
-  });
-
-  window.addEventListener(
-    'focus',
-    () => {
-      if (currentFocusedElement) currentFocusedElement.classList.remove('focused');
-
-      if (mouseClick) return;
-
-      currentFocusedElement = document.activeElement;
-      currentFocusedElement.classList.add('focused');
-    },
-    true
-  );
-}
+// Here run the querySelector to figure out if the browser supports :focus-visible or not and run code based on   // FIXED (Linus): Removed focusVisiblePolyfill - native :focus-visible support is universal in 2025
+// Modern browsers (Chrome 86+, Firefox 85+, Safari 15.4+) all support :focus-visible natively
+// If you need to support ancient browsers, use a PostCSS plugin instead of runtime JS
 
 function pauseAllMedia() {
   document.querySelectorAll('.js-youtube').forEach((video) => {

@@ -321,49 +321,65 @@
       <li id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t }}</li>
     </ul>
 
+    {%- comment -%} 
+      FIXED (Linus): Namespaced to prevent global scope pollution
+      Third-party apps also use window object - avoid conflicts
+    {%- endcomment -%}
     <script>
-      window.shopUrl = '{{ request.origin }}';
-      window.routes = {
-        cart_add_url: '{{ routes.cart_add_url }}',
-        cart_change_url: '{{ routes.cart_change_url }}',
-        cart_update_url: '{{ routes.cart_update_url }}',
-        cart_url: '{{ routes.cart_url }}',
-        predictive_search_url: '{{ routes.predictive_search_url }}',
+      window.Aurea = window.Aurea || {};
+      window.Aurea.shopUrl = {{ request.origin | json }};
+      window.Aurea.routes = {
+        cart_add_url: {{ routes.cart_add_url | json }},
+        cart_change_url: {{ routes.cart_change_url | json }},
+        cart_update_url: {{ routes.cart_update_url | json }},
+        cart_url: {{ routes.cart_url | json }},
+        predictive_search_url: {{ routes.predictive_search_url | json }}
       };
 
-      window.cartStrings = {
-        error: `{{ 'sections.cart.cart_error' | t }}`,
-        quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' }}`,
+      // Legacy support: maintain window.routes for backward compatibility with existing code
+      // TODO: Refactor all window.routes references to window.Aurea.routes
+      window.shopUrl = window.Aurea.shopUrl;
+      window.routes = window.Aurea.routes;
+
+      window.Aurea.cartStrings = {
+        error: {{ 'sections.cart.cart_error' | t | json }},
+        quantityError: {{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' | json }}
       };
 
-      window.variantStrings = {
-        addToCart: `{{ 'products.product.add_to_cart' | t }}`,
-        soldOut: `{{ 'products.product.sold_out' | t }}`,
-        unavailable: `{{ 'products.product.unavailable' | t }}`,
-        unavailable_with_option: `{{ 'products.product.value_unavailable' | t: option_value: '[value]' }}`,
+      window.Aurea.variantStrings = {
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        unavailable: {{ 'products.product.unavailable' | t | json }},
+        unavailable_with_option: {{ 'products.product.value_unavailable' | t: option_value: '[value]' | json }},
       };
 
-      window.quickOrderListStrings = {
-        itemsAdded: `{{ 'sections.quick_order_list.items_added.other' | t: quantity: '[quantity]' }}`,
-        itemAdded: `{{ 'sections.quick_order_list.items_added.one' | t: quantity: '[quantity]' }}`,
-        itemsRemoved: `{{ 'sections.quick_order_list.items_removed.other' | t: quantity: '[quantity]' }}`,
-        itemRemoved: `{{ 'sections.quick_order_list.items_removed.one' | t: quantity: '[quantity]' }}`,
-        viewCart: `{{- 'sections.quick_order_list.view_cart' | t -}}`,
-        each: `{{- 'sections.quick_order_list.each' | t: money: '[money]' }}`,
-        min_error: `{{- 'sections.quick_order_list.min_error' | t: min: '[min]' }}`,
-        max_error: `{{- 'sections.quick_order_list.max_error' | t: max: '[max]' }}`,
-        step_error: `{{- 'sections.quick_order_list.step_error' | t: step: '[step]' }}`,
+      window.Aurea.quickOrderListStrings = {
+        itemsAdded: {{ 'sections.quick_order_list.items_added.other' | t: quantity: '[quantity]' | json }},
+        itemAdded: {{ 'sections.quick_order_list.items_added.one' | t: quantity: '[quantity]' | json }},
+        itemsRemoved: {{ 'sections.quick_order_list.items_removed.other' | t: quantity: '[quantity]' | json }},
+        itemRemoved: {{ 'sections.quick_order_list.items_removed.one' | t: quantity: '[quantity]' | json }},
+        viewCart: {{- 'sections.quick_order_list.view_cart' | t | json -}},
+        each: {{- 'sections.quick_order_list.each' | t: money: '[money]' | json | remove: '[money]' -}},
+        min_error: {{- 'sections.quick_order_list.min_error' | t: min: '[min]' | json | remove: '[min]' -}},
+        max_error: {{- 'sections.quick_order_list.max_error' | t: max: '[max]' | json | remove: '[max]' -}},
+        step_error: {{- 'sections.quick_order_list.step_error' | t: step: '[step]' | json | remove: '[step]' -}}
       };
 
-      window.accessibilityStrings = {
-        imageAvailable: `{{ 'products.product.media.image_available' | t: index: '[index]' }}`,
-        shareSuccess: `{{ 'general.share.success_message' | t }}`,
-        pauseSlideshow: `{{ 'sections.slideshow.pause_slideshow' | t }}`,
-        playSlideshow: `{{ 'sections.slideshow.play_slideshow' | t }}`,
-        recipientFormExpanded: `{{ 'recipient.form.expanded' | t }}`,
-        recipientFormCollapsed: `{{ 'recipient.form.collapsed' | t }}`,
-        countrySelectorSearchCount: `{{ 'localization.country_results_count' | t: count: '[count]' }}`,
+      window.Aurea.accessibilityStrings = {
+        imageAvailable: {{ 'products.product.media.image_available' | t: index: '[index]' | json }},
+        shareSuccess: {{ 'general.share.success_message' | t | json }},
+        pauseSlideshow: {{ 'sections.slideshow.pause_slideshow' | t | json }},
+        playSlideshow: {{ 'sections.slideshow.play_slideshow' | t | json }},
+        recipientFormExpanded: {{ 'recipient.form.expanded' | t | json }},
+        recipientFormCollapsed: {{ 'recipient.form.collapsed' | t | json }},
+        countrySelectorSearchCount: {{ 'localization.country_results_count' | t: count: '[count]' | json }},
       };
+
+      // Legacy support for cart/variant/quickOrderList/accessibility strings
+      window.cartStrings = window.Aurea.cartStrings;
+      window.variantStrings = window.Aurea.variantStrings;
+      window.quickOrderListStrings = window.Aurea.quickOrderListStrings;
+      window.accessibilityStrings = window.Aurea.accessibilityStrings;
     </script>
 
     {%- if settings.predictive_search_enabled -%}
