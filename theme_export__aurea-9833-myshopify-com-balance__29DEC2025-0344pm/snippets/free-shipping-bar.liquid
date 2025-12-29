@@ -9,6 +9,14 @@
 
 {%- liquid
   assign threshold = 5000
+  
+  comment
+    SAFETY: Prevent division by zero
+  endcomment
+  if threshold == 0 or threshold == blank
+    assign threshold = 1
+  endif
+  
   assign threshold_money = threshold | money_without_trailing_zeros
   assign remaining = threshold | minus: cart.total_price
   assign remaining_money = remaining | money_without_trailing_zeros

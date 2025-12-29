@@ -2,35 +2,51 @@
   AUREA "London Vault" Footer
   A luxury, compliance-focused footer for Google Merchant Center approval.
   4-Column Grid: Brand Story | Shop | Client Care | Legal/Contact
+  
+  All content is now editable via Theme Settings.
 {%- endcomment -%}
+
+{%- liquid
+  assign brand_heading = section.settings.brand_heading | default: 'AUREA London'
+  assign brand_story = section.settings.brand_story | default: 'Handcrafted in the heart of London. Creating timeless tokens of love with premium stainless steel and 18k gold.'
+  assign instagram_url = section.settings.instagram_url | default: 'https://www.instagram.com/aurea.jewelry.uk'
+  assign tiktok_url = section.settings.tiktok_url | default: 'https://www.tiktok.com/@aurea.jewelry.uk'
+  assign pinterest_url = section.settings.pinterest_url | default: 'https://www.pinterest.com/aureajewelryuk'
+  assign contact_email = section.settings.email | default: 'support@aurea.com'
+  assign address_text = section.settings.address | default: 'AUREA Jewelry, 71-75 Shelton Street, London, WC2H 9JQ, United Kingdom'
+-%}
 
 <footer class="aurea-footer">
   <div class="aurea-footer__container">
     
     {%- comment -%} ===== COLUMN 1: BRAND & STORY ===== {%- endcomment -%}
     <div class="aurea-footer__column aurea-footer__column--brand">
-      <h4 class="aurea-footer__heading">AUREA London</h4>
-      <p class="aurea-footer__text">
-        Handcrafted in the heart of London. Creating timeless tokens of love with premium stainless steel and 18k gold.
-      </p>
+      <h4 class="aurea-footer__heading">{{ brand_heading }}</h4>
+      <p class="aurea-footer__text">{{ brand_story }}</p>
       
-      {%- comment -%} Social Icons {%- endcomment -%}
+      {%- comment -%} Social Icons - Only show if URL is set {%- endcomment -%}
       <div class="aurea-footer__social">
-        <a href="https://www.instagram.com/aurea.jewelry.uk" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="aurea-footer__social-link">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-          </svg>
-        </a>
-        <a href="https://www.tiktok.com/@aurea.jewelry.uk" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="aurea-footer__social-link">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
-          </svg>
-        </a>
-        <a href="https://www.pinterest.com/aureajewelryuk" target="_blank" rel="noopener noreferrer" aria-label="Pinterest" class="aurea-footer__social-link">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 0a12 12 0 0 0-4.37 23.17c-.1-.94-.2-2.4.04-3.43.22-.94 1.4-5.94 1.4-5.94s-.36-.72-.36-1.78c0-1.67.97-2.92 2.17-2.92 1.02 0 1.52.77 1.52 1.69 0 1.03-.66 2.57-1 4-.28 1.2.6 2.17 1.78 2.17 2.14 0 3.78-2.25 3.78-5.5 0-2.88-2.07-4.89-5.02-4.89-3.42 0-5.43 2.56-5.43 5.21 0 1.03. 0 1.9 1.06.32.54.04.78-.18 1.04-.1.26-.17.44-.34.68-.11.16-.36.35-.69.26-1.01-.32-1.63-1.32-2.1-2.13-.42-.7-.45-1.67-.08-2.88 1.05-3.5 4.05-4.54 6.13-4.54 4.12 0 6.02 2.91 6.02 6.03 0 4.09-2.3 6.66-5.67 6.66-1.14 0-2.21-.62-2.58-1.32-.6 2.42-.75 3.02-.75 3.02-.3 1.14-.86 2.29-1.41 3.18A12 12 0 1 0 12 0z"/>
-          </svg>
-        </a>
+        {% if instagram_url != blank %}
+          <a href="{{ instagram_url }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="aurea-footer__social-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+        {% endif %}
+        {% if tiktok_url != blank %}
+          <a href="{{ tiktok_url }}" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="aurea-footer__social-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+            </svg>
+          </a>
+        {% endif %}
+        {% if pinterest_url != blank %}
+          <a href="{{ pinterest_url }}" target="_blank" rel="noopener noreferrer" aria-label="Pinterest" class="aurea-footer__social-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0a12 12 0 0 0-4.37 23.17c-.1-.94-.2-2.4.04-3.43.22-.94 1.4-5.94 1.4-5.94s-.36-.72-.36-1.78c0-1.67.97-2.92 2.17-2.92 1.02 0 1.52.77 1.52 1.69 0 1.03-.66 2.57-1 4-.28 1.2.6 2.17 1.78 2.17 2.14 0 3.78-2.25 3.78-5.5 0-2.88-2.07-4.89-5.02-4.89-3.42 0-5.43 2.56-5.43 5.21 0 1.03.4 2.13.89 2.73.1.12.11.22.08.34l-.33 1.36c-.05.22-.18.27-.41.16-1.55-.72-2.52-2.99-2.52-4.81 0-3.91 2.84-7.5 8.19-7.5 4.3 0 7.64 3.06 7.64 7.15 0 4.27-2.69 7.71-6.43 7.71-1.25 0-2.43-.65-2.84-1.42l-.77 2.94c-.28 1.08-1.04 2.43-1.55 3.26A12 12 0 1 0 12 0z"/>
+            </svg>
+          </a>
+        {% endif %}
       </div>
     </div>
     
@@ -61,19 +77,17 @@
       <h4 class="aurea-footer__heading">Contact & Legal</h4>
       
       <address class="aurea-footer__address">
-        AUREA Jewelry<br>
-        71-75 Shelton Street<br>
-        London, WC2H 9JQ<br>
-        United Kingdom
+        {{ address_text | newline_to_br }}
       </address>
       
       <p class="aurea-footer__contact">
-        <a href="mailto:support@aurea.com" class="aurea-footer__link">support@aurea.com</a>
+        <a href="mailto:{{ contact_email }}" class="aurea-footer__link">{{ contact_email }}</a>
       </p>
       
       {%- comment -%} Newsletter {%- endcomment -%}
       <div class="aurea-footer__newsletter">
         {%- form 'customer', class: 'aurea-footer__newsletter-form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
           <input 
             type="email" 
             name="contact[email]" 
@@ -147,17 +161,20 @@
     {
       "type": "url",
       "id": "instagram_url",
-      "label": "Instagram URL"
+      "label": "Instagram URL",
+      "default": "https://www.instagram.com/aurea.jewelry.uk"
     },
     {
       "type": "url",
       "id": "tiktok_url",
-      "label": "TikTok URL"
+      "label": "TikTok URL",
+      "default": "https://www.tiktok.com/@aurea.jewelry.uk"
     },
     {
       "type": "url",
       "id": "pinterest_url",
-      "label": "Pinterest URL"
+      "label": "Pinterest URL",
+      "default": "https://www.pinterest.com/aureajewelryuk"
     },
     {
       "type": "header",
