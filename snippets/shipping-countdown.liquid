@@ -17,6 +17,11 @@
   {%- assign deadline_month = deadline_parts[1] | times: 1 -%}
   {%- assign deadline_day = deadline_parts[2] | times: 1 -%}
   
+  {%- comment -%} 
+    FIXED (Linus #7): Inject server time to prevent client clock drift issues
+    Server time is authoritative - client adjusts to match
+  {%- endcomment -%}
+  
   <div class="shipping-countdown-wrapper">
     {%- comment -%} Screen reader friendly static text {%- endcomment -%}
     <div class="visually-hidden" role="status" aria-live="polite">
@@ -27,6 +32,7 @@
     <div 
       class="shipping-countdown" 
       data-deadline="{{ deadline_date }}"
+      data-server-time="{{ 'now' | date: '%s' }}"
       data-initialized="false"
       aria-hidden="true"
     >
@@ -165,8 +171,17 @@
       dateDisplay.textContent = formatDate(countdownEl.dataset.deadline);
     }
     
+    // FIXED (Linus #7): Calculate time delta between server and client
+    // This allows us to show accurate server time even if client clock is wrong
+    const serverTimestamp = parseInt(countdownEl.dataset.serverTime, 10) * 1000;
+    const clientTimestamp = Date.now();
+    // Delta: How much we need to add to client time to get server time
+    // If client is 1 hour slow, delta will be +1 hour
+    const timeDelta = !isNaN(serverTimestamp) ? (serverTimestamp - clientTimestamp) : 0;
+    
     function updateCountdown() {
-      const now = new Date().getTime();
+      // Apply delta to current client time to get current server time
+      const now = Date.now() + timeDelta;
       const distance = deadline - now;
       
       if (distance < 0) {

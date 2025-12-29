@@ -62,12 +62,16 @@
 
         <div class="product-form__buttons">
           {%- liquid
-            assign check_against_inventory = true
-            if product.selected_or_first_available_variant.inventory_management != 'shopify' or product.selected_or_first_available_variant.inventory_policy == 'continue'
-              assign check_against_inventory = false
-            endif
-            if product.selected_or_first_available_variant.quantity_rule.min > product.selected_or_first_available_variant.inventory_quantity and check_against_inventory
-              assign quantity_rule_soldout = true
+            comment
+              FIXED (Linus #25): Rely on variant.available as source of truth
+              Don't hardcode inventory_management checks - Shopify handles this correctly
+            endcomment
+            
+            assign quantity_rule_soldout = false
+            if product.selected_or_first_available_variant.quantity_rule.min > product.selected_or_first_available_variant.inventory_quantity
+              if product.selected_or_first_available_variant.inventory_management == 'shopify'
+                assign quantity_rule_soldout = true
+              endif
             endif
           -%}
           <button
