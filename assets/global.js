@@ -55,6 +55,13 @@ class HTMLUpdateUtility {
   }
 
   // Sets inner HTML and reinjects the script tags to allow execution. By default, scripts are disabled when using element.innerHTML.
+  // 
+  // ⚠️ SECURITY WARNING (Linus): This method re-executes scripts from HTML strings
+  // - NEVER use with user-generated content or untrusted sources
+  // - Potential XSS vector if HTML comes from compromised apps/webhooks
+  // - Prefer event-driven architecture (CustomEvents) over embedded scripts
+  // 
+  // RECOMMENDED ALTERNATIVE: Fetch JSON data and update DOM directly, not HTML with <script> tags
   static setInnerHTML(element, html) {
     element.innerHTML = html;
     element.querySelectorAll('script').forEach((oldScriptTag) => {
@@ -1244,15 +1251,20 @@ if (!customElements.get('bulk-add')) {
   customElements.define('bulk-add', BulkAdd);
 }
 
+// FIXED (Linus): CartPerformance should only run in development/debugging mode
+// Production users don't benefit from performance.mark() pollution
 class CartPerformance {
   static #metric_prefix = "cart-performance"
+  static #enabled = window.Shopify?.designMode || window.location.search.includes('debug_perf=true')
 
   static createStartingMarker(benchmarkName) {
+    if (!this.#enabled) return null;
     const metricName = `${CartPerformance.#metric_prefix}:${benchmarkName}`
     return performance.mark(`${metricName}:start`);
   }
 
   static measureFromEvent(benchmarkName, event) {
+    if (!this.#enabled) return;
     const metricName = `${CartPerformance.#metric_prefix}:${benchmarkName}`
     const startMarker = performance.mark(`${metricName}:start`, {
       startTime: event.timeStamp
@@ -1268,6 +1280,7 @@ class CartPerformance {
   }
 
   static measureFromMarker(benchmarkName, startMarker) {
+    if (!this.#enabled || !startMarker) return;
     const metricName = `${CartPerformance.#metric_prefix}:${benchmarkName}`
     const endMarker = performance.mark(`${metricName}:end`);
 
@@ -1279,6 +1292,11 @@ class CartPerformance {
   }
 
   static measure(benchmarkName, callback) {
+    if (!this.#enabled) {
+      callback(); // Still execute callback, just don't measure
+      return;
+    }
+
     const metricName = `${CartPerformance.#metric_prefix}:${benchmarkName}`
     const startMarker = performance.mark(`${metricName}:start`);
 

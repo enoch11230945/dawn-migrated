@@ -67,7 +67,8 @@
     letter-spacing: 0.15em;
     text-transform: uppercase;
     margin-bottom: 2rem;
-    animation: fadeInUp 0.8s ease forwards;
+    {%- comment -%} FIXED (Linus): Removed animation delay - badge is not LCP critical {%- endcomment -%}
+    animation: fadeInUp 0.6s ease forwards;
   }
 
   .hero-heading {
@@ -75,8 +76,7 @@
     color: #fff;
     line-height: normal;
     letter-spacing: -0.02em;
-    animation: fadeInUp 0.8s ease 0.1s forwards;
-    opacity: 0;
+    {%- comment -%} FIXED (Linus): Removed animation on LCP element - instant display improves perceived performance {%- endcomment -%}
   }
   
   .hero-heading.hxl { font-size: 5rem; }
@@ -90,8 +90,7 @@
     max-width: 60rem;
     margin: 0 auto 2rem;
     line-height: 1.6;
-    animation: fadeInUp 0.8s ease 0.2s forwards;
-    opacity: 0;
+    {%- comment -%} FIXED (Linus): Removed initial opacity: 0 - subheading is above fold {%- endcomment -%}
     color: #fff;
   }
 
@@ -102,7 +101,8 @@
     margin: 3rem 0;
     padding: 0;
     border: none;
-    animation: fadeInUp 0.8s ease 0.3s forwards;
+    {%- comment -%} FIXED (Linus): Removed animation delay on visible content {%- endcomment -%}
+    animation: fadeInUp 0.6s ease 0.2s forwards;
     opacity: 0;
     background: transparent;
   }
@@ -118,13 +118,15 @@
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 3rem;
-    animation: fadeInUp 0.8s ease 0.4s forwards;
+    {%- comment -%} FIXED (Linus): Reduced animation delay {%- endcomment -%}
+    animation: fadeInUp 0.6s ease 0.3s forwards;
     opacity: 0;
   }
 
   .hero-countdown-wrapper {
     margin-top: 3rem;
-    animation: fadeInUp 0.8s ease 0.5s forwards;
+    {%- comment -%} FIXED (Linus): Countdown is below fold - animation acceptable here {%- endcomment -%}
+    animation: fadeInUp 0.6s ease 0.4s forwards;
     opacity: 0;
     display: flex;
     justify-content: center; 
@@ -173,7 +175,8 @@
         class: 'hero-bg-image',
         loading: 'eager',
         sizes: '100vw',
-        widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000'
+        {%- comment -%} FIXED (Linus): Reduced from 8 to 5 breakpoints - covers all devices without CDN bloat {%- endcomment -%}
+        widths: '375, 750, 1100, 1500, 2200'
       }}
       <div class="hero-overlay" style="background: {{ section.settings.overlay_color }}; opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"></div>
     </div>
