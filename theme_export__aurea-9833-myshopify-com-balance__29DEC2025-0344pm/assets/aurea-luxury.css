@@ -382,9 +382,87 @@ main section:not(.header-section):not(.footer-section) {
    Native theme layout preferred.
    ============================================ */
 
+
 /* ============================================
-   16. AUREA SNIPPETS - Consolidated Component Styles
+   17. AUREA FOOTER - Custom Layout & Aesthetics
    ============================================ */
+.footer-content {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    /* Left Menu, Center (Newsletter), Right Menu */
+    gap: 2rem;
+    text-align: center;
+    /* Default center for mobile/general */
+}
+
+@media screen and (max-width: 989px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Footer Menus */
+.footer-block--menu {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.footer-block--menu a {
+    text-decoration: none;
+    color: rgba(26, 26, 26, 0.7);
+    transition: color 0.2s;
+}
+
+.footer-block--menu a:hover {
+    color: var(--color-foreground);
+}
+
+/* Center Newsletter Column */
+.footer-block--group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Cyan Newsletter Button */
+footer .email-signup__button {
+    background-color: #40E0D0 !important;
+    /* Cyan */
+    color: #FFFFFF !important;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    border: none;
+}
+
+footer .email-signup__button:hover {
+    background-color: #20B2AA !important;
+    /* Darker Cyan */
+}
+
+footer .email-signup__input {
+    border: 1px solid #E8E4DF;
+}
+
+/* Social Icons */
+footer .social-links {
+    justify-content: center !important;
+    margin-top: 1.5rem;
+}
+
+footer .social-links__link {
+    color: #666666 !important;
+    /* Grey */
+    transition: transform 0.2s;
+}
+
+footer .social-links__link:hover {
+    color: #1A1A1A !important;
+    transform: translateY(-2px);
+}
 
 /* Low Stock Indicator */
 .aurea-low-stock {
