@@ -378,9 +378,38 @@ main section:not(.header-section):not(.footer-section) {
 }
 
 /* ============================================
-   15. HEADER FIXES - [REVERTED]
-   Native theme layout preferred.
+   15. HEADER FIXES - Targeted Alignment
    ============================================ */
+
+/* Ensure header row items are vertically centered */
+.header__row {
+    align-items: center !important;
+}
+
+/* Ensure header columns are vertically centered */
+.header__column {
+    display: flex;
+    align-items: center;
+}
+
+/* Ensure header-actions icons are vertically centered */
+header-actions {
+    display: flex;
+    align-items: center !important;
+}
+
+/* Ensure header menu is vertically centered */
+header-menu {
+    display: flex;
+    align-items: center;
+}
+
+/* Ensure the right column doesn't push icons up */
+.header__column--right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
 
 
 /* ============================================
