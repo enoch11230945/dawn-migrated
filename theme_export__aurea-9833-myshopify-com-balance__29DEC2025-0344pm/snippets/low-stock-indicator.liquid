@@ -9,7 +9,7 @@
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
   assign inventory = current_variant.inventory_quantity
-  assign threshold = 10
+  assign threshold = 20
   assign show_indicator = false
   
   if current_variant.inventory_management == 'shopify' and inventory > 0 and inventory < threshold
