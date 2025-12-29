@@ -1,0 +1,404 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .featured-gift-wrapper {
+    align-items: center;
+  }
+
+  .gift-image-wrapper {
+    position: relative;
+    border-radius: var(--media-radius);
+    overflow: hidden;
+    background: rgba(var(--color-foreground), 0.04);
+    box-shadow: var(--media-shadow-horizontal-offset) var(--media-shadow-vertical-offset) var(--media-shadow-blur-radius) rgba(var(--color-shadow), var(--media-shadow-opacity));
+  }
+
+  .gift-product-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+
+  .gift-image-wrapper:hover .gift-product-image {
+    transform: scale(1.05);
+  }
+
+  .gift-badge {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    background: linear-gradient(135deg, #d4a574, #c49464);
+    color: #fff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .gift-pre-title {
+    display: block;
+    color: #d4a574;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .gift-title {
+    font-size: 3.2rem;
+    color: rgb(var(--color-foreground));
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .gift-emotional-message {
+    font-size: 1.6rem;
+    color: rgba(var(--color-foreground), 0.75);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    padding-left: 1.5rem;
+    border-left: 3px solid #d4a574;
+  }
+
+  .gift-price {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .price-current {
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: rgb(var(--color-foreground));
+  }
+
+  .price-compare {
+    font-size: 1.6rem;
+    color: rgba(var(--color-foreground), 0.6);
+    text-decoration: line-through;
+  }
+
+  .gift-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 3rem;
+  }
+
+  .gift-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    color: rgba(var(--color-foreground), 0.8);
+    font-size: 1.4rem;
+  }
+
+  .feature-check {
+    color: #d4a574;
+    flex-shrink: 0;
+  }
+
+  .gift-cta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .gift-quick-add {
+    display: flex;
+    margin: 0;
+  }
+
+  .gift-delivery-note {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: rgba(var(--color-foreground), 0.6);
+    font-size: 1.3rem;
+  }
+
+  .gift-delivery-note svg {
+    color: #d4a574;
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="grid grid--1-col grid--2-col-desktop grid--gap-large featured-gift-wrapper">
+      
+      <div class="grid__item">
+        {%- if section.settings.product != blank -%}
+          {%- assign featured_product = section.settings.product -%}
+          
+          <div class="gift-image-wrapper">
+             {%- if featured_product.featured_image != blank -%}
+                {{ featured_product.featured_image | image_url: width: 1000 | image_tag: 
+                   class: 'gift-product-image', 
+                   loading: 'lazy',
+                   widths: '375, 550, 750, 1100'
+                }}
+             {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+             {%- endif -%}
+            
+            {%- if section.settings.badge_text != blank -%}
+              <span class="gift-badge">{{ section.settings.badge_text | escape }}</span>
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          <div class="gift-image-wrapper">
+             {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {%- endif -%}
+      </div>
+      
+      <div class="grid__item featured-gift-content">
+        {%- if section.settings.product != blank -%}
+           {%- assign featured_product = section.settings.product -%}
+
+            {%- if section.settings.pre_title != blank -%}
+              <span class="gift-pre-title">{{ section.settings.pre_title | escape }}</span>
+            {%- endif -%}
+            
+            <h2 class="gift-title {{ section.settings.heading_size }}">{{ section.settings.custom_title | default: featured_product.title | escape }}</h2>
+            
+            {%- if section.settings.emotional_message != blank -%}
+              <div class="gift-emotional-message">
+                <p>{{ section.settings.emotional_message | escape }}</p>
+              </div>
+            {%- endif -%}
+            
+            <div class="gift-price">
+              {%- if featured_product.compare_at_price > featured_product.price -%}
+                <span class="price-compare">{{ featured_product.compare_at_price | money }}</span>
+              {%- endif -%}
+              <span class="price-current">{{ featured_product.price | money }}</span>
+            </div>
+            
+            <ul class="gift-features">
+              {%- for block in section.blocks -%}
+                <li class="gift-feature-item" {{ block.shopify_attributes }}>
+                  <svg class="feature-check" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 6L9 17l-5-5"/>
+                  </svg>
+                  <span>{{ block.settings.feature_text | escape }}</span>
+                </li>
+              {%- endfor -%}
+            </ul>
+            
+            <div class="gift-cta">
+              <a href="{{ featured_product.url }}" class="button button--primary">
+                {{ section.settings.button_text | default: 'Shop Now' | escape }}
+              </a>
+              
+              {%- if section.settings.show_quick_add -%}
+                <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+                <product-form class="gift-quick-add" data-section="{{ section.id }}">
+                  {%- form 'product', featured_product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                    <input type="hidden" name="id" value="{{ featured_product.selected_or_first_available_variant.id }}">
+                    <button
+                      type="submit"
+                      name="add"
+                      class="button button--secondary"
+                      {% if featured_product.selected_or_first_available_variant.available == false %}disabled{% endif %}
+                    >
+                      <span class="button-label">
+                        {%- if featured_product.selected_or_first_available_variant.available -%}
+                          Add to Bag
+                        {%- else -%}
+                          Sold Out
+                        {%- endif -%}
+                      </span>
+                      {%- render 'loading-spinner' -%}
+                    </button>
+                  {%- endform -%}
+                </product-form>
+              {%- endif -%}
+            </div>
+            
+            {%- if section.settings.delivery_note != blank -%}
+              <div class="gift-delivery-note">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+                <span>{{ section.settings.delivery_note | escape }}</span>
+              </div>
+            {%- endif -%}
+        
+        {%- else -%}
+             <h2 class="gift-title">Product Title</h2>
+             <p>Select a product to view details.</p>
+        {%- endif -%}
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Gift",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "background-1"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "custom_title",
+      "label": "Custom title (optional)",
+      "info": "Leave blank to use product title"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" },
+        { "value": "hxl", "label": "Extra Large" }
+      ],
+      "default": "h1",
+      "label": "Heading Size"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "Best Seller"
+    },
+    {
+      "type": "header",
+      "content": "Messaging"
+    },
+    {
+      "type": "text",
+      "id": "pre_title",
+      "label": "Pre-title",
+      "default": "The Perfect Gift"
+    },
+    {
+      "type": "textarea",
+      "id": "emotional_message",
+      "label": "Emotional message",
+      "default": "Each necklace comes beautifully presented in a luxury gift box, paired with a heartfelt message card that says everything you feel but struggle to put into words."
+    },
+    {
+      "type": "text",
+      "id": "delivery_note",
+      "label": "Delivery note",
+      "default": "Free UK delivery • Ships in 2-3 days"
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "View Product"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "label": "Show quick add button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "feature_text",
+          "label": "Feature text",
+          "default": "Includes luxury gift box"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Gift",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "feature_text": "Includes luxury gift box"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "feature_text": "Heartfelt message card included"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "feature_text": "Free UK delivery"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "feature_text": "30-day returns"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

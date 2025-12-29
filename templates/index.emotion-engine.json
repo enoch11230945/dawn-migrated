@@ -1,0 +1,297 @@
+{
+    "sections": {
+        "dynamic_announcement": {
+            "type": "dynamic-announcement",
+            "blocks": {
+                "msg_1": {
+                    "type": "message",
+                    "settings": {
+                        "text": "🇬🇧 UK Stock - Ships in 2-3 Days",
+                        "show_countdown": false
+                    }
+                },
+                "msg_2": {
+                    "type": "message",
+                    "settings": {
+                        "text": "✨ Free UK Delivery on Orders Over £30",
+                        "show_countdown": false
+                    }
+                },
+                "msg_3": {
+                    "type": "message",
+                    "settings": {
+                        "text": "⏰ Order by 2pm for Same-Day Dispatch",
+                        "show_countdown": true,
+                        "countdown_hour": 14
+                    }
+                }
+            },
+            "block_order": [
+                "msg_1",
+                "msg_2",
+                "msg_3"
+            ],
+            "settings": {
+                "background_color": "#1a1a1a",
+                "text_color": "#ffffff",
+                "show_icon": true,
+                "rotation_speed": 5000
+            }
+        },
+        "hero_emotional": {
+            "type": "hero-emotional",
+            "settings": {
+                "heading": "Gifts That Speak From The Heart",
+                "subheading": "Handcrafted jewelry with personalized message cards. Made in London.",
+                "button_label": "Shop Love Collection",
+                "button_link": "shopify://collections/all",
+                "color_scheme": "scheme-1",
+                "padding_top": 0,
+                "padding_bottom": 0
+            }
+        },
+        "trust_badges": {
+            "type": "trust-badges",
+            "blocks": {
+                "badge_1": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "truck",
+                        "title": "UK Stock",
+                        "text": "Ships in 2-3 Days"
+                    }
+                },
+                "badge_2": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "shield",
+                        "title": "316L Stainless Steel",
+                        "text": "Non-Tarnish Guarantee"
+                    }
+                },
+                "badge_3": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "gift",
+                        "title": "Gift Ready",
+                        "text": "Personalized Message Card"
+                    }
+                },
+                "badge_4": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "return",
+                        "title": "30-Day Returns",
+                        "text": "No Questions Asked"
+                    }
+                }
+            },
+            "block_order": [
+                "badge_1",
+                "badge_2",
+                "badge_3",
+                "badge_4"
+            ],
+            "settings": {
+                "padding_top": 20,
+                "padding_bottom": 20
+            }
+        },
+        "featured_gift": {
+            "type": "featured-gift",
+            "settings": {
+                "heading": "The Love Knot Necklace",
+                "subheading": "A symbol of eternal connection",
+                "price": "£24.99",
+                "compare_price": "£49.99",
+                "button_label": "Shop Now",
+                "button_link": "shopify://products/love-knot-necklace",
+                "padding_top": 60,
+                "padding_bottom": 60
+            }
+        },
+        "product_value": {
+            "type": "product-compare-value",
+            "settings": {
+                "heading": "Why AUREA?",
+                "padding_top": 60,
+                "padding_bottom": 60
+            }
+        },
+        "message_cards": {
+            "type": "message-cards",
+            "blocks": {
+                "card_1": {
+                    "type": "card",
+                    "settings": {
+                        "title": "To My Wife",
+                        "text": "Perfect for anniversaries & special moments"
+                    }
+                },
+                "card_2": {
+                    "type": "card",
+                    "settings": {
+                        "title": "To My Girlfriend",
+                        "text": "Express your love beautifully"
+                    }
+                },
+                "card_3": {
+                    "type": "card",
+                    "settings": {
+                        "title": "To My Mum",
+                        "text": "For Mother's Day & birthdays"
+                    }
+                },
+                "card_4": {
+                    "type": "card",
+                    "settings": {
+                        "title": "To My Daughter",
+                        "text": "A keepsake she'll treasure"
+                    }
+                }
+            },
+            "block_order": [
+                "card_1",
+                "card_2",
+                "card_3",
+                "card_4"
+            ],
+            "settings": {
+                "heading": "Choose Your Message Card",
+                "subheading": "Every piece comes gift-ready with a personalized message",
+                "padding_top": 60,
+                "padding_bottom": 60
+            }
+        },
+        "emotional_story": {
+            "type": "emotional-story",
+            "settings": {
+                "heading": "More Than Just Jewelry",
+                "text": "Every AUREA piece is a token of love. We believe in affordable luxury - premium 316L Stainless Steel that never tarnishes, never fades, and lasts a lifetime. No more green fingers. No more broken clasps. Just pure, everlasting elegance.",
+                "padding_top": 60,
+                "padding_bottom": 60
+            }
+        },
+        "social_proof": {
+            "type": "social-proof",
+            "blocks": {
+                "review_1": {
+                    "type": "review",
+                    "settings": {
+                        "text": "Ordered on Monday, arrived Wednesday! The necklace is gorgeous and the message card made my wife cry happy tears.",
+                        "author": "Sarah M. - London",
+                        "rating": 5
+                    }
+                },
+                "review_2": {
+                    "type": "review",
+                    "settings": {
+                        "text": "Finally, a necklace that doesn't turn my neck green! The quality is amazing for the price.",
+                        "author": "Emma T. - Manchester",
+                        "rating": 5
+                    }
+                },
+                "review_3": {
+                    "type": "review",
+                    "settings": {
+                        "text": "Bought the Love Knot for my girlfriend's birthday. She hasn't taken it off since!",
+                        "author": "James R. - Birmingham",
+                        "rating": 5
+                    }
+                }
+            },
+            "block_order": [
+                "review_1",
+                "review_2",
+                "review_3"
+            ],
+            "settings": {
+                "heading": "What Our Customers Say",
+                "padding_top": 60,
+                "padding_bottom": 60
+            }
+        },
+        "uk_delivery": {
+            "type": "uk-delivery",
+            "settings": {
+                "heading": "UK Delivery in 2-3 Days",
+                "text": "We keep all items in stock in the UK. No waiting weeks for international shipping. Order by 2pm for same-day dispatch.",
+                "padding_top": 60,
+                "padding_bottom": 60
+            }
+        },
+        "aurea_faq": {
+            "type": "aurea-faq",
+            "blocks": {
+                "faq_1": {
+                    "type": "faq",
+                    "settings": {
+                        "question": "What is your jewelry made of?",
+                        "answer": "<p>All AUREA jewelry is made from premium 316L Stainless Steel with PVD gold plating. Non-tarnish, hypoallergenic, and built to last.</p>"
+                    }
+                },
+                "faq_2": {
+                    "type": "faq",
+                    "settings": {
+                        "question": "How long does delivery take?",
+                        "answer": "<p>We ship from the UK! Standard delivery is 2-3 working days via Royal Mail. Order before 2pm for same-day dispatch.</p>"
+                    }
+                },
+                "faq_3": {
+                    "type": "faq",
+                    "settings": {
+                        "question": "Is the message card included?",
+                        "answer": "<p>Yes! Every order comes gift-ready with your chosen personalized message card at no extra charge.</p>"
+                    }
+                }
+            },
+            "block_order": [
+                "faq_1",
+                "faq_2",
+                "faq_3"
+            ],
+            "settings": {
+                "heading": "Frequently Asked Questions",
+                "subheading": "Everything you need to know",
+                "show_trust_footer": true,
+                "email": "hello@aurea.co.uk",
+                "padding_top": 60,
+                "padding_bottom": 60
+            }
+        },
+        "featured_collection": {
+            "type": "featured-collection",
+            "settings": {
+                "title": "Shop The Collection",
+                "heading_size": "h2",
+                "collection": "",
+                "products_to_show": 8,
+                "columns_desktop": 4,
+                "enable_desktop_slider": true,
+                "color_scheme": "scheme-1",
+                "image_ratio": "portrait",
+                "show_secondary_image": true,
+                "show_vendor": false,
+                "show_rating": true,
+                "enable_quick_add": true,
+                "columns_mobile": "2",
+                "swipe_on_mobile": true,
+                "padding_top": 36,
+                "padding_bottom": 36
+            }
+        }
+    },
+    "order": [
+        "dynamic_announcement",
+        "hero_emotional",
+        "trust_badges",
+        "featured_gift",
+        "product_value",
+        "message_cards",
+        "emotional_story",
+        "social_proof",
+        "uk_delivery",
+        "aurea_faq",
+        "featured_collection"
+    ]
+}

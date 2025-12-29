@@ -1,0 +1,331 @@
+{{ 'section-main-page.css' | asset_url | stylesheet_tag }}
+
+<div class="page-width page-width--narrow section-{{ section.id }}-padding">
+  <div class="wishlist-header center">
+    <h1 class="main-page-title page-title h0">{{ section.settings.title }}</h1>
+    <p class="wishlist-subtitle" id="wishlistSubtitle">Loading...</p>
+  </div>
+
+  <div class="wishlist-empty center" id="wishlistEmpty" style="display: none;">
+    <div class="empty-icon" style="opacity: 0.5; margin-bottom: 2rem;">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+    </div>
+    <h2 class="h2">{{ 'templates.cart.empty' | t }}</h2>
+    <p>{{ 'general.continue_shopping' | t }}</p>
+    <a href="{{ routes.all_products_collection_url }}" class="button button--primary">
+      {{ 'general.continue_shopping' | t }}
+    </a>
+  </div>
+
+  <div class="wishlist-grid grid grid--2-col grid--3-col-tablet grid--4-col-desktop" id="wishlistGrid"></div>
+
+  <div class="wishlist-actions center" id="wishlistActions" style="display: none; margin-top: 4rem;">
+    <button type="button" class="button button--secondary" data-action="clear-wishlist">
+      Clear Wishlist
+    </button>
+  </div>
+</div>
+
+<style>
+.wishlist-grid {
+  margin-top: 3rem;
+  gap: 2rem;
+}
+.wishlist-item {
+  position: relative;
+  background: white;
+  border: 1px solid rgba(var(--color-foreground), 0.08);
+  border-radius: var(--media-radius);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+.wishlist-item:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.wishlist-item-image {
+  position: relative;
+  aspect-ratio: 1;
+  background: #f5f5f5;
+  overflow: hidden;
+}
+.wishlist-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-long) ease;
+}
+.wishlist-item:hover .wishlist-item-image img {
+  transform: scale(1.05);
+}
+.wishlist-item-remove {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 3.2rem;
+  height: 3.2rem;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  color: rgb(var(--color-foreground));
+  transition: all 0.2s;
+}
+.wishlist-item-remove:hover {
+    color: red;
+    transform: scale(1.1);
+}
+.wishlist-item-content {
+  padding: 1.5rem;
+  text-align: center;
+}
+.wishlist-item-title {
+  display: block;
+  text-decoration: none;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: rgb(var(--color-foreground));
+  margin-bottom: 0.5rem;
+}
+.wishlist-item-price {
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+}
+.wishlist-item-cta {
+    width: 100%;
+}
+</style>
+
+<script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const grid = document.getElementById('wishlistGrid');
+  const empty = document.getElementById('wishlistEmpty');
+  const subtitle = document.getElementById('wishlistSubtitle');
+  const actions = document.getElementById('wishlistActions');
+  
+  function loadWishlist() {
+    if (typeof AureaWishlist === 'undefined') {
+      setTimeout(loadWishlist, 100);
+      return;
+    }
+    
+    const items = AureaWishlist.getItems();
+    
+    if (items.length === 0) {
+      showEmpty();
+      return;
+    }
+    
+    subtitle.textContent = `${items.length} item${items.length !== 1 ? 's' : ''} saved`;
+    actions.style.display = 'block';
+    empty.style.display = 'none';
+    
+    // Clear grid
+    grid.innerHTML = '';
+    
+    // ARCHITECTURAL FIX: Use sessionStorage cache like compare page
+    const CACHE_KEY = 'aurea_wishlist_product_cache';
+    
+    function tryRenderFromCache() {
+      try {
+        const cached = sessionStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const productMap = new Map(Object.entries(JSON.parse(cached)));
+          let allFound = true;
+          
+          items.forEach(productId => {
+            const product = productMap.get(String(productId));
+            if (product) {
+              grid.appendChild(createProductCard(product));
+            } else {
+              allFound = false;
+            }
+          });
+          
+          if (allFound && grid.children.length > 0) {
+            return true;
+          }
+          // Clear and refetch if not all found
+          grid.innerHTML = '';
+        }
+      } catch(e) {}
+      return false;
+    }
+    
+    if (tryRenderFromCache()) return;
+    
+    // OPTIMIZATION: Reduced from 250 to 100. Cache result in session.
+    fetch('/products.json?limit=100')
+      .then(r => {
+        if (!r.ok) throw new Error('Network error');
+        return r.json();
+      })
+      .then(data => {
+        const productMap = new Map();
+        data.products.forEach(p => productMap.set(String(p.id), p));
+        
+        // Save to sessionStorage
+        try {
+          sessionStorage.setItem(CACHE_KEY, JSON.stringify(Object.fromEntries(productMap)));
+        } catch(e) {}
+        
+        items.forEach(productId => {
+            const product = productMap.get(String(productId));
+            if (product) {
+                grid.appendChild(createProductCard(product));
+            }
+        });
+        
+        if (grid.children.length === 0) {
+             showEmpty();
+        }
+      })
+      .catch(err => {
+        // FIXED: Handle network errors gracefully
+        console.warn('[AUREA] Failed to load wishlist products:', err);
+        subtitle.textContent = 'Unable to load wishlist. Please refresh the page.';
+      });
+  }
+  
+  function createProductCard(product) {
+    const variant = product.variants[0];
+    const div = document.createElement('div');
+    div.className = 'wishlist-item grid__item';
+    
+    const imageUrl = product.images && product.images[0] 
+      ? product.images[0].src
+      : '';
+    
+    // FIXED: products.json returns price as DECIMAL STRING (e.g., "19.99"), NOT cents.
+    // The original / 100 was turning $20 into $0.20.
+    const formattedPrice = new Intl.NumberFormat('en-GB', {
+      style: 'currency',
+      currency: 'GBP'
+    }).format(parseFloat(variant.price));
+      
+    // FIXED: Using data-action instead of onclick for CSP compliance
+    div.innerHTML = `
+      <div class="wishlist-item-image">
+         <a href="/products/${product.handle}">
+           <img src="${imageUrl}" loading="lazy" width="300" height="300" alt="${product.title}">
+         </a>
+         <button class="wishlist-item-remove" data-action="remove-wishlist" data-product-id="${product.id}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+         </button>
+      </div>
+      <div class="wishlist-item-content">
+        <a href="/products/${product.handle}" class="wishlist-item-title h4">${product.title}</a>
+        <div class="wishlist-item-price">${formattedPrice}</div>
+        <button class="button button--primary wishlist-item-cta" data-action="add-to-cart-wishlist" data-variant-id="${variant.id}">
+           Add to Cart
+        </button>
+      </div>
+    `;
+    return div;
+  }
+  
+  function showEmpty() {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    actions.style.display = 'none';
+    subtitle.textContent = '';
+  }
+  
+  // ARCHITECTURAL FIX: Event delegation for wishlist page actions
+  document.addEventListener('click', function(e) {
+    const target = e.target.closest('[data-action]');
+    if (!target) return;
+    
+    const action = target.dataset.action;
+    
+    if (action === 'remove-wishlist') {
+      const id = parseInt(target.dataset.productId, 10);
+      if (id && typeof AureaWishlist !== 'undefined') {
+        AureaWishlist.remove(id);
+        target.closest('.wishlist-item').remove();
+        if (AureaWishlist.count() === 0) showEmpty();
+        else subtitle.textContent = `${AureaWishlist.count()} item${AureaWishlist.count() !== 1 ? 's' : ''} saved`;
+      }
+    }
+    
+    if (action === 'clear-wishlist') {
+      if (typeof AureaWishlist !== 'undefined') {
+        AureaWishlist.clear();
+        showEmpty();
+      }
+    }
+    
+    if (action === 'add-to-cart-wishlist') {
+      const vid = parseInt(target.dataset.variantId, 10);
+      if (vid) {
+        addToCartFromWishlist(vid, target);
+      }
+    }
+  });
+  
+  function addToCartFromWishlist(vid, btn) {
+    let formData = {
+      'items': [{
+        'id': vid,
+        'quantity': 1
+      }]
+    };
+    
+    fetch(window.Shopify.routes.root + 'cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    })
+    .then(() => {
+        btn.textContent = 'Added';
+    })
+    .catch((e) => console.error(e));
+  }
+
+  loadWishlist();
+});
+</script>
+
+{% schema %}
+{
+  "name": "Wishlist Page",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Wishlist",
+      "label": "Title"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}

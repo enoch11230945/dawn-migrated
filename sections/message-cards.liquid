@@ -1,0 +1,329 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .message-card-item {
+    background: rgb(var(--color-background));
+    border-radius: var(--media-radius);
+    overflow: hidden;
+    height: 100%;
+    border: 1px solid rgba(var(--color-foreground), 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .message-card-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--media-shadow-horizontal-offset) var(--media-shadow-vertical-offset) var(--media-shadow-blur-radius) rgba(var(--color-shadow), var(--media-shadow-opacity));
+    border-color: rgba(var(--color-foreground), 0.2);
+  }
+
+  .message-card-item.featured {
+    border: 2px solid #d4a574;
+  }
+
+  .card-preview {
+    padding: 2rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-thumbnail {
+    width: 100%;
+    height: auto;
+    border-radius: calc(var(--media-radius) - 4px);
+    margin-bottom: 1.5rem;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  .card-content {
+    text-align: center;
+  }
+
+  .occasion-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #d4a574, #c49464);
+    color: #fff;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .card-title {
+    margin-bottom: 1rem;
+    color: rgb(var(--color-foreground));
+  }
+
+  .card-message {
+    font-size: 1.4rem;
+    color: rgba(var(--color-foreground), 0.75);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  .message-card-cta {
+    margin: 0 2rem 2rem;
+  }
+
+  .custom-message-cta {
+    padding: 3rem;
+    background: rgba(var(--color-foreground), 0.03);
+    border-radius: var(--media-radius);
+    text-align: center;
+    margin-top: 4rem;
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width">
+    {%- if section.settings.title != blank -%}
+      <div class="title-wrapper--no-top-margin center">
+        <h2 class="title {{ section.settings.heading_size }}">{{ section.settings.title | escape }}</h2>
+        {%- if section.settings.subtitle != blank -%}
+          <p class="subtitle">{{ section.settings.subtitle | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="grid grid--1-col grid--2-col-tablet grid--3-col-desktop grid--gap-large">
+      {%- for block in section.blocks -%}
+        <div class="grid__item" {{ block.shopify_attributes }}>
+          <div class="message-card-item {% if block.settings.featured %}featured{% endif %}" data-occasion="{{ block.settings.occasion_type }}">
+            <div class="card-preview" style="background-color: {{ block.settings.card_bg_color }};">
+              {%- if block.settings.card_image != blank -%}
+                {{ block.settings.card_image | image_url: width: 600 | image_tag: 
+                   class: 'card-thumbnail', 
+                   loading: 'lazy',
+                   widths: '300, 450, 600'
+                }}
+              {%- else -%}
+                 {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg card-thumbnail' }}
+              {%- endif -%}
+              <div class="card-content">
+                <span class="occasion-badge">{{ block.settings.occasion_label | escape }}</span>
+                <h3 class="card-title h4">{{ block.settings.card_title | escape }}</h3>
+                <p class="card-message">"{{ block.settings.card_message | escape }}"</p>
+              </div>
+            </div>
+            {%- if block.settings.card_link != blank -%}
+              <div class="message-card-cta">
+                <a href="{{ block.settings.card_link }}" class="button button--secondary button--full-width">
+                  {{ block.settings.button_text | default: 'Choose This Card' | escape }}
+                </a>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.show_custom_option -%}
+      <div class="custom-message-cta">
+        <p class="h3">{{ section.settings.custom_message_title | escape }}</p>
+        <p class="text-body">{{ section.settings.custom_message_text | escape }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Message Cards",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "background-1"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Choose Your Message"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" },
+        { "value": "hxl", "label": "Extra Large" }
+      ],
+      "default": "h1",
+      "label": "Heading Size"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Each necklace comes with a beautifully designed message card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_custom_option",
+      "label": "Show custom message option",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "custom_message_title",
+      "label": "Custom option title",
+      "default": "Want a personalised message?"
+    },
+    {
+      "type": "text",
+      "id": "custom_message_text",
+      "label": "Custom option text",
+      "default": "Add your own words at checkout"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "message_card",
+      "name": "Message Card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "occasion_type",
+          "label": "Occasion type",
+          "options": [
+            { "value": "dad-daughter", "label": "Dad to Daughter" },
+            { "value": "mum-daughter", "label": "Mum to Daughter" },
+            { "value": "husband-wife", "label": "Husband to Wife" },
+            { "value": "boyfriend-girlfriend", "label": "Boyfriend to Girlfriend" },
+            { "value": "soulmate", "label": "Soulmate" },
+            { "value": "anniversary", "label": "Anniversary" },
+            { "value": "valentines", "label": "Valentine's Day" },
+            { "value": "mothers-day", "label": "Mother's Day" }
+          ],
+          "default": "soulmate"
+        },
+        {
+          "type": "text",
+          "id": "occasion_label",
+          "label": "Badge label",
+          "default": "To My Soulmate"
+        },
+        {
+          "type": "text",
+          "id": "card_title",
+          "label": "Card title",
+          "default": "For the One I Love"
+        },
+        {
+          "type": "textarea",
+          "id": "card_message",
+          "label": "Card message preview",
+          "default": "I wasn't sure if you were the one... until I realised I couldn't imagine my life without you."
+        },
+        {
+          "type": "image_picker",
+          "id": "card_image",
+          "label": "Card preview image"
+        },
+        {
+          "type": "color",
+          "id": "card_bg_color",
+          "label": "Card background",
+          "default": "#ffffff"
+        },
+        {
+          "type": "url",
+          "id": "card_link",
+          "label": "Link to product"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Choose This Card"
+        },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Featured card",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Message Cards",
+      "blocks": [
+        {
+          "type": "message_card",
+          "settings": {
+            "occasion_type": "dad-daughter",
+            "occasion_label": "From Dad",
+            "card_title": "To My Little Girl",
+            "card_message": "I can't promise to be here for the rest of your life, but I can promise to love you for the rest of mine."
+          }
+        },
+        {
+          "type": "message_card",
+          "settings": {
+            "occasion_type": "soulmate",
+            "occasion_label": "To My Soulmate",
+            "card_title": "My Person",
+            "card_message": "Meeting you was fate, becoming your friend was a choice, but falling in love with you was beyond my control."
+          }
+        },
+        {
+          "type": "message_card",
+          "settings": {
+            "occasion_type": "husband-wife",
+            "occasion_label": "To My Wife",
+            "card_title": "My Forever",
+            "card_message": "Thank you for standing by me. Thank you for loving me. Thank you for being my everything."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

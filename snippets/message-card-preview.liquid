@@ -1,0 +1,108 @@
+{%- comment -%}
+  Digital Gift Card / Message Card Snippet
+  PRD v2.0: Section 5.2 - The "Message Card" Generator
+  
+  This renders a preview of the personalized message card that will be included with the order.
+  Usage: {% render 'message-card-preview', message_type: 'wife', custom_message: 'Your custom text' %}
+{%- endcomment -%}
+
+{%- assign card_type = message_type | default: 'love' -%}
+
+<div class="message-card-preview" data-card-type="{{ card_type }}">
+  <div class="message-card-preview__frame">
+    <div class="message-card-preview__content">
+      {%- case card_type -%}
+        {%- when 'wife' -%}
+          <p class="message-card-preview__title">To My Beautiful Wife</p>
+          <p class="message-card-preview__text">I may not be your first love, your first kiss, or your first date... but I want to be your last everything.</p>
+        {%- when 'girlfriend' -%}
+          <p class="message-card-preview__title">To My Girlfriend</p>
+          <p class="message-card-preview__text">You are my today and all of my tomorrows. Thank you for being you.</p>
+        {%- when 'mum' -%}
+          <p class="message-card-preview__title">To My Wonderful Mum</p>
+          <p class="message-card-preview__text">A mother's love is the fuel that enables a normal human being to do the impossible. Thank you for everything.</p>
+        {%- when 'daughter' -%}
+          <p class="message-card-preview__title">To My Darling Daughter</p>
+          <p class="message-card-preview__text">You are braver than you believe, stronger than you seem, and loved more than you know.</p>
+        {%- when 'grandmother' -%}
+          <p class="message-card-preview__title">To My Beloved Grandmother</p>
+          <p class="message-card-preview__text">Grandmothers hold our tiny hands for just a little while, but our hearts forever.</p>
+        {%- when 'soulmate' -%}
+          <p class="message-card-preview__title">To My Soulmate</p>
+          <p class="message-card-preview__text">In a sea of people, my eyes will always search for you.</p>
+        {%- when 'custom' -%}
+          <p class="message-card-preview__title">{{ custom_title | default: 'With Love' }}</p>
+          <p class="message-card-preview__text">{{ custom_message | default: 'Your personal message here...' }}</p>
+        {%- else -%}
+          <p class="message-card-preview__title">With Love</p>
+          <p class="message-card-preview__text">A small token of appreciation for the amazing person you are.</p>
+      {%- endcase -%}
+      
+      <div class="message-card-preview__signature">
+        <span class="message-card-preview__brand">AUREA</span>
+        <span class="message-card-preview__tagline">Handcrafted with Love in London</span>
+      </div>
+    </div>
+  </div>
+  
+  <p class="message-card-preview__note">
+    This message card will be printed and included with your order.
+  </p>
+</div>
+
+<style>
+  .message-card-preview {
+    max-width: 400px;
+    margin: 2rem auto;
+  }
+  .message-card-preview__frame {
+    background: linear-gradient(135deg, #faf9f8 0%, #f5f3f0 100%);
+    border: 1px solid #e5e2dc;
+    border-radius: 8px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+  .message-card-preview__content {
+    text-align: center;
+  }
+  .message-card-preview__title {
+    font-family: var(--font-heading-family);
+    font-size: 1.8rem;
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+  .message-card-preview__text {
+    font-family: var(--font-body-family);
+    font-size: 1.4rem;
+    color: #4a4a4a;
+    line-height: 1.8;
+    font-style: italic;
+    margin-bottom: 2rem;
+  }
+  .message-card-preview__signature {
+    border-top: 1px solid #e5e2dc;
+    padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .message-card-preview__brand {
+    font-family: var(--font-heading-family);
+    font-size: 1.6rem;
+    letter-spacing: 0.3em;
+    color: #d4a574;
+  }
+  .message-card-preview__tagline {
+    font-size: 1rem;
+    color: #888;
+  }
+  .message-card-preview__note {
+    text-align: center;
+    font-size: 1.2rem;
+    color: rgba(var(--color-foreground), 0.5);
+    margin-top: 1rem;
+  }
+</style>

@@ -1,0 +1,182 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    background-color: {{ section.settings.background_color }};
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .ticker-container {
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    width: 100%;
+    display: flex;
+  }
+
+  .ticker-wrap {
+    display: flex;
+    flex-shrink: 0;
+    animation: ticker-{{ section.id }} {{ section.settings.animation_duration }}s linear infinite;
+  }
+  
+  {% if section.settings.direction == 'rtl' %}
+      @keyframes ticker-{{ section.id }} {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-100%); }
+      }
+  {% else %}
+      @keyframes ticker-{{ section.id }} {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(0); }
+      }
+  {% endif %}
+
+  .ticker-item {
+    padding: 0 4rem;
+    font-size: {{ section.settings.font_size }}px;
+    font-weight: bold;
+    color: {{ section.settings.text_color }};
+    display: flex;
+    align-items: center;
+  }
+
+  /* Hover to pause */
+  .ticker-container:hover .ticker-wrap {
+      animation-play-state: paused;
+  }
+
+{%- endstyle -%}
+
+<div class="section-{{ section.id }}-padding">
+  <div class="ticker-container" role="marquee">
+    <div class="ticker-wrap">
+       {% for block in section.blocks %}
+          <div class="ticker-item">
+             {% if block.settings.title != blank %}
+                <span>{{ block.settings.title }}</span>
+             {% endif %}
+          </div>
+       {% endfor %}
+    </div>
+    <div class="ticker-wrap" aria-hidden="true">
+       {% for block in section.blocks %}
+          <div class="ticker-item">
+             {% if block.settings.title != blank %}
+                <span>{{ block.settings.title }}</span>
+             {% endif %}
+          </div>
+       {% endfor %}
+    </div>
+    <div class="ticker-wrap" aria-hidden="true">
+       {% for block in section.blocks %}
+          <div class="ticker-item">
+             {% if block.settings.title != blank %}
+                <span>{{ block.settings.title }}</span>
+             {% endif %}
+          </div>
+       {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ticker / Marquee",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "animation_duration",
+      "min": 5,
+      "max": 60,
+      "step": 1,
+      "unit": "s",
+      "label": "Animation Duration",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Direction",
+      "options": [
+        { "value": "rtl", "label": "Right to Left" },
+        { "value": "ltr", "label": "Left to Right" }
+      ],
+      "default": "rtl"
+    },
+    {
+       "type": "color",
+       "id": "background_color",
+       "label": "Background Color",
+       "default": "#F3F3F3"
+    },
+     {
+       "type": "color",
+       "id": "text_color",
+       "label": "Text Color",
+       "default": "#121212"
+    },
+    {
+       "type": "range",
+       "id": "font_size",
+       "min": 12,
+       "max": 100,
+       "step": 1,
+       "unit": "px",
+       "label": "Font Size",
+       "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 12
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Banner item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Text",
+          "default": "Welcome to our store"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ticker / Marquee",
+      "blocks": [
+        { "type": "text" },
+        { "type": "text" },
+        { "type": "text" }
+      ]
+    }
+  ]
+}
+{% endschema %}

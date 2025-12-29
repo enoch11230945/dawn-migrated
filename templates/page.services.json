@@ -1,0 +1,13 @@
+{
+    "sections": {
+        "main": {
+            "type": "template-services",
+            "settings": {
+                "delivery_title": "Delivery"
+            }
+        }
+    },
+    "order": [
+        "main"
+    ]
+}

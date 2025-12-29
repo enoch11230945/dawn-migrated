@@ -1,0 +1,377 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .proof-header {
+    margin-bottom: 3rem;
+  }
+
+  .rating-summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .stars {
+    display: flex;
+    gap: 0.2rem;
+  }
+  
+  .stars svg {
+    color: #FFB800;
+  }
+
+  .rating-number {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: rgb(var(--color-foreground));
+  }
+
+  .proof-title {
+    margin-bottom: 1rem;
+    color: rgb(var(--color-foreground));
+  }
+
+  .proof-subtitle {
+    font-size: 1.6rem;
+    color: rgba(var(--color-foreground), 0.75);
+    margin: 0;
+  }
+
+  .review-card {
+    background: rgb(var(--color-background));
+    border-radius: var(--media-radius);
+    padding: 3rem 2rem;
+    border: 1px solid rgba(var(--color-foreground), 0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .review-card:hover {
+    box-shadow: var(--media-shadow-horizontal-offset) var(--media-shadow-vertical-offset) var(--media-shadow-blur-radius) rgba(var(--color-shadow), var(--media-shadow-opacity));
+    transform: translateY(-2px);
+  }
+
+  .review-stars {
+    display: flex;
+    gap: 0.2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .review-stars svg {
+    color: #FFB800;
+  }
+
+  .review-headline {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: rgb(var(--color-foreground));
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .review-text {
+    font-size: 1.4rem;
+    color: rgba(var(--color-foreground), 0.75);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    flex-grow: 1;
+  }
+
+  .review-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: auto;
+  }
+
+  .author-avatar {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d4a574, #c49464);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.6rem;
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .author-name {
+    font-weight: 600;
+    color: rgb(var(--color-foreground));
+    font-size: 1.4rem;
+  }
+
+  .author-location {
+    font-size: 1.2rem;
+    color: rgba(var(--color-foreground), 0.6);
+  }
+
+  .verified-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: auto;
+    background: rgba(var(--color-foreground), 0.05);
+    color: #2e7d32;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .review-product {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(var(--color-foreground), 0.08);
+    font-size: 1.2rem;
+    color: rgba(var(--color-foreground), 0.6);
+  }
+
+  .review-product strong {
+    color: rgba(var(--color-foreground), 0.8);
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width">
+    
+    <div class="proof-header center">
+      {%- if section.settings.rating_text != blank -%}
+        <div class="rating-summary">
+          <div class="stars">
+            {%- for i in (1..5) -%}
+              <svg class="star" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+            {%- endfor -%}
+          </div>
+          <span class="rating-number">{{ section.settings.rating_text | escape }}</span>
+        </div>
+      {%- endif -%}
+      
+      <h2 class="proof-title {{ section.settings.heading_size }}">{{ section.settings.title | escape }}</h2>
+      
+      {%- if section.settings.subtitle != blank -%}
+        <p class="proof-subtitle">{{ section.settings.subtitle | escape }}</p>
+      {%- endif -%}
+    </div>
+    
+    <div class="grid grid--1-col grid--2-col-tablet grid--3-col-desktop grid--gap-large">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'review' -%}
+            <div class="grid__item" {{ block.shopify_attributes }}>
+              <div class="review-card">
+                
+                <div class="review-stars">
+                  {%- assign stars = block.settings.stars | default: 5 -%}
+                  {%- for i in (1..stars) -%}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                  {%- endfor -%}
+                </div>
+                
+                {%- if block.settings.headline != blank -%}
+                  <h4 class="review-headline">"{{ block.settings.headline | escape }}"</h4>
+                {%- endif -%}
+                
+                <p class="review-text">{{ block.settings.review_text | escape }}</p>
+                
+                <div class="review-author">
+                  <div class="author-avatar">
+                    {{ block.settings.author_name | slice: 0 | upcase }}
+                  </div>
+                  <div class="author-info">
+                    <span class="author-name">{{ block.settings.author_name | escape }}</span>
+                    <span class="author-location">{{ block.settings.author_location | escape }}</span>
+                  </div>
+                  {%- if block.settings.verified -%}
+                    <span class="verified-badge">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                      </svg>
+                      Verified
+                    </span>
+                  {%- endif -%}
+                </div>
+                
+                {%- if block.settings.product_purchased != blank -%}
+                  <div class="review-product">
+                    Purchased: <strong>{{ block.settings.product_purchased | escape }}</strong>
+                  </div>
+                {%- endif -%}
+                
+              </div>
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+    
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Social Proof",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "background-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "text",
+      "id": "rating_text",
+      "label": "Rating text",
+      "default": "4.9/5 from 500+ happy customers"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" },
+        { "value": "hxl", "label": "Extra Large" }
+      ],
+      "default": "h1",
+      "label": "Heading Size"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Real reviews from real people"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "range",
+          "id": "stars",
+          "label": "Star rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "headline",
+          "label": "Review headline",
+          "default": "She absolutely loved it"
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review text",
+          "default": "When she read the message card, she started crying. Best reaction I've ever got from a gift. The necklace is beautiful and the presentation was perfect."
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author name",
+          "default": "James W."
+        },
+        {
+          "type": "text",
+          "id": "author_location",
+          "label": "Author location",
+          "default": "Manchester, UK"
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Verified purchase",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "product_purchased",
+          "label": "Product purchased",
+          "default": "Love Knot Necklace"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Social Proof",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "headline": "She cried when she read the card",
+            "review_text": "I'm rubbish at expressing how I feel, but the message on the card said exactly what I wanted to say. When she read it, she started crying. Best gift I've ever given.",
+            "author_name": "James W.",
+            "author_location": "Manchester, UK",
+            "verified": true,
+            "product_purchased": "Love Knot Necklace"
+          }
+        },
+        {
+          "type": "review"
+        },
+        {
+          "type": "review"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

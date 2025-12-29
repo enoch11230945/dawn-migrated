@@ -1,0 +1,338 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .delivery-card {
+    background: rgb(var(--color-background));
+    border: 1px solid rgba(var(--color-foreground), 0.08);
+    border-radius: var(--media-radius);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .delivery-card:hover {
+    border-color: rgba(var(--color-foreground), 0.2);
+    box-shadow: var(--media-shadow-horizontal-offset) var(--media-shadow-vertical-offset) var(--media-shadow-blur-radius) rgba(var(--color-shadow), var(--media-shadow-opacity));
+  }
+
+  .delivery-card.highlighted {
+    border-color: #d4a574;
+    background: rgba(var(--color-foreground), 0.03);
+  }
+
+  .delivery-icon {
+    width: 6.4rem;
+    height: 6.4rem;
+    border-radius: 50%;
+    background: rgba(var(--color-foreground), 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    color: #d4a574;
+  }
+  
+  .delivery-icon svg {
+    width: 3.2rem;
+    height: 3.2rem;
+  }
+
+  .delivery-card.highlighted .delivery-icon {
+    background: linear-gradient(135deg, #d4a574, #c49464);
+    color: #fff;
+  }
+
+  .delivery-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: rgb(var(--color-foreground));
+    margin-bottom: 0.8rem;
+  }
+
+  .delivery-time {
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: #d4a574;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .delivery-desc {
+    font-size: 1.4rem;
+    color: rgba(var(--color-foreground), 0.7);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    flex-grow: 1;
+  }
+
+  .delivery-price {
+    display: inline-block;
+    background: rgba(var(--color-foreground), 0.05);
+    padding: 0.6rem 1.4rem;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: rgb(var(--color-foreground));
+  }
+
+  .delivery-card.highlighted .delivery-price {
+    background: #d4a574;
+    color: #fff;
+  }
+
+  .delivery-disclaimer {
+    text-align: center;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(var(--color-foreground), 0.08);
+  }
+
+  .delivery-disclaimer p {
+    font-size: 1.2rem;
+    color: rgba(var(--color-foreground), 0.5);
+    margin: 0;
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width">
+    
+    {%- if section.settings.section_title != blank -%}
+      <div class="title-wrapper--no-top-margin center">
+        <h2 class="title {{ section.settings.heading_size }}">{{ section.settings.section_title | escape }}</h2>
+      </div>
+    {%- endif -%}
+    
+    <div class="grid grid--1-col grid--2-col-tablet grid--3-col-desktop grid--gap-large">
+      {%- for block in section.blocks -%}
+        <div class="grid__item" {{ block.shopify_attributes }}>
+          <div class="delivery-card {{ block.settings.highlight ? 'highlighted' : '' }}">
+            
+            <div class="delivery-icon">
+              {%- case block.settings.icon_type -%}
+                {%- when 'standard' -%}
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="1" y="3" width="15" height="13"></rect>
+                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                  </svg>
+                {%- when 'express' -%}
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                  </svg>
+                {%- when 'gift' -%}
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                    <rect x="2" y="7" width="20" height="5"></rect>
+                    <line x1="12" y1="22" x2="12" y2="7"></line>
+                    <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                    <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+                  </svg>
+                {%- when 'clock' -%}
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                {%- else -%}
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+              {%- endcase -%}
+            </div>
+            
+            <h3 class="delivery-title h4">{{ block.settings.title | escape }}</h3>
+            <p class="delivery-time">{{ block.settings.delivery_time | escape }}</p>
+            <p class="delivery-desc">{{ block.settings.description | escape }}</p>
+            
+            {%- if block.settings.price != blank -%}
+              <span class="delivery-price">{{ block.settings.price | escape }}</span>
+            {%- endif -%}
+            
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+    
+    {%- if section.settings.show_disclaimer -%}
+      <div class="delivery-disclaimer">
+        <p>{{ section.settings.disclaimer_text | escape }}</p>
+      </div>
+    {%- endif -%}
+    
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "UK Delivery Info",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "background-1"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title",
+      "default": "UK Delivery"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" },
+        { "value": "hxl", "label": "Extra Large" }
+      ],
+      "default": "h1",
+      "label": "Heading Size"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_disclaimer",
+      "label": "Show disclaimer",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "disclaimer_text",
+      "label": "Disclaimer text",
+      "default": "Delivery times are estimates and may vary during peak periods. Orders placed after the cutoff date may not arrive in time for the occasion."
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "delivery_option",
+      "name": "Delivery Option",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon_type",
+          "label": "Icon",
+          "options": [
+            { "value": "standard", "label": "Delivery Van" },
+            { "value": "express", "label": "Lightning" },
+            { "value": "gift", "label": "Gift Box" },
+            { "value": "clock", "label": "Clock" },
+            { "value": "check", "label": "Checkmark" }
+          ],
+          "default": "standard"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "UK Stock"
+        },
+        {
+          "type": "text",
+          "id": "delivery_time",
+          "label": "Delivery time",
+          "default": "2-3 days"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Ships from our UK facility via Royal Mail 2nd Class"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "FREE"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight",
+          "label": "Highlight this option",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "UK Delivery Info",
+      "blocks": [
+        {
+          "type": "delivery_option",
+          "settings": {
+            "icon_type": "standard",
+            "title": "UK Stock",
+            "delivery_time": "2-3 days",
+            "description": "Ships from our UK facility via Royal Mail 2nd Class",
+            "price": "FREE",
+            "highlight": true
+          }
+        },
+        {
+          "type": "delivery_option",
+          "settings": {
+            "icon_type": "express",
+            "title": "Express Delivery",
+            "delivery_time": "Next day",
+            "description": "Royal Mail Tracked 24 - order before 2pm",
+            "price": "+£3.50"
+          }
+        },
+        {
+          "type": "delivery_option",
+          "settings": {
+            "icon_type": "gift",
+            "title": "Gift Ready",
+            "delivery_time": "Included",
+            "description": "Luxury box, velvet pouch, and message card",
+            "price": "FREE"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

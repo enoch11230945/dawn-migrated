@@ -1,0 +1,14 @@
+{
+    "sections": {
+        "main": {
+            "type": "template-personal-block",
+            "settings": {
+                "color_scheme": "background-1",
+                "columns_desktop": 3
+            }
+        }
+    },
+    "order": [
+        "main"
+    ]
+}

@@ -1,0 +1,302 @@
+{%- comment -%}
+  AUREA Dynamic Announcement Bar
+  PRD v2.0: Section 5.0 - Emotional Marketing
+  Features:
+  - Rotating messages
+  - Countdown timer integration
+  - UK Delivery messaging (2-3 days)
+{%- endcomment -%}
+
+{%- style -%}
+  .dynamic-announcement {
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    padding: 0.8rem 0;
+    text-align: center;
+    font-size: 1.4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .dynamic-announcement__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .dynamic-announcement__icon {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+  .dynamic-announcement__text {
+    font-weight: 500;
+  }
+  .dynamic-announcement__link {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .dynamic-announcement__messages {
+    position: relative;
+    height: 2rem;
+    overflow: hidden;
+  }
+  .dynamic-announcement__message {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .dynamic-announcement__message.is-active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .dynamic-announcement__countdown {
+    font-weight: 700;
+    background: rgba(255,255,255,0.2);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-family: var(--font-body-family);
+  }
+{%- endstyle -%}
+
+<div class="dynamic-announcement" 
+     data-section-id="{{ section.id }}"
+     data-rotation-speed="{{ section.settings.rotation_speed | default: 5000 }}">
+  <div class="page-width">
+    <div class="dynamic-announcement__inner">
+      {%- if section.settings.show_icon -%}
+        <svg class="dynamic-announcement__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+        </svg>
+      {%- endif -%}
+
+      <div class="dynamic-announcement__messages">
+        {%- for block in section.blocks -%}
+          <div class="dynamic-announcement__message{% if forloop.first %} is-active{% endif %}" 
+               data-index="{{ forloop.index0 }}"
+               {{ block.shopify_attributes }}>
+            <span class="dynamic-announcement__text">
+              {{ block.settings.text }}
+            </span>
+            {%- if block.settings.show_countdown -%}
+              <span class="dynamic-announcement__countdown" data-countdown-target="{{ block.settings.countdown_hour | default: 14 }}:00">
+                --:--:--
+              </span>
+            {%- endif -%}
+            {%- if block.settings.link_text != blank and block.settings.link_url != blank -%}
+              <a href="{{ block.settings.link_url }}" class="dynamic-announcement__link">
+                {{ block.settings.link_text }}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const section = document.querySelector('[data-section-id="{{ section.id }}"]');
+    if (!section) return;
+
+    const messages = section.querySelectorAll('.dynamic-announcement__message');
+    if (messages.length <= 1) return;
+
+    const rotationSpeed = parseInt(section.dataset.rotationSpeed) || 5000;
+    let currentIndex = 0;
+    let intervalId = null;
+    const countdownIntervals = [];
+
+    function rotateMessages() {
+      messages[currentIndex].classList.remove('is-active');
+      currentIndex = (currentIndex + 1) % messages.length;
+      messages[currentIndex].classList.add('is-active');
+    }
+
+    intervalId = setInterval(rotateMessages, rotationSpeed);
+
+    // Optimized London Time & Shipping Logic
+    const countdowns = section.querySelectorAll('[data-countdown-target]');
+    countdowns.forEach(function(el) {
+      const targetHourStr = el.dataset.countdownTarget.split(':')[0];
+      const weekdayTargetHour = parseInt(targetHourStr);
+      const saturdayTargetHour = 11; // Royal Mail Saturday cutoff is earlier
+
+      function updateCountdown() {
+        // High Precision London Time (First Principles: Data Source must be absolute)
+        const now = new Date();
+        const londonString = now.toLocaleString("en-GB", {timeZone: "Europe/London"});
+        const parts = londonString.split(/[\/, :]/);
+        // Format: [DD, MM, YYYY, HH, mm, ss]
+        const londonTime = new Date(parts[2], parts[1] - 1, parts[0], parts[3], parts[4], parts[5]);
+        
+        const dayOfWeek = londonTime.getDay(); // 0 = Sunday, 6 = Saturday
+        let target = new Date(londonTime);
+        let currentTargetHour = weekdayTargetHour;
+        let isWeekend = false;
+
+        if (dayOfWeek === 0) { // Sunday: No collection
+          target.setDate(target.getDate() + 1);
+          target.setHours(weekdayTargetHour, 0, 0, 0);
+          isWeekend = true;
+        } else if (dayOfWeek === 6) { // Saturday
+          currentTargetHour = saturdayTargetHour;
+          target.setHours(saturdayTargetHour, 0, 0, 0);
+          if (londonTime >= target) {
+             target.setDate(target.getDate() + 2); // Next is Monday
+             target.setHours(weekdayTargetHour, 0, 0, 0);
+          }
+        } else { // Weekdays
+          target.setHours(weekdayTargetHour, 0, 0, 0);
+          if (londonTime >= target) {
+            if (dayOfWeek === 5) { // Friday after cutoff -> next is Saturday 11am
+              target.setDate(target.getDate() + 1);
+              target.setHours(saturdayTargetHour, 0, 0, 0);
+            } else {
+              target.setDate(target.getDate() + 1);
+            }
+          }
+        }
+
+        const diff = target - londonTime;
+        
+        // If it's Sunday or we've passed Saturday's cutoff, we can show "Next Dispatch: Monday" 
+        // But the PRD usually wants the timer to be continuous.
+        
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        
+        el.textContent = 
+          String(hours).padStart(2, '0') + ':' +
+          String(minutes).padStart(2, '0') + ':' +
+          String(seconds).padStart(2, '0');
+          
+        // Optional prefix for weekend context
+        if (dayOfWeek === 0 || (dayOfWeek === 6 && londonTime.getHours() >= saturdayTargetHour)) {
+           // el.parentElement.querySelector('.dynamic-announcement__text').textContent = "Monday Dispatch in:";
+        }
+      }
+      
+      updateCountdown();
+      const countdownId = setInterval(updateCountdown, 1000);
+      countdownIntervals.push(countdownId);
+    });
+
+    document.addEventListener('shopify:section:unload', function(e) {
+      if (e.detail.sectionId === '{{ section.id }}') {
+        clearInterval(intervalId);
+        countdownIntervals.forEach(function(id) { clearInterval(id); });
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Dynamic Announcement",
+  "tag": "section",
+  "class": "section-dynamic-announcement",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show icon",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rotation_speed",
+      "min": 3000,
+      "max": 10000,
+      "step": 500,
+      "unit": "ms",
+      "label": "Rotation speed",
+      "default": 5000
+    }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Message",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Message text",
+          "default": "🇬🇧 UK Stock - Ships in 2-3 Days"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_countdown",
+          "label": "Show countdown timer",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "countdown_hour",
+          "min": 10,
+          "max": 18,
+          "step": 1,
+          "unit": ":00",
+          "label": "Countdown target hour (UK time)",
+          "default": 14,
+          "info": "Order by this time for same-day dispatch"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dynamic Announcement",
+      "blocks": [
+        {
+          "type": "message",
+          "settings": {
+            "text": "🇬🇧 UK Stock - Ships in 2-3 Days"
+          }
+        },
+        {
+          "type": "message",
+          "settings": {
+            "text": "✨ Free UK Delivery on Orders Over £30"
+          }
+        },
+        {
+          "type": "message",
+          "settings": {
+            "text": "💝 Handcrafted with Love in London",
+            "show_countdown": true,
+            "countdown_hour": 14
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,313 @@
+{{ 'section-main-page.css' | asset_url | stylesheet_tag }}
+
+<div class="page-width page-width--narrow section-{{ section.id }}-padding">
+  <div class="compare-header center">
+    <h1 class="main-page-title page-title h0">{{ section.settings.title }}</h1>
+  </div>
+
+  <div class="compare-empty center" id="compareEmpty" style="display: none;">
+    <h2 class="h2">{{ 'templates.cart.empty' | t }}</h2>
+    <p>{{ 'general.continue_shopping' | t }}</p>
+    <a href="{{ routes.all_products_collection_url }}" class="button button--primary">
+      {{ 'general.continue_shopping' | t }}
+    </a>
+  </div>
+
+  <div class="compare-container" id="compareContainer" style="overflow-x: auto;">
+      <table class="compare-table" id="compareTable" style="width: 100%; border-collapse: collapse;">
+          <!-- JS will populate -->
+      </table>
+  </div>
+
+   <div class="compare-actions center" id="compareActions" style="display: none; margin-top: 4rem;">
+    <button type="button" class="button button--secondary" data-action="clear-compare">
+      Clear Compare List
+    </button>
+  </div>
+</div>
+
+<style>
+.compare-table th, .compare-table td {
+    padding: 1.5rem;
+    border: 1px solid rgba(var(--color-foreground), 0.1);
+    text-align: center;
+    min-width: 200px;
+}
+.compare-table th {
+    background: rgba(var(--color-foreground), 0.02);
+    font-weight: bold;
+    text-align: left;
+    min-width: 150px;
+}
+.compare-product-image img {
+    max-width: 150px;
+    height: auto;
+}
+.compare-remove {
+    margin-top: 1rem;
+    color: red;
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-decoration: underline;
+}
+</style>
+
+<script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const table = document.getElementById('compareTable');
+  const empty = document.getElementById('compareEmpty');
+  const actions = document.getElementById('compareActions');
+  const container = document.getElementById('compareContainer');
+  
+  // ARCHITECTURAL FIX: Use a PERSISTENT session cache.
+  // Store in sessionStorage so we don't refetch on every page load or remove action.
+  const CACHE_KEY = 'aurea_compare_product_cache';
+  let productCache = null;
+  
+  function loadCacheFromSession() {
+    try {
+      const cached = sessionStorage.getItem(CACHE_KEY);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        productCache = new Map(Object.entries(parsed));
+        return true;
+      }
+    } catch(e) {}
+    return false;
+  }
+  
+  function saveCacheToSession() {
+    if (productCache) {
+      try {
+        const obj = Object.fromEntries(productCache);
+        sessionStorage.setItem(CACHE_KEY, JSON.stringify(obj));
+      } catch(e) {}
+    }
+  }
+
+  function loadCompare() {
+    if (typeof AureaCompare === 'undefined') {
+      setTimeout(loadCompare, 100);
+      return;
+    }
+    
+    const items = AureaCompare.getItems();
+    
+    if (items.length === 0) {
+      showEmpty();
+      return;
+    }
+    
+    actions.style.display = 'block';
+    empty.style.display = 'none';
+    
+    // Try to load from session cache first
+    const hasCachedData = productCache || loadCacheFromSession();
+    
+    if (hasCachedData && productCache) {
+      const products = items.map(id => productCache.get(String(id))).filter(p => !!p);
+      // Only render if we have ALL products cached
+      if (products.length === items.length && products.length > 0) {
+        renderTable(products);
+        return;
+      }
+    }
+    
+    // OPTIMIZATION: If we must fetch, fetch with a reasonable limit based on actual catalog size.
+    // Most stores have < 100 products. Only increase if needed.
+    // Also: Only fetch ONCE per session. Cache the result.
+    fetch('/products.json?limit=100')
+      .then(r => r.json())
+      .then(data => {
+        productCache = new Map();
+        data.products.forEach(p => productCache.set(String(p.id), p));
+        saveCacheToSession();
+        
+        const products = items.map(id => productCache.get(String(id))).filter(p => !!p);
+        
+        if (products.length > 0) {
+          renderTable(products);
+        } else {
+          showEmpty();
+        }
+      })
+      .catch(() => showEmpty());
+  }
+  
+  function renderTable(products) {
+      // Metrics: Image, Title, Price, Vendor, Type, Availability (Variant check?), Add to Cart
+      let html = '';
+      
+      // Row 1: Image & Title & Remove (FIXED: using data-action instead of onclick)
+      html += '<tr><th>Product</th>';
+      products.forEach(p => {
+          const img = p.images && p.images[0] ? p.images[0].src : '';
+          html += `<td>
+              <div class="compare-product-image">
+                  <a href="/products/${p.handle}"><img src="${img}" loading="lazy"></a>
+              </div>
+              <div class="h4"><a href="/products/${p.handle}" class="link list-menu__item">${p.title}</a></div>
+              <button class="compare-remove" data-action="remove-compare" data-product-id="${p.id}">Remove</button>
+          </td>`;
+      });
+      html += '</tr>';
+      
+      // Row 2: Price
+      html += '<tr><th>Price</th>';
+      products.forEach(p => {
+           const variant = p.variants[0];
+           // FIXED v28.0: products.json returns price as a DECIMAL STRING (e.g., "19.99"), NOT cents.
+           // Dividing by 100 was turning $20 into $0.20. Removed division.
+           const formatted = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(parseFloat(variant.price));
+           html += `<td>${formatted}</td>`;
+      });
+      html += '</tr>';
+
+      
+      // Row 3: Vendor
+      html += '<tr><th>Vendor</th>';
+       products.forEach(p => {
+           html += `<td>${p.vendor}</td>`;
+      });
+      html += '</tr>';
+      
+      // Row 4: Type
+      html += '<tr><th>Type</th>';
+       products.forEach(p => {
+           html += `<td>${p.product_type}</td>`;
+      });
+      html += '</tr>';
+      
+        // Row 5: Action (FIXED: using data-action instead of onclick)
+      html += '<tr><th>Action</th>';
+       products.forEach(p => {
+            const variant = p.variants[0];
+           html += `<td>
+            <button class="button button--primary" data-action="add-to-cart" data-variant-id="${variant.id}">Add to Cart</button>
+           </td>`;
+      });
+      html += '</tr>';
+      
+      table.innerHTML = html;
+  }
+  
+  function showEmpty() {
+    container.style.display = 'none';
+    empty.style.display = 'block';
+    actions.style.display = 'none';
+  }
+  
+  // ARCHITECTURAL FIX: Event delegation for compare page actions
+  document.addEventListener('click', function(e) {
+    const target = e.target;
+    
+    if (target.matches('[data-action="remove-compare"]')) {
+      const id = parseInt(target.dataset.productId, 10);
+      if (id && typeof AureaCompare !== 'undefined') {
+        AureaCompare.remove(id);
+        loadCompare();
+      }
+    }
+    
+    if (target.matches('[data-action="clear-compare"]')) {
+      if (typeof AureaCompare !== 'undefined') {
+        AureaCompare.clear();
+        showEmpty();
+      }
+    }
+    
+    if (target.matches('[data-action="add-to-cart"]')) {
+      const vid = parseInt(target.dataset.variantId, 10);
+      if (vid) {
+        addToCartFromCompare(vid, target);
+      }
+    }
+  });
+  
+  function addToCartFromCompare(vid, btn) {
+    let formData = {
+      'items': [{
+        'id': vid,
+        'quantity': 1
+      }]
+    };
+    
+    fetch(window.Shopify.routes.root + 'cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    })
+    .then(() => {
+        btn.textContent = 'Added';
+    })
+    .catch(() => {
+        btn.textContent = 'Error';
+    });
+  }
+  
+  // FIXED: Implementation of Add to Cart matching wishlist
+  if (!window.addToCartFromWishlist) {
+      window.addToCartFromWishlist = function(vid, btn) {
+          let formData = {
+            'items': [{
+              'id': vid,
+              'quantity': 1
+            }]
+          };
+          
+          fetch(window.Shopify.routes.root + 'cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+          })
+          .then(() => {
+              btn.textContent = 'Added';
+              if (window.AureaCompare) AureaCompare.remove(vid); // Optional: remove from compare after adding
+              document.querySelector('cart-notification') && document.querySelector('cart-notification').renderContents(formData.items[0]);
+          })
+          .catch((e) => console.error(e));
+      }
+  }
+
+  loadCompare();
+});
+</script>
+
+{% schema %}
+{
+  "name": "Compare Page",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Compare Products",
+      "label": "Title"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}

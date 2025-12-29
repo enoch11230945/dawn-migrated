@@ -1,0 +1,185 @@
+{%- comment -%}
+  London_Emotion_Engine - Shipping Countdown Snippet
+  Displays deadline for guaranteed arrival (Valentine's Day, Mother's Day, etc.)
+  
+  Usage: {% render 'shipping-countdown', deadline_date: '2026-02-07', occasion_name: "Valentine's Day" %}
+{%- endcomment -%}
+
+{%- assign deadline = deadline_date | default: '' -%}
+{%- assign occasion = occasion_name | default: 'the occasion' -%}
+
+{%- if deadline != blank -%}
+<div class="shipping-countdown" data-deadline="{{ deadline }}">
+  <div class="countdown-inner">
+    <svg class="countdown-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M12 6v6l4 2"/>
+    </svg>
+    <div class="countdown-text">
+      <span class="countdown-label">Order by <strong class="countdown-date"></strong> for guaranteed {{ occasion }} delivery</span>
+      <span class="countdown-timer">
+        <span class="days"></span>d 
+        <span class="hours"></span>h 
+        <span class="minutes"></span>m 
+        <span class="seconds"></span>s
+      </span>
+    </div>
+  </div>
+</div>
+
+<style>
+.shipping-countdown {
+  background: linear-gradient(135deg, rgb(var(--color-button)), rgb(var(--color-button)) );
+  color: rgb(var(--color-button-text));
+  padding: 1.2rem 2rem;
+  border-radius: var(--media-radius);
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.shipping-countdown .countdown-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.shipping-countdown .countdown-icon {
+  flex-shrink: 0;
+  color: #fff;
+  opacity: 0.9;
+}
+
+.shipping-countdown .countdown-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.shipping-countdown .countdown-label {
+  font-size: 1.2rem;
+}
+
+.shipping-countdown .countdown-label strong {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.shipping-countdown .countdown-timer {
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #fff;
+}
+
+.shipping-countdown.expired {
+  background: #a00;
+}
+
+.shipping-countdown.expired .countdown-timer {
+  display: none;
+}
+
+.shipping-countdown.expired .countdown-label::after {
+  content: " - ORDER NOW for fastest delivery";
+  color: #fff;
+  font-weight: 600;
+}
+
+@media (max-width: 750px) {
+  .shipping-countdown {
+    padding: 1rem 1.5rem;
+  }
+  
+  .shipping-countdown .countdown-label {
+    font-size: 1.1rem;
+  }
+  
+  .shipping-countdown .countdown-timer {
+    font-size: 1.4rem;
+  }
+}
+</style>
+
+<script>
+(function() {
+  document.querySelectorAll('.shipping-countdown').forEach(countdownEl => {
+    // Skip if already initialized
+    if (countdownEl.dataset.initialized) return;
+    countdownEl.dataset.initialized = 'true';
+    
+    // Use UTC timezone (+00:00) to ensure correct deadline for UK customers
+    const deadline = new Date(countdownEl.dataset.deadline + 'T23:59:59+00:00').getTime();
+    
+    function formatDate(date) {
+      const options = { day: 'numeric', month: 'short' };
+      return new Date(date).toLocaleDateString('en-GB', options);
+    }
+    
+    const dateDisplay = countdownEl.querySelector('.countdown-date');
+    if (dateDisplay) {
+      dateDisplay.textContent = formatDate(countdownEl.dataset.deadline);
+    }
+    
+    let countdownInterval = null;
+    
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = deadline - now;
+      
+      if (distance < 0) {
+        countdownEl.classList.add('expired');
+        if (countdownInterval) {
+          clearInterval(countdownInterval);
+          countdownInterval = null;
+        }
+        return;
+      }
+      
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+      const daysEl = countdownEl.querySelector('.days');
+      if (daysEl) daysEl.textContent = days;
+      
+      const hoursEl = countdownEl.querySelector('.hours');
+      if (hoursEl) hoursEl.textContent = hours.toString().padStart(2, '0');
+      
+      const minEl = countdownEl.querySelector('.minutes');
+      if (minEl) minEl.textContent = minutes.toString().padStart(2, '0');
+      
+      const secEl = countdownEl.querySelector('.seconds');
+      if (secEl) secEl.textContent = seconds.toString().padStart(2, '0');
+    }
+    
+    updateCountdown();
+    countdownInterval = setInterval(updateCountdown, 1000);
+    
+    // FIXED: Don't use MutationObserver on document.body - that's O(N) per countdown!
+    // Instead, just check on visibility change or window unload for cleanup.
+    function cleanup() {
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+    }
+    
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', cleanup, { once: true });
+    
+    // Cleanup if element becomes disconnected (for Theme Editor / SPA)
+    // Only observe the parent, not the entire document.body
+    if (countdownEl.parentElement) {
+      const observer = new MutationObserver(function(mutations) {
+        if (!countdownEl.isConnected) {
+          cleanup();
+          observer.disconnect();
+        }
+      });
+      observer.observe(countdownEl.parentElement, { childList: true });
+    }
+  });
+})();
+</script>
+{%- endif -%}
