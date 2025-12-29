@@ -1171,7 +1171,9 @@ class ProductRecommendations extends HTMLElement {
         }
       })
       .catch((e) => {
-        console.error(e);
+        if (window.Shopify && window.Shopify.designMode) {
+          console.error('[ProductRecommendations] Fetch error:', e);
+        }
       });
   }
 }
@@ -1211,9 +1213,9 @@ class BulkAdd extends HTMLElement {
   startQueue(id, quantity) {
     this.queue.push({ id, quantity });
 
-    // FIXED v14.0: Prevent creating multiple setIntervals.
-    // If an interval is already running, don't create another one.
-    if (this.queueInterval) return;
+    // FIXED v15.0 (Linus): Prevent race condition with strict null check
+    // Previous fix was incomplete - clearInterval doesn't auto-null the variable
+    if (this.queueInterval !== null && this.queueInterval !== undefined) return;
 
     this.queueInterval = setInterval(() => {
       if (this.queue.length > 0) {
@@ -1222,7 +1224,7 @@ class BulkAdd extends HTMLElement {
         }
       } else {
         clearInterval(this.queueInterval);
-        this.queueInterval = null;
+        this.queueInterval = null; // CRITICAL: Must explicitly null after clear
       }
     }, BulkAdd.ASYNC_REQUEST_DELAY);
   }

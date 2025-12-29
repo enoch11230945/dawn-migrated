@@ -1,0 +1,90 @@
+/* 
+ * Wishlist & Compare Action Buttons - Linus Clean CSS
+ * Replaces inline styles for better maintainability and performance
+ */
+
+.aurea-action-btn {
+  padding: 0;
+  min-width: 3.2rem;
+  min-height: 3.2rem;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  background: rgb(var(--color-background));
+  border: 1px solid rgba(var(--color-foreground), 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.aurea-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-color: rgb(var(--color-button));
+}
+
+.aurea-action-btn svg {
+  width: 1.6rem;
+  height: 1.6rem;
+  stroke: currentColor;
+  fill: none;
+  transition: fill 0.2s ease;
+}
+
+/* Pressed/Active state */
+.aurea-action-btn[aria-pressed="true"] svg {
+  fill: rgb(var(--color-button));
+  stroke: rgb(var(--color-button));
+}
+
+/* Badge container for wishlist/compare buttons */
+.card__badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  left: auto;
+  bottom: auto;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+/* Mobile specific */
+@media (max-width: 750px) {
+  .aurea-action-btn {
+    min-width: 2.8rem;
+    min-height: 2.8rem;
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+
+  .aurea-action-btn svg {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+}
+
+/* Loading state */
+.aurea-action-btn[data-loading="true"] {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.aurea-action-btn[data-loading="true"]::after {
+  content: '';
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 2px solid rgba(var(--color-foreground), 0.2);
+  border-top-color: rgb(var(--color-foreground));
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

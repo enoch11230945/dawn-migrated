@@ -103,7 +103,9 @@ class CartItems extends HTMLElement {
           }
         })
         .catch((e) => {
-          console.error(e);
+          if (window.Shopify && window.Shopify.designMode) {
+            console.error('[CartDrawer] Update error:', e);
+          }
         });
     } else {
       return fetch(`${routes.cart_url}?section_id=main-cart-items`)
@@ -114,7 +116,9 @@ class CartItems extends HTMLElement {
           this.innerHTML = sourceQty.innerHTML;
         })
         .catch((e) => {
-          console.error(e);
+          if (window.Shopify && window.Shopify.designMode) {
+            console.error('[Cart] Update error:', e);
+          }
         });
     }
   }

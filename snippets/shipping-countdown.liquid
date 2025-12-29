@@ -107,6 +107,9 @@
     if (countdownEl.dataset.initialized) return;
     countdownEl.dataset.initialized = 'true';
     
+    // Generate unique ID for this countdown
+    const countdownId = `countdown-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    
     // Use UTC timezone (+00:00) to ensure correct deadline for UK customers
     const deadline = new Date(countdownEl.dataset.deadline + 'T23:59:59+00:00').getTime();
     
@@ -120,17 +123,15 @@
       dateDisplay.textContent = formatDate(countdownEl.dataset.deadline);
     }
     
-    let countdownInterval = null;
-    
     function updateCountdown() {
       const now = new Date().getTime();
       const distance = deadline - now;
       
       if (distance < 0) {
         countdownEl.classList.add('expired');
-        if (countdownInterval) {
-          clearInterval(countdownInterval);
-          countdownInterval = null;
+        // FIXED (Linus): Use TimerManager for centralized cleanup
+        if (window.TimerManager) {
+          window.TimerManager.unregister(countdownId);
         }
         return;
       }
@@ -153,33 +154,36 @@
       if (secEl) secEl.textContent = seconds.toString().padStart(2, '0');
     }
     
+    // Initial update
     updateCountdown();
-    countdownInterval = setInterval(updateCountdown, 1000);
     
-    // FIXED: Don't use MutationObserver on document.body - that's O(N) per countdown!
-    // Instead, just check on visibility change or window unload for cleanup.
-    function cleanup() {
-      if (countdownInterval) {
-        clearInterval(countdownInterval);
-        countdownInterval = null;
-      }
+    // FIXED (Linus): Use global TimerManager instead of local setInterval
+    if (window.TimerManager) {
+      window.TimerManager.register(countdownId, updateCountdown, 1000);
+    } else {
+      // Fallback if TimerManager not loaded (should not happen if properly included)
+      console.error('[COUNTDOWN] TimerManager not found. Include timer-manager.js in theme.liquid');
+      setInterval(updateCountdown, 1000);
     }
     
-    // Cleanup on page unload
-    window.addEventListener('beforeunload', cleanup, { once: true });
-    
-    // Cleanup if element becomes disconnected (for Theme Editor / SPA)
-    // Only observe the parent, not the entire document.body
-    if (countdownEl.parentElement) {
+    // FIXED (Linus): Lightweight cleanup observer - only watch parent, not entire document.body
+    if (countdownEl.parentElement && window.MutationObserver) {
       const observer = new MutationObserver(function(mutations) {
         if (!countdownEl.isConnected) {
-          cleanup();
-          observer.disconnect();
+          if (window.TimerManager) {
+            window.TimerManager.unregister(countdownId);
+            window.TimerManager.unregisterObserver(countdownId);
+          }
         }
       });
       observer.observe(countdownEl.parentElement, { childList: true });
+      
+      if (window.TimerManager) {
+        window.TimerManager.registerObserver(countdownId, observer);
+      }
     }
   });
 })();
 </script>
+
 {%- endif -%}
