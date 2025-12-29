@@ -1,0 +1,860 @@
+/* ============================================
+   AUREA LUXURY OVERRIDE CSS
+   Premium Jewelry Store Aesthetic
+   ============================================ */
+
+/* ============================================
+   1. TYPOGRAPHY - Elegant Serif Fonts
+   ============================================ */
+
+:root {
+    /* Luxury Gold Palette */
+    --aurea-gold: #D4AF37;
+    --aurea-gold-light: #F0D78C;
+    --aurea-gold-dark: #B8860B;
+    --aurea-cream: #FAF8F5;
+    --aurea-cream-warm: #F5F0E6;
+    --aurea-black: #0D0D0D;
+    --aurea-charcoal: #1A1A1A;
+
+    /* Spacing - Generous Luxury Breathing Room */
+    --aurea-space-xs: 0.5rem;
+    --aurea-space-sm: 1rem;
+    --aurea-space-md: 2rem;
+    --aurea-space-lg: 4rem;
+    --aurea-space-xl: 6rem;
+    --aurea-space-2xl: 8rem;
+
+    /* Transitions - Smooth, Unhurried */
+    --aurea-transition-slow: 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+    --aurea-transition-medium: 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+    --aurea-transition-fast: 0.2s ease-out;
+}
+
+/*
+   FONTS: Do NOT use @import here - it blocks rendering.
+   Instead, add to layout/theme.liquid <head>:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap">
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap">
+*/
+
+/* Apply Serif Typography */
+body {
+    font-family: 'Cormorant', Georgia, serif !important;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1.8;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    font-family: 'Playfair Display', Georgia, serif !important;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+}
+
+/* ============================================
+   2. BUTTONS - Refined, Understated Luxury
+   ============================================ */
+
+.button,
+button[type="submit"],
+.shopify-payment-button button {
+    font-family: 'Cormorant', Georgia, serif !important;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 1.25rem 2.5rem;
+    border-radius: 0 !important;
+    transition: all var(--aurea-transition-medium);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Gold shimmer effect on hover */
+.button--primary::before,
+button[type="submit"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(212, 175, 55, 0.3),
+            transparent);
+    transition: left 0.7s ease;
+}
+
+.button--primary:hover::before,
+button[type="submit"]:hover::before {
+    left: 100%;
+}
+
+/* ============================================
+   3. CARDS - Elegant Product Presentation
+   ============================================ */
+
+/* Product card hover effect */
+.product-card,
+[class*="product-card"] {
+    transition: transform var(--aurea-transition-medium),
+        box-shadow var(--aurea-transition-medium);
+}
+
+.product-card:hover,
+[class*="product-card"]:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Product images - subtle zoom */
+.product-card img,
+[class*="product-card"] img {
+    transition: transform var(--aurea-transition-slow);
+}
+
+.product-card:hover img,
+[class*="product-card"]:hover img {
+    transform: scale(1.03);
+}
+
+/* ============================================
+   4. HERO SECTIONS - Dramatic & Immersive
+   ============================================ */
+
+/* Hero text fade-in animation */
+@keyframes aurea-fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero h1,
+.hero h2,
+[class*="hero"] h1,
+[class*="hero"] h2 {
+    animation: aurea-fade-up 1s var(--aurea-transition-slow) forwards;
+    animation-delay: 0.2s;
+    opacity: 0;
+}
+
+.hero p,
+[class*="hero"] p {
+    animation: aurea-fade-up 1s var(--aurea-transition-slow) forwards;
+    animation-delay: 0.4s;
+    opacity: 0;
+}
+
+/* ============================================
+   5. DIVIDERS & DECORATIONS - Gold Accents
+   ============================================ */
+
+/* Gold line divider */
+.aurea-divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--aurea-gold), transparent);
+    margin: var(--aurea-space-md) auto;
+}
+
+/* Gold corner accents */
+.aurea-corner-accent::before,
+.aurea-corner-accent::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-color: var(--aurea-gold);
+    border-style: solid;
+    border-width: 0;
+}
+
+.aurea-corner-accent::before {
+    top: 0;
+    left: 0;
+    border-top-width: 1px;
+    border-left-width: 1px;
+}
+
+.aurea-corner-accent::after {
+    bottom: 0;
+    right: 0;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+}
+
+/* ============================================
+   6. NAVIGATION - Minimal, Elegant
+   ============================================ */
+
+header a,
+nav a {
+    font-family: 'Cormorant', Georgia, serif !important;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    transition: color var(--aurea-transition-fast);
+}
+
+header a:hover,
+nav a:hover {
+    color: var(--aurea-gold) !important;
+}
+
+/* ============================================
+   7. FOOTER - Restrained Elegance
+   ============================================ */
+
+footer {
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+footer h2,
+footer h3,
+footer h4 {
+    font-family: 'Playfair Display', Georgia, serif !important;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+/* ============================================
+   8. FORMS - Clean, Premium Feel
+   ============================================ */
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+textarea,
+select {
+    font-family: 'Cormorant', Georgia, serif !important;
+    border-radius: 0 !important;
+    border-width: 1px;
+    padding: 1rem 1.25rem;
+    transition: border-color var(--aurea-transition-fast),
+        box-shadow var(--aurea-transition-fast);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--aurea-gold) !important;
+    box-shadow: 0 0 0 1px var(--aurea-gold);
+    outline: none;
+}
+
+/* ============================================
+   9. PRICE DISPLAY - Sophisticated
+   ============================================ */
+
+.price,
+[class*="price"] {
+    font-family: 'Cormorant', Georgia, serif !important;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+}
+
+.price--sale,
+.price--on-sale {
+    color: var(--aurea-gold-dark) !important;
+}
+
+/* ============================================
+   10. SCROLLBAR - Custom Luxury Style
+   ============================================ */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--aurea-cream);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--aurea-charcoal);
+    border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--aurea-gold);
+}
+
+/* ============================================
+   11. SELECTION - Gold Highlight
+   ============================================ */
+
+::selection {
+    background: var(--aurea-gold);
+    color: var(--aurea-black);
+}
+
+::-moz-selection {
+    background: var(--aurea-gold);
+    color: var(--aurea-black);
+}
+
+/* ============================================
+   12. LOADING / SKELETON - Subtle Shimmer
+   ============================================ */
+
+@keyframes aurea-shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.loading,
+.skeleton {
+    background: linear-gradient(90deg,
+            var(--aurea-cream) 0%,
+            var(--aurea-cream-warm) 50%,
+            var(--aurea-cream) 100%);
+    background-size: 200% 100%;
+    animation: aurea-shimmer 2s infinite;
+}
+
+/* ============================================
+   13. HIDE AGGRESSIVE URGENCY ELEMENTS
+   Luxury = Scarcity through Story, not Timers
+   ============================================ */
+
+/* Hide countdown timers on homepage - show only on product page if needed */
+.index .shipping-countdown,
+.homepage .shipping-countdown,
+[data-template="index"] .shipping-countdown {
+    display: none !important;
+}
+
+/* Subtle stock indicators instead of urgent red */
+.stock-indicator--low {
+    color: var(--aurea-gold-dark) !important;
+    font-style: italic;
+}
+
+/* ============================================
+   14. SPACING OVERRIDES - More Breathing Room
+   IMPORTANT: Exclude header and footer to prevent layout issues
+   ============================================ */
+
+main section:not(.header-section):not(.footer-section) {
+    padding-top: var(--aurea-space-xl);
+    padding-bottom: var(--aurea-space-xl);
+}
+
+@media (min-width: 990px) {
+    main section:not(.header-section):not(.footer-section) {
+        padding-top: var(--aurea-space-2xl);
+        padding-bottom: var(--aurea-space-2xl);
+    }
+}
+
+/* ============================================
+   15. HEADER FIXES - Proper icon alignment
+   ============================================ */
+
+/* Ensure header icons align properly */
+.header-actions,
+header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-sm, 0.5rem);
+}
+
+.header-actions__action,
+.header__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Fix header row vertical alignment */
+.header__row {
+    display: flex;
+    align-items: center;
+}
+
+.header__columns {
+    align-items: center;
+}
+
+/* ============================================
+   16. AUREA SNIPPETS - Consolidated Component Styles
+   ============================================ */
+
+/* Low Stock Indicator */
+.aurea-low-stock {
+    display: flex;
+    align-items: center;
+    margin: 0.75rem 0;
+    color: #B91C1C;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.aurea-low-stock__dot-wrapper {
+    position: relative;
+    display: flex;
+    height: 10px;
+    width: 10px;
+    margin-right: 10px;
+}
+
+.aurea-low-stock__dot-ping {
+    animation: aurea-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+    position: absolute;
+    display: inline-flex;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    background-color: #EF4444;
+    opacity: 0.75;
+}
+
+.aurea-low-stock__dot-core {
+    position: relative;
+    display: inline-flex;
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+    background-color: #B91C1C;
+}
+
+@keyframes aurea-ping {
+
+    75%,
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+/* Gift Note Input */
+.aurea-gift-note {
+    margin: 1rem 0;
+}
+
+.aurea-gift-note details {
+    border: 1px solid var(--color-border, #E8E4DF);
+    border-radius: 4px;
+}
+
+.aurea-gift-note summary {
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    color: var(--color-foreground, #1A1A1A);
+    font-weight: 600;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--aurea-cream, #FAF8F5);
+}
+
+.aurea-gift-note summary::-webkit-details-marker,
+.aurea-gift-note summary::marker {
+    display: none;
+}
+
+.aurea-gift-content {
+    padding: 1rem;
+    background: #FFFFFF;
+}
+
+.aurea-gift-textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border, #E8E4DF);
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: vertical;
+    border-radius: 0;
+}
+
+.aurea-gift-toggle {
+    margin-left: auto;
+    font-size: 1.2rem;
+    transition: transform 0.3s;
+}
+
+.aurea-gift-note details[open] .aurea-gift-toggle {
+    transform: rotate(45deg);
+}
+
+/* Bundle Selector */
+.aurea-bundle {
+    margin: 2rem 0;
+}
+
+.aurea-bundle__header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.aurea-bundle__line {
+    flex: 1;
+    height: 1px;
+    background: var(--color-border, #E8E4DF);
+}
+
+.aurea-bundle__title {
+    padding: 0 1rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-foreground, #1A1A1A);
+    font-weight: 600;
+}
+
+.aurea-bundle__option {
+    display: block;
+    position: relative;
+    border: 2px solid var(--color-border, #E8E4DF);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.aurea-bundle__option:first-child {
+    border-color: var(--color-foreground, #1A1A1A);
+}
+
+.aurea-bundle__option:hover {
+    border-color: var(--aurea-gold-dark, #B8860B) !important;
+}
+
+.aurea-bundle__option:has(input:checked) {
+    border-color: var(--color-foreground, #1A1A1A) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.aurea-bundle__badge {
+    position: absolute;
+    top: -10px;
+    right: 16px;
+    background: #1A1A1A;
+    color: #FFFFFF;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.aurea-bundle__tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    background: #FAF8F5;
+    border: 1px solid #E8E4DF;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+    font-weight: 400;
+}
+
+/* Drop a Hint */
+.aurea-drop-hint {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.aurea-hint-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #25D366;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid #25D366;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.aurea-hint-btn:hover {
+    background: #25D366;
+    color: #FFFFFF !important;
+    transform: scale(1.02);
+}
+
+/* Delivery Date Estimator */
+.aurea-delivery-estimate {
+    background-color: var(--aurea-cream, #FAF8F5);
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border, #E8E4DF);
+    margin: 0.75rem 0;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Free Shipping Bar */
+.aurea-shipping-bar {
+    padding: 0.75rem 1rem;
+    background: var(--aurea-cream, #FAF8F5);
+    border-bottom: 1px solid var(--color-border, #E8E4DF);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.aurea-shipping-progress {
+    width: 100%;
+    height: 4px;
+    background: var(--color-border, #E8E4DF);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.aurea-shipping-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--aurea-gold-dark, #B8860B), #D4AF37);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+/* Size Guide */
+.aurea-size-guide-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--aurea-gold-dark, #B8860B);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    transition: color 0.2s ease;
+}
+
+.aurea-size-guide-trigger:hover {
+    color: #8B6914;
+}
+
+.aurea-size-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.aurea-size-modal.is-open {
+    display: flex;
+}
+
+.aurea-size-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+}
+
+.aurea-size-modal__content {
+    position: relative;
+    background: var(--aurea-cream, #FAF8F5);
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 3rem;
+    animation: aurea-modal-fade-in 0.3s ease;
+}
+
+@keyframes aurea-modal-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.aurea-size-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--color-foreground, #1A1A1A);
+    transition: color 0.2s ease;
+}
+
+.aurea-size-modal__close:hover {
+    color: var(--aurea-gold-dark, #B8860B);
+}
+
+/* ============================================
+   17. AUREA SNIPPETS - Inner Elements (Deep Refactor)
+   ============================================ */
+
+/* Bundle Selector Inner Elements */
+.aurea-bundle__content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.aurea-bundle__info-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.aurea-bundle__radio {
+    width: 18px;
+    height: 18px;
+    margin-top: 3px;
+    accent-color: var(--color-foreground, #1A1A1A);
+}
+
+.aurea-bundle__label-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-foreground, #1A1A1A);
+    margin-bottom: 0.25rem;
+}
+
+.aurea-bundle__subtext {
+    font-size: 0.85rem;
+    color: rgba(26, 26, 26, 0.6);
+}
+
+.aurea-bundle__price-wrapper {
+    text-align: right;
+}
+
+.aurea-bundle__price {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-foreground, #1A1A1A);
+}
+
+.aurea-bundle__compare-price {
+    font-size: 0.85rem;
+    color: rgba(26, 26, 26, 0.5);
+    text-decoration: line-through;
+}
+
+/* Bundle Variant Selector */
+.aurea-bundle__variant-wrapper {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-border, #E8E4DF);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.aurea-bundle__variant-label {
+    font-size: 0.8rem;
+    color: rgba(26, 26, 26, 0.6);
+}
+
+.aurea-bundle__variant-image {
+    width: 32px;
+    height: 32px;
+    background: var(--color-border, #E8E4DF);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+}
+
+.aurea-bundle__variant-select {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--color-border, #E8E4DF);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    background: #FFFFFF;
+}
+
+/* Drop Hint Caption */
+.aurea-hint-caption {
+    font-size: 0.7rem;
+    color: rgba(26, 26, 26, 0.5);
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+/* Delivery Date Inner */
+.aurea-delivery-icon {
+    flex-shrink: 0;
+}
+
+.aurea-delivery-text {
+    color: var(--color-foreground, #1A1A1A);
+}
+
+.aurea-delivery-date {
+    color: #0D0D0D;
+}
+
+/* Free Shipping Inner */
+.aurea-shipping-text {
+    margin-bottom: 0.5rem;
+    color: var(--color-foreground, #1A1A1A);
+}
+
+.aurea-shipping-highlight {
+    color: var(--aurea-gold-dark, #B8860B);
+}
+
+.aurea-shipping-success {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #0D0D0D;
+}
+
+.aurea-shipping-checkmark {
+    color: var(--aurea-gold-dark, #B8860B);
+    font-size: 1.1rem;
+}

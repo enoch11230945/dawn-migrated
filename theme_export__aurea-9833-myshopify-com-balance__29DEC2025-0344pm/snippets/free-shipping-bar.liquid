@@ -1,0 +1,34 @@
+{%- comment -%}
+  Free Shipping Progress Bar
+  For Cart Drawer - Motivation to increase AOV
+  Threshold: £50 (5000 pence)
+{%- endcomment -%}
+
+{%- liquid
+  assign free_shipping_threshold = 5000
+  assign cart_total = cart.total_price
+  assign remaining = free_shipping_threshold | minus: cart_total
+  assign progress_percent = cart_total | times: 100 | divided_by: free_shipping_threshold
+  if progress_percent > 100
+    assign progress_percent = 100
+  endif
+-%}
+
+<div class="aurea-shipping-bar">
+  {%- if remaining > 0 -%}
+    {%- comment -%} Not yet qualified {%- endcomment -%}
+    <div class="aurea-shipping-text">
+      Add <strong class="aurea-shipping-highlight">{{ remaining | money }}</strong> more for 
+      <strong>Free Royal Mail Delivery</strong>
+    </div>
+    <div class="aurea-shipping-progress">
+      <div class="aurea-shipping-fill" style="width: {{ progress_percent }}%;"></div>
+    </div>
+  {%- else -%}
+    {%- comment -%} Qualified for free shipping {%- endcomment -%}
+    <div class="aurea-shipping-success">
+      <span class="aurea-shipping-checkmark">✓</span>
+      <span>You've unlocked <strong>Free Royal Mail Delivery!</strong></span>
+    </div>
+  {%- endif -%}
+</div>

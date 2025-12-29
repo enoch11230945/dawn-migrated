@@ -1,0 +1,229 @@
+{
+    "sections": {
+        "hero": {
+            "type": "hero",
+            "blocks": {
+                "heading": {
+                    "type": "text",
+                    "settings": {
+                        "text": "<h1>Crafting Emotion in the Heart of London</h1>",
+                        "width": "100%",
+                        "alignment": "center",
+                        "type_preset": "h1"
+                    }
+                },
+                "subtext": {
+                    "type": "text",
+                    "settings": {
+                        "text": "<p>Where timeless design meets heartfelt intention</p>",
+                        "alignment": "center",
+                        "type_preset": "paragraph"
+                    }
+                }
+            },
+            "block_order": [
+                "heading",
+                "subtext"
+            ],
+            "settings": {
+                "section_height": "medium",
+                "color_scheme": "scheme-2",
+                "toggle_overlay": true,
+                "overlay_color": "#0000004d"
+            }
+        },
+        "story": {
+            "type": "section",
+            "blocks": {
+                "text": {
+                    "type": "text",
+                    "settings": {
+                        "text": "<p style='font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; color: #B8860B; margin-bottom: 1rem;'>Our Story</p><p style='font-size: 1.15rem; line-height: 2;'>It started in a small studio in London—just a desk, a dream, and a question that wouldn't leave me alone: <em>Why does jewelry feel so impersonal?</em></p><p style='font-size: 1.15rem; line-height: 2;'>I realized the problem wasn't the metal or the stones. It was the message—or rather, the lack of one.</p><p style='font-size: 1.15rem; line-height: 2;'>So I built AUREA. Every piece we create is designed to carry meaning. We hand-pack each order with a message card that says what you feel but struggle to put into words.</p><p style='font-size: 1.15rem; line-height: 2;'>When she opens the box, it's not just jewelry. It's a declaration.</p><p style='font-size: 1.15rem; line-height: 2;'>That's why we do this.</p>",
+                        "width": "100%",
+                        "max_width": "narrow",
+                        "alignment": "center",
+                        "type_preset": "rte"
+                    }
+                }
+            },
+            "block_order": [
+                "text"
+            ],
+            "settings": {
+                "horizontal_alignment_flex_direction_column": "center",
+                "gap": 32,
+                "section_width": "page-width",
+                "color_scheme": "scheme-1",
+                "padding-block-start": 80,
+                "padding-block-end": 80
+            }
+        },
+        "why_us": {
+            "type": "section",
+            "blocks": {
+                "col1": {
+                    "type": "group",
+                    "settings": {
+                        "content_direction": "column",
+                        "horizontal_alignment_flex_direction_column": "center",
+                        "gap": 12,
+                        "width": "fill"
+                    },
+                    "blocks": {
+                        "icon1": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<p style='font-size: 2.5rem; margin-bottom: 0.5rem;'>💎</p>",
+                                "alignment": "center"
+                            }
+                        },
+                        "title1": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<h3>Built to Last</h3>",
+                                "alignment": "center",
+                                "type_preset": "h4"
+                            }
+                        },
+                        "desc1": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<p>We use 316L Stainless Steel because love shouldn't rust. It's hypoallergenic, waterproof, and designed to last a lifetime.</p>",
+                                "alignment": "center",
+                                "type_preset": "paragraph"
+                            }
+                        }
+                    },
+                    "block_order": [
+                        "icon1",
+                        "title1",
+                        "desc1"
+                    ]
+                },
+                "col2": {
+                    "type": "group",
+                    "settings": {
+                        "content_direction": "column",
+                        "horizontal_alignment_flex_direction_column": "center",
+                        "gap": 12,
+                        "width": "fill"
+                    },
+                    "blocks": {
+                        "icon2": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<p style='font-size: 2.5rem; margin-bottom: 0.5rem;'>💌</p>",
+                                "alignment": "center"
+                            }
+                        },
+                        "title2": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<h3>Words That Matter</h3>",
+                                "alignment": "center",
+                                "type_preset": "h4"
+                            }
+                        },
+                        "desc2": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<p>Our message cards are printed on premium 300gsm cardstock in-house, ensuring vibrant colours and sharp text every time.</p>",
+                                "alignment": "center",
+                                "type_preset": "paragraph"
+                            }
+                        }
+                    },
+                    "block_order": [
+                        "icon2",
+                        "title2",
+                        "desc2"
+                    ]
+                },
+                "col3": {
+                    "type": "group",
+                    "settings": {
+                        "content_direction": "column",
+                        "horizontal_alignment_flex_direction_column": "center",
+                        "gap": 12,
+                        "width": "fill"
+                    },
+                    "blocks": {
+                        "icon3": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<p style='font-size: 2.5rem; margin-bottom: 0.5rem;'>🇬🇧</p>",
+                                "alignment": "center"
+                            }
+                        },
+                        "title3": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<h3>London Service</h3>",
+                                "alignment": "center",
+                                "type_preset": "h4"
+                            }
+                        },
+                        "desc3": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<p>Questions? We reply within hours, not days. Fast shipping via Royal Mail Tracked from our London studio.</p>",
+                                "alignment": "center",
+                                "type_preset": "paragraph"
+                            }
+                        }
+                    },
+                    "block_order": [
+                        "icon3",
+                        "title3",
+                        "desc3"
+                    ]
+                }
+            },
+            "block_order": [
+                "col1",
+                "col2",
+                "col3"
+            ],
+            "settings": {
+                "content_direction": "row",
+                "horizontal_alignment": "center",
+                "gap": 48,
+                "section_width": "page-width",
+                "color_scheme": "scheme-4",
+                "padding-block-start": 80,
+                "padding-block-end": 80
+            }
+        },
+        "signature": {
+            "type": "section",
+            "blocks": {
+                "quote": {
+                    "type": "text",
+                    "settings": {
+                        "text": "<p style='font-style: italic; font-size: 1.25rem; line-height: 1.8; margin-bottom: 1.5rem;'>\"Thank you for supporting a small local business. Every order puts a smile on our face, and we hope it puts one on yours too.\"</p><p style='font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #B8860B;'>— Founder, AUREA</p>",
+                        "width": "100%",
+                        "max_width": "narrow",
+                        "alignment": "center",
+                        "type_preset": "rte"
+                    }
+                }
+            },
+            "block_order": [
+                "quote"
+            ],
+            "settings": {
+                "horizontal_alignment_flex_direction_column": "center",
+                "section_width": "page-width",
+                "color_scheme": "scheme-1",
+                "padding-block-start": 60,
+                "padding-block-end": 60
+            }
+        }
+    },
+    "order": [
+        "hero",
+        "story",
+        "why_us",
+        "signature"
+    ]
+}

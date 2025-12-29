@@ -1,0 +1,88 @@
+{%- comment -%}
+  Dynamic Delivery Date - The "Amazon Effect"
+  Shows specific delivery date instead of vague "2-3 days"
+  Optimized for Royal Mail Tracked 48 (UK)
+  
+  FIXED: Now uses UK timezone approximation, not local browser time
+  FIXED: Wrapped in DOMContentLoaded for safety
+  
+  Usage: {% render 'delivery-date-estimator' %}
+{%- endcomment -%}
+
+<div class="aurea-delivery-estimate">
+  {%- comment -%} Truck Icon {%- endcomment -%}
+  <svg class="aurea-delivery-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+    <rect x="1" y="3" width="15" height="13"></rect>
+    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+  </svg>
+  
+  {%- comment -%} Text {%- endcomment -%}
+  <span class="aurea-delivery-text">
+    Order now to receive by 
+    <strong id="aurea-delivery-date" class="aurea-delivery-date">
+      {%- comment -%} 
+        Server-side fallback: Calculate in Liquid for no-JS users
+        Use Shopify's server time which is roughly UTC
+      {%- endcomment -%}
+      {%- liquid
+        assign days_to_add = 4
+        assign delivery_timestamp = 'now' | date: '%s' | plus: 345600
+        assign delivery_date = delivery_timestamp | date: '%A, %d %b'
+      -%}
+      {{ delivery_date }}
+    </strong>
+  </span>
+</div>
+
+<script>
+  // Calculate UK delivery date (client-side enhancement)
+  // Falls back gracefully to server-rendered Liquid date
+  (function() {
+    function calculateDeliveryDate() {
+      var el = document.getElementById('aurea-delivery-date');
+      if (!el) return;
+      
+      var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      
+      // Get current UTC time and offset to UK (GMT/BST approximation)
+      // Note: This is an approximation. For exact UK time, use a timezone library.
+      var now = new Date();
+      var utcHours = now.getUTCHours();
+      
+      // UK is UTC+0 in winter, UTC+1 in summer (rough check)
+      var month = now.getUTCMonth();
+      var ukOffset = (month >= 2 && month <= 9) ? 1 : 0; // BST Mar-Oct
+      var ukHours = utcHours + ukOffset;
+      
+      var daysToAdd = 3; // 1 processing + 2 shipping
+      
+      // If after 2pm UK time, add extra day
+      if (ukHours >= 14) {
+        daysToAdd += 1;
+      }
+      
+      var deliveryDate = new Date(now.getTime() + (daysToAdd * 24 * 60 * 60 * 1000));
+      
+      // Skip Sunday (no Royal Mail delivery)
+      if (deliveryDate.getDay() === 0) {
+        deliveryDate.setDate(deliveryDate.getDate() + 1);
+      }
+      
+      var dayName = dayNames[deliveryDate.getDay()];
+      var day = deliveryDate.getDate();
+      var monthName = monthNames[deliveryDate.getMonth()];
+      
+      el.textContent = dayName + ', ' + day + ' ' + monthName;
+    }
+    
+    // Run after DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', calculateDeliveryDate);
+    } else {
+      calculateDeliveryDate();
+    }
+  })();
+</script>

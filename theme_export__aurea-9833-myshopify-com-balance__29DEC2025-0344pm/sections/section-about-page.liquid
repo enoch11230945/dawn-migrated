@@ -1,0 +1,292 @@
+{%- comment -%}
+  AUREA About Page Section
+  Elegant brand story page with founder story, values, and mission
+{%- endcomment -%}
+
+<div class="aurea-about" style="padding: 0;">
+  
+  {%- comment -%} Hero Banner {%- endcomment -%}
+  <section class="aurea-about__hero" style="
+    position: relative;
+    height: 60vh;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0D0D0D 0%, #1A1A1A 100%);
+    overflow: hidden;
+  ">
+    {% if section.settings.hero_image %}
+      <img 
+        src="{{ section.settings.hero_image | image_url: width: 1920 }}"
+        alt="{{ section.settings.hero_heading }}"
+        style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4;"
+        loading="lazy"
+      >
+    {% endif %}
+    <div style="position: relative; text-align: center; padding: 2rem; max-width: 800px;">
+      <p style="
+        font-family: 'Cormorant', Georgia, serif;
+        font-size: 0.9rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #D4AF37;
+        margin-bottom: 1rem;
+      ">{{ section.settings.hero_preheading }}</p>
+      <h1 style="
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        font-weight: 400;
+        color: #FFFFFF;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+      ">{{ section.settings.hero_heading }}</h1>
+      <p style="
+        font-family: 'Cormorant', Georgia, serif;
+        font-size: 1.25rem;
+        color: rgba(255,255,255,0.8);
+        line-height: 1.8;
+      ">{{ section.settings.hero_text }}</p>
+    </div>
+  </section>
+  
+  {%- comment -%} Mission Section {%- endcomment -%}
+  <section class="aurea-about__mission page-width" style="padding: 6rem 2rem; text-align: center;">
+    <div style="max-width: 700px; margin: 0 auto;">
+      <div style="width: 60px; height: 1px; background: linear-gradient(90deg, transparent, #D4AF37, transparent); margin: 0 auto 2rem;"></div>
+      <p style="
+        font-family: 'Cormorant', Georgia, serif;
+        font-size: 0.85rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: #B8860B;
+        margin-bottom: 1rem;
+      ">{{ section.settings.mission_label }}</p>
+      <h2 style="
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        font-weight: 400;
+        margin-bottom: 2rem;
+        line-height: 1.3;
+      ">{{ section.settings.mission_heading }}</h2>
+      <p style="
+        font-family: 'Cormorant', Georgia, serif;
+        font-size: 1.1rem;
+        line-height: 2;
+        color: rgba(26,26,26,0.8);
+      ">{{ section.settings.mission_text }}</p>
+    </div>
+  </section>
+  
+  {%- comment -%} Values Grid {%- endcomment -%}
+  <section class="aurea-about__values" style="background: #F5F0E6; padding: 6rem 2rem;">
+    <div class="page-width">
+      <h2 style="
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        font-weight: 400;
+        text-align: center;
+        margin-bottom: 4rem;
+      ">{{ section.settings.values_heading }}</h2>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem;">
+        {% for block in section.blocks %}
+          {% if block.type == 'value' %}
+            <div style="text-align: center;">
+              <div style="
+                width: 80px;
+                height: 80px;
+                margin: 0 auto 1.5rem;
+                border: 1px solid #D4AF37;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2rem;
+              ">{{ block.settings.icon }}</div>
+              <h3 style="
+                font-family: 'Playfair Display', Georgia, serif;
+                font-size: 1.25rem;
+                font-weight: 400;
+                margin-bottom: 1rem;
+              ">{{ block.settings.title }}</h3>
+              <p style="
+                font-family: 'Cormorant', Georgia, serif;
+                font-size: 1rem;
+                line-height: 1.8;
+                color: rgba(26,26,26,0.7);
+              ">{{ block.settings.description }}</p>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  
+  {%- comment -%} Founder Quote {%- endcomment -%}
+  <section class="aurea-about__quote page-width" style="padding: 6rem 2rem; text-align: center;">
+    <div style="max-width: 800px; margin: 0 auto;">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" style="margin-bottom: 2rem; color: #D4AF37;">
+        <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z" fill="currentColor" opacity="0.2"/>
+        <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v4z" fill="currentColor" opacity="0.2"/>
+      </svg>
+      <blockquote style="
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: clamp(1.25rem, 3vw, 1.75rem);
+        font-style: italic;
+        font-weight: 400;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+      ">{{ section.settings.quote_text }}</blockquote>
+      <p style="
+        font-family: 'Cormorant', Georgia, serif;
+        font-weight: 600;
+        font-size: 0.9rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: #B8860B;
+      ">{{ section.settings.quote_author }}</p>
+    </div>
+  </section>
+  
+</div>
+
+{% schema %}
+{
+  "name": "About Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image"
+    },
+    {
+      "type": "text",
+      "id": "hero_preheading",
+      "label": "Preheading",
+      "default": "Our Story"
+    },
+    {
+      "type": "text",
+      "id": "hero_heading",
+      "label": "Heading",
+      "default": "Crafted with Love, Worn with Meaning"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_text",
+      "label": "Hero Text",
+      "default": "Every piece tells a story. What will yours say?"
+    },
+    {
+      "type": "header",
+      "content": "Mission Section"
+    },
+    {
+      "type": "text",
+      "id": "mission_label",
+      "label": "Label",
+      "default": "Our Mission"
+    },
+    {
+      "type": "text",
+      "id": "mission_heading",
+      "label": "Heading",
+      "default": "To Help You Express Love Through Timeless Jewelry"
+    },
+    {
+      "type": "textarea",
+      "id": "mission_text",
+      "label": "Text",
+      "default": "At AUREA, we believe that jewelry should be more than decoration. Each piece we create carries a story—a whisper of devotion, a symbol of connection, a reminder of the bonds that define us. Our journey began with a simple question: how can we help people express the feelings that words alone cannot capture?"
+    },
+    {
+      "type": "header",
+      "content": "Values Section"
+    },
+    {
+      "type": "text",
+      "id": "values_heading",
+      "label": "Values Heading",
+      "default": "What We Stand For"
+    },
+    {
+      "type": "header",
+      "content": "Founder Quote"
+    },
+    {
+      "type": "textarea",
+      "id": "quote_text",
+      "label": "Quote",
+      "default": "We don't just sell jewelry. We help create moments that last forever—the look in her eyes when she opens the box, the tears of joy, the embrace that follows."
+    },
+    {
+      "type": "text",
+      "id": "quote_author",
+      "label": "Author",
+      "default": "— The AUREA Atelier"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (Emoji)",
+          "default": "💎"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Quality First"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "We use only 316L stainless steel and 18k gold PVD coating that will never tarnish or fade."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Page",
+      "blocks": [
+        {
+          "type": "value",
+          "settings": {
+            "icon": "💎",
+            "title": "Premium Quality",
+            "description": "316L stainless steel with 18k gold PVD that never tarnishes."
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "icon": "❤️",
+            "title": "Made with Love",
+            "description": "Every piece is crafted to help you express your deepest emotions."
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "icon": "🇬🇧",
+            "title": "UK Based",
+            "description": "Fast 2-3 day delivery from our London warehouse."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

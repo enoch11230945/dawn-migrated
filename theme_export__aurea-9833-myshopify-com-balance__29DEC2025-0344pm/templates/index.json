@@ -1,0 +1,372 @@
+{
+    "sections": {
+        "hero_main": {
+            "type": "hero",
+            "blocks": {
+                "group_hero": {
+                    "type": "group",
+                    "name": "Hero Content",
+                    "settings": {
+                        "content_direction": "column",
+                        "vertical_on_mobile": true,
+                        "horizontal_alignment": "flex-start",
+                        "vertical_alignment": "center",
+                        "horizontal_alignment_flex_direction_column": "flex-start",
+                        "vertical_alignment_flex_direction_column": "center",
+                        "gap": 16,
+                        "width": "fill",
+                        "width_mobile": "fill",
+                        "height": "fit",
+                        "inherit_color_scheme": true,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                    },
+                    "blocks": {
+                        "text_headline": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<h2>Timeless Connections</h2>",
+                                "width": "100%",
+                                "max_width": "normal",
+                                "alignment": "left",
+                                "type_preset": "h1",
+                                "font": "var(--font-primary--family)",
+                                "wrap": "pretty"
+                            }
+                        },
+                        "text_subheadline": {
+                            "type": "text",
+                            "name": "Subheadline",
+                            "settings": {
+                                "text": "<p>Jewelry that speaks your heart's language.</p>",
+                                "width": "fit-content",
+                                "max_width": "normal",
+                                "alignment": "left",
+                                "type_preset": "custom",
+                                "font": "var(--font-primary--family)",
+                                "font_size": "1.25rem"
+                            }
+                        },
+                        "button_cta": {
+                            "type": "button",
+                            "name": "CTA Button",
+                            "settings": {
+                                "label": "Shop Now",
+                                "link": "shopify://collections/all",
+                                "open_in_new_tab": false,
+                                "style_class": "button",
+                                "width": "fit-content"
+                            }
+                        }
+                    },
+                    "block_order": [
+                        "text_headline",
+                        "text_subheadline",
+                        "button_cta"
+                    ]
+                }
+            },
+            "block_order": [
+                "group_hero"
+            ],
+            "settings": {
+                "media_type_1": "image",
+                "image_1": "shopify://shop_images/jewelry-minimal-1.jpg",
+                "section_width": "page-width",
+                "section_height": "large",
+                "color_scheme": "scheme-2",
+                "toggle_overlay": true,
+                "overlay_color": "#0303037d",
+                "overlay_style": "gradient",
+                "gradient_direction": "to top",
+                "padding-block-start": 24,
+                "padding-block-end": 64
+            }
+        },
+        "trust_bar": {
+            "type": "section-trust-bar",
+            "blocks": {
+                "badge_1": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "📦",
+                        "text": "Royal Mail Tracked"
+                    }
+                },
+                "badge_2": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "💧",
+                        "text": "100% Waterproof"
+                    }
+                },
+                "badge_3": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "♾️",
+                        "text": "Lifetime Warranty"
+                    }
+                },
+                "badge_4": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "🔒",
+                        "text": "Secure Checkout"
+                    }
+                }
+            },
+            "block_order": [
+                "badge_1",
+                "badge_2",
+                "badge_3",
+                "badge_4"
+            ],
+            "settings": {}
+        },
+        "product_list": {
+            "type": "product-list",
+            "disabled": false,
+            "blocks": {
+                "static-header": {
+                    "type": "_product-list-content",
+                    "name": "Header",
+                    "static": true,
+                    "settings": {
+                        "content_direction": "row",
+                        "horizontal_alignment": "space-between",
+                        "vertical_alignment": "flex-end",
+                        "align_baseline": true,
+                        "gap": 12,
+                        "width": "fill"
+                    },
+                    "blocks": {
+                        "product_list_title": {
+                            "type": "_product-list-text",
+                            "name": "Title",
+                            "settings": {
+                                "text": "<h3>Featured Collection</h3>",
+                                "width": "fit-content",
+                                "alignment": "left",
+                                "type_preset": "h3"
+                            }
+                        }
+                    },
+                    "block_order": [
+                        "product_list_title"
+                    ]
+                },
+                "static-product-card": {
+                    "type": "_product-card",
+                    "name": "Product Card",
+                    "static": true,
+                    "settings": {
+                        "product_card_gap": 8,
+                        "inherit_color_scheme": true
+                    },
+                    "blocks": {
+                        "product_card_gallery": {
+                            "type": "_product-card-gallery",
+                            "name": "Media",
+                            "settings": {
+                                "image_ratio": "portrait"
+                            }
+                        },
+                        "product_card_group": {
+                            "type": "_product-card-group",
+                            "name": "Details",
+                            "settings": {
+                                "content_direction": "column",
+                                "gap": 0,
+                                "width": "fill"
+                            },
+                            "blocks": {
+                                "product_title": {
+                                    "type": "text",
+                                    "name": "Title",
+                                    "settings": {
+                                        "text": "<h5>{{ closest.product.title }}</h5>",
+                                        "width": "100%",
+                                        "alignment": "left",
+                                        "type_preset": "custom",
+                                        "font": "var(--font-body--family)",
+                                        "font_size": "1.25rem"
+                                    }
+                                },
+                                "product_price": {
+                                    "type": "price",
+                                    "name": "Price",
+                                    "settings": {
+                                        "product": "{{ closest.product }}",
+                                        "show_sale_price_first": true,
+                                        "width": "100%",
+                                        "alignment": "left",
+                                        "font": "var(--font-body--family)",
+                                        "font_size": "1rem"
+                                    }
+                                }
+                            },
+                            "block_order": [
+                                "product_title",
+                                "product_price"
+                            ]
+                        }
+                    },
+                    "block_order": [
+                        "product_card_gallery",
+                        "product_card_group"
+                    ]
+                }
+            },
+            "settings": {
+                "collection": "",
+                "layout_type": "grid",
+                "carousel_on_mobile": false,
+                "max_products": 4,
+                "columns": 4,
+                "mobile_columns": "2",
+                "columns_gap": 20,
+                "rows_gap": 36,
+                "section_width": "page-width",
+                "color_scheme": "scheme-1",
+                "padding-block-start": 72,
+                "padding-block-end": 72
+            }
+        },
+        "gift_anatomy": {
+            "type": "section-gift-anatomy",
+            "blocks": {
+                "feature_1": {
+                    "type": "feature",
+                    "settings": {
+                        "title": "18k Gold PVD Finish",
+                        "subtitle": "Not cheap alloy"
+                    }
+                },
+                "feature_2": {
+                    "type": "feature",
+                    "settings": {
+                        "title": "Premium Message Card",
+                        "subtitle": "Heavyweight paper"
+                    }
+                },
+                "feature_3": {
+                    "type": "feature",
+                    "settings": {
+                        "title": "Luxury Soft-Touch Box",
+                        "subtitle": "Free upgrade"
+                    }
+                },
+                "feature_4": {
+                    "type": "feature",
+                    "settings": {
+                        "title": "Lifetime Warranty",
+                        "subtitle": "Will never tarnish"
+                    }
+                }
+            },
+            "block_order": [
+                "feature_1",
+                "feature_2",
+                "feature_3",
+                "feature_4"
+            ],
+            "settings": {
+                "preheading": "What's Inside",
+                "heading": "The Complete Gifting Experience",
+                "button_text": "Gift Her Now",
+                "button_link": "shopify://collections/all"
+            }
+        },
+        "reviews": {
+            "type": "section-review-grid",
+            "blocks": {
+                "review_1": {
+                    "type": "review",
+                    "settings": {
+                        "text": "My girlfriend cried when she saw the message inside. Best gift I've ever given.",
+                        "author": "James T.",
+                        "location": "London"
+                    }
+                },
+                "review_2": {
+                    "type": "review",
+                    "settings": {
+                        "text": "The quality is incredible for the price. Looks like it cost ten times more.",
+                        "author": "Emily R.",
+                        "location": "Manchester"
+                    }
+                },
+                "review_3": {
+                    "type": "review",
+                    "settings": {
+                        "text": "Arrived in 2 days, beautifully packaged. My mum absolutely loved it.",
+                        "author": "Sarah K.",
+                        "location": "Birmingham"
+                    }
+                }
+            },
+            "block_order": [
+                "review_1",
+                "review_2",
+                "review_3"
+            ],
+            "settings": {
+                "preheading": "Real Stories",
+                "heading": "What Our Customers Say"
+            }
+        },
+        "homepage_faq": {
+            "type": "section-homepage-faq",
+            "blocks": {
+                "faq_1": {
+                    "type": "faq",
+                    "settings": {
+                        "question": "How long does UK delivery take?",
+                        "answer": "2-3 business days via Royal Mail Tracked. Orders before 2pm ship same day."
+                    }
+                },
+                "faq_2": {
+                    "type": "faq",
+                    "settings": {
+                        "question": "Will it tarnish or turn green?",
+                        "answer": "Never. Our 18k gold PVD coating is waterproof, sweatproof, and backed by a lifetime warranty."
+                    }
+                },
+                "faq_3": {
+                    "type": "faq",
+                    "settings": {
+                        "question": "What if she doesn't like it?",
+                        "answer": "30-day no-questions-asked returns. We'll even cover return postage."
+                    }
+                },
+                "faq_4": {
+                    "type": "faq",
+                    "settings": {
+                        "question": "Can I add a personal message?",
+                        "answer": "Yes! Every order includes a premium message card. Just add your note at checkout."
+                    }
+                }
+            },
+            "block_order": [
+                "faq_1",
+                "faq_2",
+                "faq_3",
+                "faq_4"
+            ],
+            "settings": {
+                "preheading": "Questions?",
+                "heading": "We've Got Answers"
+            }
+        }
+    },
+    "order": [
+        "hero_main",
+        "trust_bar",
+        "product_list",
+        "gift_anatomy",
+        "reviews",
+        "homepage_faq"
+    ]
+}

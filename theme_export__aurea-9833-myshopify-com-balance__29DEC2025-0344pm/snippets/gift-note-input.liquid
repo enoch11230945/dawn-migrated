@@ -1,0 +1,97 @@
+{%- comment -%}
+  Gift Note Input - Service Layer
+  For Cart Drawer - Uses AJAX to save note (not form attribute which doesn't work in drawer)
+  
+  Usage: {% render 'gift-note-input' %}
+{%- endcomment -%}
+
+<div class="aurea-gift-note">
+  <details>
+    <summary aria-expanded="false" role="button">
+      {%- comment -%} Gift Icon {%- endcomment -%}
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8860B" stroke-width="2" style="flex-shrink: 0;" aria-hidden="true">
+        <path d="M20 12v10H4V12"></path>
+        <path d="M2 7h20v5H2z"></path>
+        <path d="M12 22V7"></path>
+        <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+        <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+      </svg>
+      <span>Add a Free Gift Message</span>
+      <span class="aurea-gift-toggle" aria-hidden="true">+</span>
+    </summary>
+    
+    <div class="aurea-gift-content">
+      <textarea 
+        id="aurea-cart-note"
+        class="aurea-gift-textarea"
+        placeholder="Write your heartfelt message here...&#10;&#10;e.g., 'To my love, you mean everything to me...'"
+        aria-label="Gift message for your order"
+      >{{ cart.note }}</textarea>
+      
+      <p style="
+        font-size: 0.75rem;
+        color: rgba(26,26,26,0.6);
+        margin-top: 0.5rem;
+        font-style: italic;
+      ">
+        ✨ We'll print this on a premium card and place it inside the box.
+      </p>
+      
+      <p id="aurea-note-status" style="
+        font-size: 0.75rem;
+        color: #B8860B;
+        margin-top: 0.25rem;
+        display: none;
+      ">Saved ✓</p>
+    </div>
+  </details>
+</div>
+
+<script>
+  // Save gift note via AJAX (Cart Drawer doesn't use traditional form submit)
+  (function() {
+    const textarea = document.getElementById('aurea-cart-note');
+    const status = document.getElementById('aurea-note-status');
+    if (!textarea) return;
+    
+    let debounceTimer;
+    
+    textarea.addEventListener('input', function() {
+      clearTimeout(debounceTimer);
+      
+      debounceTimer = setTimeout(function() {
+        fetch('/cart/update.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            note: textarea.value
+          })
+        })
+        .then(function(response) {
+          if (response.ok && status) {
+            status.style.display = 'block';
+            setTimeout(function() {
+              status.style.display = 'none';
+            }, 2000);
+          }
+        })
+        .catch(function() {
+          // Silent fail - note will be saved on checkout anyway
+        });
+      }, 500); // 500ms debounce
+    });
+    
+    // Update aria-expanded on toggle
+    const details = textarea.closest('details');
+    if (details) {
+      const summary = details.querySelector('summary');
+      details.addEventListener('toggle', function() {
+        if (summary) {
+          summary.setAttribute('aria-expanded', details.open);
+        }
+      });
+    }
+  })();
+</script>

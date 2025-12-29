@@ -1,364 +1,86 @@
 {
   "sections": {
-    "hero_banner": {
-      "type": "image-banner",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Spring Sale",
-            "heading_size": "h1"
-          }
-        },
-        "subheading": {
-          "type": "text",
-          "settings": {
-            "text": "Best Home and Kitchen",
-            "text_style": "body"
-          }
-        },
-        "buttons": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "discover now",
-            "button_link_1": "shopify:\/\/collections\/all",
-            "button_style_secondary_1": false
-          }
-        }
-      },
-      "block_order": [
-        "subheading",
-        "heading",
-        "buttons"
-      ],
-      "settings": {
-        "image": "shopify:\/\/shop_images\/best_home_and_kitchen2.webp",
-        "image_overlay_opacity": 20,
-        "image_height": "medium",
-        "desktop_content_position": "middle-center",
-        "show_text_box": true,
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-1",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": true,
-        "show_text_below": true
-      }
-    },
-    "divider_1": {
-      "type": "divider",
-      "settings": {
-        "padding_top": 20,
-        "padding_bottom": 20
-      }
-    },
     "hero_emotional": {
       "type": "hero-emotional",
       "settings": {
+        "hero_height": 90,
+        "text_alignment": "center",
+        "overlay_color": "#000000",
+        "overlay_opacity": 30,
+        "occasion_badge": "Valentine's Day Collection",
+        "heading": "Say What You Feel",
+        "heading_size": "h0",
+        "subheading": "Beautiful necklaces paired with heartfelt message cards. Because sometimes, you need a little help saying 'I love you'.",
+        "emotional_quote": "I can't promise to be here for the rest of your life, but I can promise to love you for the rest of mine.",
+        "button_text": "Shop Updated Collection",
+        "button_link": "shopify://collections/all",
+        "secondary_button_text": "View Message Cards",
+        "secondary_button_link": "shopify://pages/message-cards",
+        "show_countdown": true,
+        "countdown_date": "2026-02-14",
+        "countdown_occasion": "Valentine's Day",
+        "show_scroll_indicator": true,
         "padding_top": 0,
         "padding_bottom": 0
       }
     },
-    "trust_badges": {
-      "type": "trust-badges",
+    "section_product_value": {
+      "type": "section-product-value",
       "settings": {
-        "padding_top": 20,
-        "padding_bottom": 20
+        "show_price_anchor": true,
+        "original_price": "£49.99",
+        "current_price": "£24.99",
+        "show_savings": true,
+        "savings_amount": "50% OFF",
+        "show_stock_badge": true,
+        "stock_text": "In Stock - Ships from London, UK",
+        "show_quality": true,
+        "quality_title": "Premium Material",
+        "quality_desc": "316L Stainless Steel & 18k Gold PVD",
+        "show_delivery": true,
+        "delivery_title": "Fast UK Delivery",
+        "delivery_desc": "2-3 Days via Royal Mail",
+        "show_warranty": true,
+        "warranty_title": "Lifetime Warranty",
+        "warranty_desc": "Will never tarnish or fade"
       }
     },
-    "emotional_story": {
-      "type": "emotional-story",
-      "settings": {
-        "padding_top": 60,
-        "padding_bottom": 60
-      }
-    },
-    "message_cards": {
-      "type": "message-cards",
-      "settings": {
-        "padding_top": 60,
-        "padding_bottom": 60
-      }
-    },
-    "featured_gift": {
-      "type": "featured-gift",
-      "settings": {
-        "padding_top": 60,
-        "padding_bottom": 60
-      }
-    },
-    "social_proof": {
-      "type": "social-proof",
-      "settings": {
-        "padding_top": 60,
-        "padding_bottom": 60
-      }
-    },
-    "uk_delivery": {
-      "type": "uk-delivery",
-      "settings": {
-        "padding_top": 60,
-        "padding_bottom": 60
-      }
-    },
-    "product_compare_value": {
-      "type": "product-compare-value",
-      "settings": {
-        "padding_top": 60,
-        "padding_bottom": 60
-      }
-    },
-    "featured_products_1": {
+    "featured_collection": {
       "type": "featured-collection",
       "settings": {
-        "title": "Product",
+        "title": "Best Sellers",
         "heading_size": "h2",
-        "description": "",
-        "show_description": false,
+        "description": "Our most loved gifts for her",
+        "show_description": true,
         "description_style": "body",
-        "collection": "home-kitchen",
-        "products_to_show": 8,
+        "collection": "all",
+        "products_to_show": 4,
         "columns_desktop": 4,
         "full_width": false,
-        "show_view_all": false,
-        "view_all_style": "solid",
-        "enable_desktop_slider": true,
+        "show_view_all": true,
+        "view_all_style": "outline",
+        "enable_desktop_slider": false,
         "color_scheme": "scheme-1",
-        "image_ratio": "adapt",
-        "show_secondary_image": false,
+        "image_ratio": "square",
+        "show_secondary_image": true,
         "show_vendor": false,
-        "show_rating": false,
-        "enable_quick_add": false,
+        "show_rating": true,
+        "enable_quick_add": true,
         "columns_mobile": "2",
         "swipe_on_mobile": true,
         "padding_top": 36,
         "padding_bottom": 36
       }
     },
-    "divider_2": {
-      "type": "divider",
+    "section_message_card": {
+      "type": "section-message-card",
       "settings": {
-        "padding_top": 20,
-        "padding_bottom": 20
-      }
-    },
-    "banner_family": {
-      "type": "image-banner",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Give the best to your family",
-            "heading_size": "h1"
-          }
-        },
-        "subheading": {
-          "type": "text",
-          "settings": {
-            "text": "Best Home and Kitchen",
-            "text_style": "body"
-          }
-        },
-        "buttons": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "discover now",
-            "button_link_1": "shopify:\/\/collections\/all",
-            "button_style_secondary_1": false
-          }
-        }
-      },
-      "block_order": [
-        "subheading",
-        "heading",
-        "buttons"
-      ],
-      "settings": {
-        "image": "shopify:\/\/shop_images\/best_home_and_kitchen4.webp",
-        "image_height": "medium",
-        "desktop_content_position": "middle-center",
-        "show_text_box": true,
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-1"
-      }
-    },
-    "banner_fun": {
-      "type": "image-banner",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Rediscover Family Fun",
-            "heading_size": "h1"
-          }
-        },
-        "subheading": {
-          "type": "text",
-          "settings": {
-            "text": "Best Home and Kitchen",
-            "text_style": "body"
-          }
-        },
-        "buttons": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "discover now",
-            "button_link_1": "shopify:\/\/collections\/all",
-            "button_style_secondary_1": false
-          }
-        }
-      },
-      "block_order": [
-        "subheading",
-        "heading",
-        "buttons"
-      ],
-      "settings": {
-        "image": "shopify:\/\/shop_images\/best_home_and_kitchen7.webp",
-        "image_height": "medium",
-        "desktop_content_position": "middle-center",
-        "show_text_box": true,
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-1"
-      }
-    },
-    "promo_grid": {
-      "type": "multicolumn",
-      "blocks": {
-        "col1": {
-          "type": "column",
-          "settings": {
-            "title": "Up to 30% off",
-            "text": "<p>new Bags<br>Shop now</p>",
-            "link": "shopify:\/\/collections\/fashion"
-          }
-        },
-        "col2": {
-          "type": "column",
-          "settings": {
-            "title": "New in this week",
-            "text": "<p>select Tops<br>Sale up to 50% off!</p>",
-            "link": "shopify:\/\/collections\/coats"
-          }
-        }
-      },
-      "block_order": [
-        "col1",
-        "col2"
-      ],
-      "settings": {
-        "title": "",
-        "heading_size": "h1",
-        "image_width": "full",
-        "image_ratio": "adapt",
-        "columns_desktop": 2,
-        "column_alignment": "left",
-        "background_style": "none",
-        "color_scheme": "scheme-1",
-        "columns_mobile": "1",
-        "swipe_on_mobile": true
-      }
-    },
-    "divider_3": {
-      "type": "divider",
-      "settings": {
-        "padding_top": 20,
-        "padding_bottom": 20
-      }
-    },
-    "contact_info": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "We’re here to help you!",
-            "heading_size": "h1"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Have a question, comment, or brilliant idea you'd like to share? Send us a little note below - we love to hear from you and will always reply!</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "scheme-1",
-        "full_width": true,
-        "padding_top": 40,
-        "padding_bottom": 40
-      }
-    },
-    "contact_form": {
-      "type": "contact-form",
-      "settings": {
-        "heading": "Contact form",
-        "heading_size": "h1",
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "divider_4": {
-      "type": "divider",
-      "settings": {
-        "padding_top": 20,
-        "padding_bottom": 20
-      }
-    },
-    "featured_products_2": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "Best seller",
-        "description": "Top sale in this week",
-        "collection": "home-kitchen",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1"
-      }
-    },
-    "divider_5": {
-      "type": "divider",
-      "settings": {
-        "padding_top": 20,
-        "padding_bottom": 20
-      }
-    },
-    "divider_6": {
-      "type": "divider",
-      "settings": {
-        "padding_top": 20,
-        "padding_bottom": 20
-      }
-    },
-    "custom_products": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "Featured Products",
-        "products_to_show": 4
-      }
-    },
-    "judge_me_reviews": {
-      "type": "apps",
-      "blocks": {
-        "widget": {
-          "type": "shopify:\/\/apps\/judge-me-reviews\/blocks\/featured_carousel\/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {
-            "maxwidth": 1080
-          }
-        }
-      },
-      "block_order": [
-        "widget"
-      ],
-      "settings": {
-        "include_margins": true
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "section_heading": "Create Your Moment",
+         "message_preset_1": "To My Wife - I loved you then, I love you still...",
+         "message_preset_2": "To My Soulmate - You are my rock, my love...",
+         "message_preset_3": "To My Daughter - Never forget that I love you..."
       }
     },
     "testimonials": {
@@ -368,27 +90,27 @@
           "type": "quote",
           "settings": {
             "star": "5",
-            "quote": "<p>Our products are meticulously crafted using the finest materials, ensuring unparalleled quality.</p>",
-            "author": "Premium Quality Guaranteed",
-            "author_info": ""
+            "quote": "<p>My wife cried when she opened it. The message card was perfect quality and the necklace shines beautifully.</p>",
+            "author": "James W.",
+            "author_info": "Verified Buyer - London"
           }
         },
         "quote_2": {
           "type": "quote",
           "settings": {
             "star": "5",
-            "quote": "<p>Our efficient shipping process ensures swift delivery to your doorstep.</p>",
-            "author": "Express Shipping",
-            "author_info": ""
+            "quote": "<p>Arrived in 2 days as promised. The packaging feels very premium for the price.</p>",
+            "author": "Sarah H.",
+            "author_info": "Verified Buyer - Manchester"
           }
         },
         "quote_3": {
           "type": "quote",
           "settings": {
             "star": "5",
-            "quote": "<p>Our commitment to customer satisfaction extends beyond the sale.</p>",
-            "author": "Unbeatable Warranty Coverage",
-            "author_info": ""
+            "quote": "<p>Honestly better than expected. The gold plating looks real and hasn't faded after a month.</p>",
+            "author": "Michael R.",
+            "author_info": "Verified Buyer - Bristol"
           }
         }
       },
@@ -398,40 +120,21 @@
         "quote_3"
       ],
       "settings": {
-        "title": "Our Commitments",
-        "heading_size": "h1",
+        "title": "Trusted by 1000+ UK Customers",
+        "heading_size": "h2",
         "columns_desktop": 3,
         "column_alignment": "center",
-        "color_scheme": "scheme-1",
-        "padding_top": 50
-      }
-    },
-    "featured_products_3": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "Best Sellers of the Year",
-        "collection": "home-kitchen",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1"
+        "color_scheme": "scheme-2",
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     }
   },
   "order": [
     "hero_emotional",
-    "trust_badges",
-    "emotional_story",
-    "featured_products_1",
-    "message_cards",
-    "featured_gift",
-    "banner_family",
-    "uk_delivery",
-    "social_proof",
-    "product_compare_value",
-    "testimonials",
-    "banner_fun",
-    "contact_info",
-    "contact_form",
-    "judge_me_reviews"
+    "section_product_value",
+    "featured_collection",
+    "section_message_card",
+    "testimonials"
   ]
 }

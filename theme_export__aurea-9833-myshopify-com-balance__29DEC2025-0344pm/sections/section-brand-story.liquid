@@ -1,0 +1,137 @@
+{%- comment -%}
+  AUREA Brand Story Section
+  Elegant storytelling for luxury jewelry brand
+  Usage: Add to homepage via Theme Editor
+{%- endcomment -%}
+
+<section class="aurea-story page-width" style="padding: 8rem 0;">
+  
+  {%- comment -%} Gold Decorative Divider {%- endcomment -%}
+  <div class="aurea-story__divider" style="
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+    margin: 0 auto 3rem;
+  "></div>
+  
+  {%- comment -%} Section Preheading {%- endcomment -%}
+  <p class="aurea-story__preheading" style="
+    text-align: center;
+    font-family: 'Cormorant', Georgia, serif;
+    font-weight: 400;
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #B8860B;
+    margin-bottom: 1rem;
+  ">{{ section.settings.preheading }}</p>
+  
+  {%- comment -%} Main Heading {%- endcomment -%}
+  <h2 class="aurea-story__heading" style="
+    text-align: center;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    letter-spacing: 0.04em;
+    margin-bottom: 2rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  ">{{ section.settings.heading }}</h2>
+  
+  {%- comment -%} Story Content {%- endcomment -%}
+  <div class="aurea-story__content" style="
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  ">
+    <p style="
+      font-family: 'Cormorant', Georgia, serif;
+      font-size: 1.25rem;
+      line-height: 2;
+      color: rgba(26, 26, 26, 0.8);
+      margin-bottom: 2rem;
+    ">{{ section.settings.story_text }}</p>
+    
+    {%- if section.settings.show_signature -%}
+      <div class="aurea-story__signature" style="
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid #E8E4DF;
+      ">
+        <p style="
+          font-family: 'Playfair Display', Georgia, serif;
+          font-style: italic;
+          font-size: 1.1rem;
+          margin-bottom: 0.5rem;
+        ">{{ section.settings.signature_quote }}</p>
+        <p style="
+          font-family: 'Cormorant', Georgia, serif;
+          font-weight: 600;
+          font-size: 0.9rem;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          color: #B8860B;
+        ">{{ section.settings.signature_name }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+  
+  {%- comment -%} Bottom Decorative Divider {%- endcomment -%}
+  <div class="aurea-story__divider" style="
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+    margin: 4rem auto 0;
+  "></div>
+  
+</section>
+
+{% schema %}
+{
+  "name": "Brand Story",
+  "settings": [
+    {
+      "type": "text",
+      "id": "preheading",
+      "label": "Preheading",
+      "default": "Our Story"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Crafted with Intention, Worn with Meaning"
+    },
+    {
+      "type": "textarea",
+      "id": "story_text",
+      "label": "Story Text",
+      "default": "At AUREA, we believe that jewelry should be more than decoration. Each piece we create carries a story—a whisper of devotion, a symbol of connection, a reminder of the bonds that define us. Our journey began with a simple question: how can we help people express the feelings that words alone cannot capture? The answer became our purpose: to craft timeless pieces that become part of your most meaningful moments."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_signature",
+      "label": "Show Signature",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "signature_quote",
+      "label": "Signature Quote",
+      "default": "Every piece tells a story. What will yours say?"
+    },
+    {
+      "type": "text",
+      "id": "signature_name",
+      "label": "Signature Name",
+      "default": "— The AUREA Atelier"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Story"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,219 @@
+{%- comment -%}
+  Bundle Selector - "Buy More Save More"
+  Tiered pricing with quantity discounts
+  For Product Page
+{%- endcomment -%}
+
+<div class="aurea-bundle">
+  {%- comment -%} Section Title {%- endcomment -%}
+  <div class="aurea-bundle__header">
+    <div class="aurea-bundle__line"></div>
+    <span class="aurea-bundle__title">{{ section.settings.title }}</span>
+    <div class="aurea-bundle__line"></div>
+  </div>
+
+  {%- comment -%} Bundle Options {%- endcomment -%}
+  <div class="aurea-bundle__options">
+    {% for block in section.blocks %}
+      {%- liquid
+        assign is_popular = block.settings.is_popular
+        assign quantity = block.settings.quantity
+        assign discount_percent = block.settings.discount_percent
+        assign original_price = product.selected_or_first_available_variant.price | times: quantity
+        
+        if discount_percent > 0
+          assign discount_multiplier = 100 | minus: discount_percent | divided_by: 100.0
+          assign final_price = original_price | times: discount_multiplier
+        else
+          assign final_price = original_price
+        endif
+      -%}
+      
+      <label 
+        class="aurea-bundle__option {% if is_popular %}aurea-bundle__option--popular{% endif %}"
+        {{ block.shopify_attributes }}
+      >
+        {%- comment -%} Most Popular Badge {%- endcomment -%}
+        {% if is_popular %}
+          <span class="aurea-bundle__badge">Most Popular</span>
+        {% endif %}
+        
+        <div class="aurea-bundle__content">
+          {%- comment -%} Left: Radio + Info {%- endcomment -%}
+          <div class="aurea-bundle__info-wrapper">
+            <input 
+              type="radio" 
+              name="bundle_option" 
+              value="{{ quantity }}"
+              data-price="{{ final_price }}"
+              data-original-price="{{ original_price }}"
+              {% if forloop.first %}checked{% endif %}
+              class="aurea-bundle__radio"
+            >
+            <div>
+              <div class="aurea-bundle__label-text">
+                Buy {{ quantity }}
+                
+                {%- comment -%} Benefit Tags {%- endcomment -%}
+                {% if block.settings.show_free_shipping %}
+                  <span class="aurea-bundle__tag">+ Free Shipping</span>
+                {% endif %}
+                
+                {% if block.settings.extra_bonus != blank %}
+                  <span class="aurea-bundle__tag">+ {{ block.settings.extra_bonus }}</span>
+                {% endif %}
+              </div>
+              
+              <div class="aurea-bundle__subtext">
+                {% if discount_percent > 0 %}
+                  {{ discount_percent }}% off
+                {% else %}
+                  Regular Price
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          
+          {%- comment -%} Right: Price {%- endcomment -%}
+          <div class="aurea-bundle__price-wrapper">
+            <div class="aurea-bundle__price">{{ final_price | money }}</div>
+            
+            {% if discount_percent > 0 %}
+              <div class="aurea-bundle__compare-price">{{ original_price | money }}</div>
+            {% endif %}
+          </div>
+        </div>
+        
+        {%- comment -%} Variant Selector (only for first option or all) {%- endcomment -%}
+        {% if forloop.first and product.has_only_default_variant == false %}
+          <div class="aurea-bundle__variant-wrapper">
+            <span class="aurea-bundle__variant-label">#1</span>
+            <div class="aurea-bundle__variant-image">
+              {% if product.featured_image %}
+                <img src="{{ product.featured_image | image_url: width: 64 }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+              {% else %}
+                📷
+              {% endif %}
+            </div>
+            <select class="aurea-bundle__variant-select">
+              {% for variant in product.variants %}
+                <option value="{{ variant.id }}" {% if variant == product.selected_or_first_available_variant %}selected{% endif %}>
+                  {{ variant.title }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endif %}
+      </label>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  // AUREA Bundle Selector - Connect to Shopify Product Form
+  (function() {
+    const radios = document.querySelectorAll('.aurea-bundle__option input[type="radio"]');
+    
+    radios.forEach(radio => {
+      radio.addEventListener('change', function() {
+        const quantity = parseInt(this.value, 10);
+        
+        // Find the closest product form's quantity input
+        const quantityInputs = document.querySelectorAll('input[name="quantity"]');
+        quantityInputs.forEach(input => {
+          input.value = quantity;
+          // Trigger change event for Shopify's JS to pick up
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Bundle Selector",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "BUNDLE"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tier",
+      "name": "Bundle Tier",
+      "settings": [
+        {
+          "type": "number",
+          "id": "quantity",
+          "label": "Quantity",
+          "default": 1
+        },
+        {
+          "type": "number",
+          "id": "discount_percent",
+          "label": "Discount Percentage",
+          "default": 0,
+          "info": "0 for regular price, 10 for 10% off, etc."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_free_shipping",
+          "label": "Show Free Shipping Tag",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "extra_bonus",
+          "label": "Extra Bonus Text",
+          "info": "e.g., 'Mystery Gift'"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_popular",
+          "label": "Mark as Most Popular",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bundle Selector",
+      "blocks": [
+        {
+          "type": "tier",
+          "settings": {
+            "quantity": 1,
+            "discount_percent": 0,
+            "show_free_shipping": false,
+            "is_popular": false
+          }
+        },
+        {
+          "type": "tier",
+          "settings": {
+            "quantity": 2,
+            "discount_percent": 10,
+            "show_free_shipping": true,
+            "is_popular": true
+          }
+        },
+        {
+          "type": "tier",
+          "settings": {
+            "quantity": 3,
+            "discount_percent": 20,
+            "show_free_shipping": true,
+            "extra_bonus": "Mystery Gift",
+            "is_popular": false
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

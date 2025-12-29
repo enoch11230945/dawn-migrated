@@ -1,0 +1,108 @@
+{%- comment -%}
+  Trust Badges - "Trust Protocol"
+  Horizontal row of trust icons: Royal Mail, Waterproof, Guarantee
+  Based on page.md Block 2 specification
+{%- endcomment -%}
+
+<section class="aurea-trust-bar" style="
+  background: #0D0D0D;
+  color: #FFFFFF;
+  padding: 2rem;
+">
+  <div class="page-width">
+    <div style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    " class="aurea-trust-bar__items">
+      
+      {% for block in section.blocks %}
+        <div style="
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          font-family: 'Cormorant', Georgia, serif;
+          font-size: 0.95rem;
+          letter-spacing: 0.05em;
+        " {{ block.shopify_attributes }}>
+          <span style="color: #D4AF37; font-size: 1.25rem;">{{ block.settings.icon }}</span>
+          <span>{{ block.settings.text }}</span>
+        </div>
+      {% endfor %}
+      
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (max-width: 768px) {
+    .aurea-trust-bar__items {
+      flex-direction: column !important;
+      gap: 1rem !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Trust Bar",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Trust Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (Emoji)",
+          "default": "📦"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free UK Shipping"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Bar",
+      "blocks": [
+        {
+          "type": "badge",
+          "settings": {
+            "icon": "📦",
+            "text": "Royal Mail Tracked"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "icon": "💧",
+            "text": "100% Waterproof"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "icon": "♾️",
+            "text": "Lifetime Warranty"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "icon": "🔒",
+            "text": "Secure Checkout"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

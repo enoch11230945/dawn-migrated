@@ -1,0 +1,105 @@
+{%- comment -%}
+  Track Your Order - Static Route
+  Zero dependency, pure HTML/CSS
+  Per page.md specification - WISMO Killer
+{%- endcomment -%}
+
+<div class="page-width" style="padding: 4rem 2rem;">
+  <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+    
+    <h1 style="
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+    ">Track Your Order</h1>
+    
+    <p style="
+      font-family: 'Cormorant', Georgia, serif;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    ">Once your order has been dispatched, you will receive a <strong>Shipping Confirmation Email</strong> containing your unique Tracking Number.</p>
+    
+    <p style="
+      font-family: 'Cormorant', Georgia, serif;
+      font-size: 1rem;
+      color: rgba(26,26,26,0.7);
+      margin-bottom: 2rem;
+    ">Please allow 24 hours for the tracking status to update after receiving the email.</p>
+    
+    <hr style="margin: 2rem 0; border: 0; border-top: 1px solid #E8E4DF;">
+
+    <h3 style="
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+    ">Shipping via Royal Mail</h3>
+    
+    <p style="
+      font-family: 'Cormorant', Georgia, serif;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    ">We use <strong>Royal Mail Tracked 48</strong> for all UK orders.</p>
+    
+    <p style="margin-top: 1.5rem;">
+      <a 
+        href="https://www.royalmail.com/track-your-item" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="aurea-track-btn"
+      >
+        Track via Royal Mail
+      </a>
+    </p>
+
+    <p style="
+      margin-top: 2rem; 
+      font-family: 'Cormorant', Georgia, serif;
+      font-size: 0.9rem; 
+      color: rgba(26,26,26,0.6);
+    ">
+      <em>Not working? Try the universal tracker:</em><br>
+      <a 
+        href="https://t.17track.net/en" 
+        target="_blank" 
+        rel="noopener"
+        style="color: #B8860B; text-decoration: underline;"
+      >Track via 17Track</a>
+    </p>
+    
+  </div>
+</div>
+
+<style>
+  .aurea-track-btn {
+    background-color: #0D0D0D;
+    color: #ffffff;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    font-family: 'Cormorant', Georgia, serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+  }
+  
+  .aurea-track-btn:hover {
+    background-color: #D4AF37;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Track Order",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Track Order"
+    }
+  ]
+}
+{% endschema %}

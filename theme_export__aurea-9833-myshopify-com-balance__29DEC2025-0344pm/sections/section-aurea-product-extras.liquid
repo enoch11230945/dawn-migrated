@@ -1,0 +1,203 @@
+{%- comment -%}
+  AUREA Product Extras Section
+  Adds shipping countdown and value proposition to product pages
+  Usage: Add this section to product.json template order
+{%- endcomment -%}
+
+{{ 'section-product-value.css' | asset_url | stylesheet_tag }}
+
+<div class="aurea-product-extras page-width" style="padding: 2rem 0;">
+  
+  {%- comment -%} Shipping Countdown {%- endcomment -%}
+  {% if section.settings.show_countdown %}
+    <div class="aurea-countdown-wrapper" style="margin-bottom: 2rem;">
+      {% render 'shipping-countdown',
+        deadline_hour: section.settings.deadline_hour,
+        deadline_text: section.settings.deadline_text
+      %}
+    </div>
+  {% endif %}
+  
+  {%- comment -%} Value Proposition Grid {%- endcomment -%}
+  {% if section.settings.show_value_props %}
+    <div class="aurea-value-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+      
+      {% if section.settings.show_quality %}
+        <div class="value-item" style="text-align: center; padding: 1rem;">
+          <div class="value-icon" style="font-size: 2rem; margin-bottom: 0.5rem;">💎</div>
+          <div class="value-title" style="font-weight: 600; margin-bottom: 0.5rem;">{{ section.settings.quality_title }}</div>
+          <div class="value-description" style="font-size: 0.9rem; opacity: 0.8;">{{ section.settings.quality_desc }}</div>
+        </div>
+      {% endif %}
+      
+      {% if section.settings.show_delivery %}
+        <div class="value-item" style="text-align: center; padding: 1rem;">
+          <div class="value-icon" style="font-size: 2rem; margin-bottom: 0.5rem;">🚀</div>
+          <div class="value-title" style="font-weight: 600; margin-bottom: 0.5rem;">{{ section.settings.delivery_title }}</div>
+          <div class="value-description" style="font-size: 0.9rem; opacity: 0.8;">{{ section.settings.delivery_desc }}</div>
+        </div>
+      {% endif %}
+      
+      {% if section.settings.show_warranty %}
+        <div class="value-item" style="text-align: center; padding: 1rem;">
+          <div class="value-icon" style="font-size: 2rem; margin-bottom: 0.5rem;">🛡️</div>
+          <div class="value-title" style="font-weight: 600; margin-bottom: 0.5rem;">{{ section.settings.warranty_title }}</div>
+          <div class="value-description" style="font-size: 0.9rem; opacity: 0.8;">{{ section.settings.warranty_desc }}</div>
+        </div>
+      {% endif %}
+      
+    </div>
+  {% endif %}
+  
+  {%- comment -%} Size Guide {%- endcomment -%}
+  {% if section.settings.show_size_guide %}
+    <div class="aurea-size-guide-wrapper" style="margin: 2rem 0; text-align: center;">
+      {% render 'aurea-size-guide' %}
+    </div>
+  {% endif %}
+  
+  {%- comment -%} Trust & Delivery Block {%- endcomment -%}
+  {% if section.settings.show_trust_block %}
+    {% render 'section-trust-delivery' %}
+  {% endif %}
+  
+  {%- comment -%} Back in Stock (Klaviyo) {%- endcomment -%}
+  {% if section.settings.show_back_in_stock %}
+    {% unless product.available %}
+      {% render 'klaviyo-back-in-stock', product: product %}
+    {% endunless %}
+  {% endif %}
+  
+</div>
+
+{% schema %}
+{
+  "name": "AUREA Product Extras",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Shipping Countdown"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_countdown",
+      "label": "Show Shipping Countdown",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "deadline_hour",
+      "label": "Cutoff Hour (24h)",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "text",
+      "id": "deadline_text",
+      "label": "Countdown Text",
+      "default": "Order within {time} for same-day dispatch"
+    },
+    {
+      "type": "header",
+      "content": "Value Propositions"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_value_props",
+      "label": "Show Value Props",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quality",
+      "label": "Show Quality",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "quality_title",
+      "label": "Quality Title",
+      "default": "Premium Materials"
+    },
+    {
+      "type": "text",
+      "id": "quality_desc",
+      "label": "Quality Description",
+      "default": "316L Stainless Steel & 18k Gold PVD"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_delivery",
+      "label": "Show Delivery",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "delivery_title",
+      "label": "Delivery Title",
+      "default": "Fast UK Delivery"
+    },
+    {
+      "type": "text",
+      "id": "delivery_desc",
+      "label": "Delivery Description",
+      "default": "2-3 Days via Royal Mail"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_warranty",
+      "label": "Show Warranty",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "warranty_title",
+      "label": "Warranty Title",
+      "default": "Lifetime Guarantee"
+    },
+    {
+      "type": "text",
+      "id": "warranty_desc",
+      "label": "Warranty Description",
+      "default": "Will never tarnish or fade"
+    },
+    {
+      "type": "header",
+      "content": "Size Guide"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_size_guide",
+      "label": "Show Size Guide",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Trust & Delivery"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_block",
+      "label": "Show Trust & Delivery Block",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Back in Stock"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_back_in_stock",
+      "label": "Show Back in Stock (Klaviyo)",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "AUREA Product Extras"
+    }
+  ]
+}
+{% endschema %}

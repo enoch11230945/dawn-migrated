@@ -1,0 +1,33 @@
+{%- comment -%}
+  Low Stock Indicator - Scarcity Engine
+  Red pulsing dot when inventory < 10
+  Reads REAL Shopify inventory data (Honest Scarcity)
+  
+  Usage: {% render 'low-stock-indicator', product: product %}
+{%- endcomment -%}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign inventory = current_variant.inventory_quantity
+  assign threshold = 10
+  assign show_indicator = false
+  
+  if current_variant.inventory_management == 'shopify' and inventory > 0 and inventory < threshold
+    assign show_indicator = true
+  endif
+-%}
+
+{% if show_indicator %}
+  <div class="aurea-low-stock">
+    {%- comment -%} Pulsing Red Dot {%- endcomment -%}
+    <span class="aurea-low-stock__dot-wrapper">
+      <span class="aurea-low-stock__dot-ping"></span>
+      <span class="aurea-low-stock__dot-core"></span>
+    </span>
+    
+    {%- comment -%} Text {%- endcomment -%}
+    <span>
+      Only {{ inventory }} left in stock – Order soon
+    </span>
+  </div>
+{% endif %}

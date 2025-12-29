@@ -1,0 +1,245 @@
+{%- comment -%}
+  AUREA Size Guide Snippet
+  Elegant ring/necklace size guide modal
+  Usage: {% render 'aurea-size-guide' %}
+{%- endcomment -%}
+
+<div class="aurea-size-guide">
+  }
+  
+  .aurea-size-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #E8E4DF;
+    padding-bottom: 1rem;
+  }
+  
+  .aurea-size-tab {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1rem;
+  }
+  
+  .aurea-size-tab.is-active {
+    color: #B8860B;
+    border-bottom-color: #B8860B;
+  }
+  
+  .aurea-size-panel {
+    display: none;
+  }
+  
+  .aurea-size-panel.is-active {
+    display: block;
+  }
+  
+  .aurea-size-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Cormorant', Georgia, serif;
+  }
+  
+  .aurea-size-table th,
+  .aurea-size-table td {
+    padding: 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid #E8E4DF;
+  }
+  
+  .aurea-size-table th {
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #1A1A1A;
+    background: #F5F0E6;
+  }
+  
+  .aurea-size-table td {
+    font-size: 0.95rem;
+  }
+  
+  .aurea-size-tip {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #F5F0E6;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  
+  .aurea-size-tip strong {
+    color: #B8860B;
+  }
+</style>
+
+<button type="button" class="aurea-size-guide-trigger" data-open-size-guide>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+    <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+    <line x1="12" y1="22.08" x2="12" y2="12"/>
+  </svg>
+  Size Guide
+</button>
+
+<div class="aurea-size-modal" id="aurea-size-modal">
+  <div class="aurea-size-modal__overlay" data-close-size-guide></div>
+  <div class="aurea-size-modal__content">
+    <button type="button" class="aurea-size-modal__close" data-close-size-guide aria-label="Close">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    
+    <h2 class="aurea-size-modal__title">Size Guide</h2>
+    <p class="aurea-size-modal__subtitle">Find your perfect fit</p>
+    
+    <div class="aurea-size-tabs">
+      <button type="button" class="aurea-size-tab is-active" data-tab="necklace">Necklaces</button>
+      <button type="button" class="aurea-size-tab" data-tab="ring">Rings</button>
+      <button type="button" class="aurea-size-tab" data-tab="bracelet">Bracelets</button>
+    </div>
+    
+    {%- comment -%} Necklace Sizes {%- endcomment -%}
+    <div class="aurea-size-panel is-active" data-panel="necklace">
+      <table class="aurea-size-table">
+        <thead>
+          <tr>
+            <th>Length</th>
+            <th>cm</th>
+            <th>Placement</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Choker</td>
+            <td>35-40 cm</td>
+            <td>Sits at base of neck</td>
+          </tr>
+          <tr>
+            <td>Princess</td>
+            <td>43-48 cm</td>
+            <td>Sits at collarbone</td>
+          </tr>
+          <tr>
+            <td>Matinee</td>
+            <td>50-60 cm</td>
+            <td>Falls below collarbone</td>
+          </tr>
+          <tr>
+            <td>Opera</td>
+            <td>70-90 cm</td>
+            <td>Sits at or below bust</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="aurea-size-tip">
+        <strong>Tip:</strong> Our necklaces come with an adjustable 5cm extension chain, giving you flexibility in styling.
+      </div>
+    </div>
+    
+    {%- comment -%} Ring Sizes {%- endcomment -%}
+    <div class="aurea-size-panel" data-panel="ring">
+      <table class="aurea-size-table">
+        <thead>
+          <tr>
+            <th>UK Size</th>
+            <th>US Size</th>
+            <th>Diameter (mm)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>J</td><td>5</td><td>15.7</td></tr>
+          <tr><td>L</td><td>6</td><td>16.5</td></tr>
+          <tr><td>N</td><td>7</td><td>17.3</td></tr>
+          <tr><td>P</td><td>8</td><td>18.1</td></tr>
+          <tr><td>R</td><td>9</td><td>19.0</td></tr>
+        </tbody>
+      </table>
+      <div class="aurea-size-tip">
+        <strong>How to measure:</strong> Wrap a piece of string around your finger, mark where it meets, and measure the length in mm.
+      </div>
+    </div>
+    
+    {%- comment -%} Bracelet Sizes {%- endcomment -%}
+    <div class="aurea-size-panel" data-panel="bracelet">
+      <table class="aurea-size-table">
+        <thead>
+          <tr>
+            <th>Size</th>
+            <th>Wrist (cm)</th>
+            <th>Bracelet Length</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Small</td><td>14-15 cm</td><td>16 cm</td></tr>
+          <tr><td>Medium</td><td>15-17 cm</td><td>18 cm</td></tr>
+          <tr><td>Large</td><td>17-19 cm</td><td>20 cm</td></tr>
+        </tbody>
+      </table>
+      <div class="aurea-size-tip">
+        <strong>Our bracelets</strong> come with an adjustable chain for a comfortable fit on most wrist sizes.
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<script>
+  (function() {
+    const modal = document.getElementById('aurea-size-modal');
+    if (!modal) return;
+    
+    // Open modal
+    document.querySelectorAll('[data-open-size-guide]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        modal.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+    
+    // Close modal
+    document.querySelectorAll('[data-close-size-guide]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        modal.classList.remove('is-open');
+        document.body.style.overflow = '';
+      });
+    });
+    
+    // Tab switching
+    document.querySelectorAll('.aurea-size-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.tab;
+        
+        // Update tabs
+        document.querySelectorAll('.aurea-size-tab').forEach(t => t.classList.remove('is-active'));
+        tab.classList.add('is-active');
+        
+        // Update panels
+        document.querySelectorAll('.aurea-size-panel').forEach(p => p.classList.remove('is-active'));
+        document.querySelector(`[data-panel="${target}"]`).classList.add('is-active');
+      });
+    });
+    
+    // Close on ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) {
+        modal.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
+    });
+  })();
+</script>
