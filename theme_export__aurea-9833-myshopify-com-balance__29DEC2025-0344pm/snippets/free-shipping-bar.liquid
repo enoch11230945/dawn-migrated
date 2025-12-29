@@ -1,34 +1,78 @@
 {%- comment -%}
   Free Shipping Progress Bar
-  For Cart Drawer - Motivation to increase AOV
-  Threshold: £50 (5000 pence)
+  Gamified cart drawer element showing progress to free shipping.
+  
+  Usage: {% render 'free-shipping-bar', cart: cart %}
+  
+  Configure threshold: Change 5000 to your free shipping threshold in cents (£50 = 5000)
 {%- endcomment -%}
 
 {%- liquid
-  assign free_shipping_threshold = 5000
-  assign cart_total = cart.total_price
-  assign remaining = free_shipping_threshold | minus: cart_total
-  assign progress_percent = cart_total | times: 100 | divided_by: free_shipping_threshold
-  if progress_percent > 100
-    assign progress_percent = 100
+  assign threshold = 5000
+  assign threshold_money = threshold | money_without_trailing_zeros
+  assign remaining = threshold | minus: cart.total_price
+  assign remaining_money = remaining | money_without_trailing_zeros
+  
+  if cart.total_price >= threshold
+    assign progress = 100
+    assign qualified = true
+  else
+    assign progress = cart.total_price | times: 100 | divided_by: threshold
+    assign qualified = false
   endif
 -%}
 
 <div class="aurea-shipping-bar">
-  {%- if remaining > 0 -%}
-    {%- comment -%} Not yet qualified {%- endcomment -%}
-    <div class="aurea-shipping-text">
-      Add <strong class="aurea-shipping-highlight">{{ remaining | money }}</strong> more for 
-      <strong>Free Royal Mail Delivery</strong>
-    </div>
-    <div class="aurea-shipping-progress">
-      <div class="aurea-shipping-fill" style="width: {{ progress_percent }}%;"></div>
-    </div>
-  {%- else -%}
-    {%- comment -%} Qualified for free shipping {%- endcomment -%}
-    <div class="aurea-shipping-success">
-      <span class="aurea-shipping-checkmark">✓</span>
-      <span>You've unlocked <strong>Free Royal Mail Delivery!</strong></span>
-    </div>
-  {%- endif -%}
+  <div class="aurea-shipping-bar__progress" style="width: {{ progress }}%;"></div>
+  
+  <div class="aurea-shipping-bar__text">
+    {% if qualified %}
+      <span class="aurea-shipping-bar__icon">🎉</span>
+      <span>You've unlocked <strong>FREE SHIPPING!</strong></span>
+    {% elsif cart.item_count > 0 %}
+      <span class="aurea-shipping-bar__icon">🚚</span>
+      <span>Add <strong>{{ remaining_money }}</strong> more for FREE shipping</span>
+    {% else %}
+      <span class="aurea-shipping-bar__icon">🚚</span>
+      <span>Free shipping on orders over <strong>{{ threshold_money }}</strong></span>
+    {% endif %}
+  </div>
 </div>
+
+<style>
+  .aurea-shipping-bar {
+    position: relative;
+    background: #F3F3F3;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 36px;
+    margin: 12px 0;
+  }
+  
+  .aurea-shipping-bar__progress {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #D4AF37 0%, #B8860B 100%);
+    border-radius: 20px;
+    transition: width 0.4s ease;
+  }
+  
+  .aurea-shipping-bar__text {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 100%;
+    font-size: 0.85rem;
+    color: #1A1A1A;
+    padding: 0 16px;
+  }
+  
+  .aurea-shipping-bar__icon {
+    font-size: 1rem;
+  }
+</style>

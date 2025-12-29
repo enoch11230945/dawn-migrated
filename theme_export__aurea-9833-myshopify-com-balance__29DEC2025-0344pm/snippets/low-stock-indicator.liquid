@@ -1,7 +1,8 @@
 {%- comment -%}
-  Low Stock Indicator - Scarcity Engine
-  Red pulsing dot when inventory < 10
-  Reads REAL Shopify inventory data (Honest Scarcity)
+  Dynamic Scarcity Indicator
+  - Low Stock (< 20): Red pulsing "Only X left"
+  - High Demand (20-50): Orange "High Demand - Selling Fast"
+  - Normal (> 50): Hidden
   
   Usage: {% render 'low-stock-indicator', product: product %}
 {%- endcomment -%}
@@ -9,25 +10,86 @@
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
   assign inventory = current_variant.inventory_quantity
-  assign threshold = 20
-  assign show_indicator = false
+  assign low_threshold = 20
+  assign high_demand_threshold = 50
   
-  if current_variant.inventory_management == 'shopify' and inventory > 0 and inventory < threshold
-    assign show_indicator = true
+  assign show_low_stock = false
+  assign show_high_demand = false
+  
+  if current_variant.inventory_management == 'shopify' and inventory > 0
+    if inventory < low_threshold
+      assign show_low_stock = true
+    elsif inventory < high_demand_threshold
+      assign show_high_demand = true
+    endif
   endif
 -%}
 
-{% if show_indicator %}
-  <div class="aurea-low-stock">
-    {%- comment -%} Pulsing Red Dot {%- endcomment -%}
-    <span class="aurea-low-stock__dot-wrapper">
-      <span class="aurea-low-stock__dot-ping"></span>
-      <span class="aurea-low-stock__dot-core"></span>
+{% if show_low_stock %}
+  <div class="aurea-scarcity aurea-scarcity--low">
+    <span class="aurea-scarcity__dot-wrapper">
+      <span class="aurea-scarcity__dot-ping"></span>
+      <span class="aurea-scarcity__dot-core"></span>
     </span>
-    
-    {%- comment -%} Text {%- endcomment -%}
-    <span>
-      Only {{ inventory }} left in stock – Order soon
-    </span>
+    <span>Only {{ inventory }} left in stock – Order soon</span>
+  </div>
+{% elsif show_high_demand %}
+  <div class="aurea-scarcity aurea-scarcity--demand">
+    <span class="aurea-scarcity__icon">🔥</span>
+    <span>High Demand – Selling Fast</span>
   </div>
 {% endif %}
+
+<style>
+  .aurea-scarcity {
+    display: flex;
+    align-items: center;
+    margin: 0.75rem 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  
+  .aurea-scarcity--low {
+    color: #B91C1C;
+  }
+  
+  .aurea-scarcity--demand {
+    color: #D97706;
+  }
+  
+  .aurea-scarcity__dot-wrapper {
+    position: relative;
+    display: flex;
+    height: 10px;
+    width: 10px;
+    margin-right: 10px;
+  }
+  
+  .aurea-scarcity__dot-ping {
+    animation: aurea-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+    position: absolute;
+    display: inline-flex;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    background-color: #EF4444;
+    opacity: 0.75;
+  }
+  
+  .aurea-scarcity__dot-core {
+    position: relative;
+    display: inline-flex;
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+    background-color: #B91C1C;
+  }
+  
+  .aurea-scarcity__icon {
+    margin-right: 6px;
+  }
+  
+  @keyframes aurea-ping {
+    75%, 100% { transform: scale(2); opacity: 0; }
+  }
+</style>
