@@ -41,6 +41,18 @@
       {%- render 'theme-editor' -%}
     {% endif %}
 
+    {%- comment -%} AUREA: LCP Preload for Hero Image {%- endcomment -%}
+    {% if template.name == 'index' %}
+      {% for section in content_for_layout %}
+        {% if section.type == 'hero' or section.type == 'slideshow' %}
+          {% if section.settings.image %}
+            <link rel="preload" as="image" href="{{ section.settings.image | image_url: width: 1400 }}" fetchpriority="high">
+          {% endif %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
     {{ content_for_header }}
   </head>
 
