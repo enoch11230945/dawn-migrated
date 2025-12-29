@@ -1,3 +1,5 @@
+稀缺性驅動是正確的策略。"Low Stock, High Profit" 比 "High Volume, Low Margin" 更容易編譯成利潤
+
 # 📜 PRD: Project "London_Emotion_Engine" v2.0
 
 > **Authored by:** Linus Torvalds  

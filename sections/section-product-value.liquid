@@ -1,0 +1,283 @@
+{% comment %}
+  Product Value Proposition Section
+  PRD v2.0: Price Anchoring + UK Stock Badge + Urgency
+  
+  Usage: {% section 'section-product-value' %}
+{% endcomment %}
+
+{%- style -%}
+  .product-value-wrapper {
+    background: linear-gradient(135deg, rgb(var(--color-background)) 0%, rgba(var(--color-foreground), 0.02) 100%);
+    border: 1px solid rgba(var(--color-foreground), 0.1);
+    border-radius: var(--media-radius);
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+
+  .value-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .value-item {
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .value-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+  }
+
+  .value-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+  }
+
+  .value-description {
+    font-size: 1.2rem;
+    color: rgba(var(--color-foreground), 0.7);
+    line-height: 1.4;
+  }
+
+  .price-anchor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(var(--color-foreground), 0.03);
+    border-radius: var(--buttons-radius);
+  }
+
+  .original-price {
+    text-decoration: line-through;
+    color: rgba(var(--color-foreground), 0.5);
+    font-size: 1.8rem;
+  }
+
+  .current-price {
+    color: rgb(var(--color-button));
+    font-size: 2.4rem;
+    font-weight: 700;
+  }
+
+  .savings-badge {
+    background: #28a745;
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  .stock-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--buttons-radius);
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  .stock-badge svg {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+
+  @media (max-width: 750px) {
+    .product-value-wrapper {
+      padding: 1.5rem;
+    }
+
+    .value-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .price-anchor {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+{%- endstyle -%}
+
+<div class="product-value-wrapper">
+  {% if section.settings.show_price_anchor %}
+    <div class="price-anchor">
+      <span class="original-price">{{ section.settings.original_price }}</span>
+      <span class="current-price">{{ section.settings.current_price }}</span>
+      {% if section.settings.show_savings %}
+        <span class="savings-badge">Save {{ section.settings.savings_amount }}</span>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% if section.settings.show_stock_badge %}
+    <div style="text-align: center;">
+      <div class="stock-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        {{ section.settings.stock_text }}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="value-grid">
+    {% if section.settings.show_quality %}
+      <div class="value-item">
+        <div class="value-icon">💎</div>
+        <div class="value-title">{{ section.settings.quality_title }}</div>
+        <div class="value-description">{{ section.settings.quality_desc }}</div>
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_delivery %}
+      <div class="value-item">
+        <div class="value-icon">🚀</div>
+        <div class="value-title">{{ section.settings.delivery_title }}</div>
+        <div class="value-description">{{ section.settings.delivery_desc }}</div>
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_warranty %}
+      <div class="value-item">
+        <div class="value-icon">🛡️</div>
+        <div class="value-title">{{ section.settings.warranty_title }}</div>
+        <div class="value-description">{{ section.settings.warranty_desc }}</div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Value Proposition",
+  "tag": "section",
+  "class": "section-product-value",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Price Anchoring"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price_anchor",
+      "label": "Show Price Comparison",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "original_price",
+      "label": "Original Price",
+      "default": "£49.99"
+    },
+    {
+      "type": "text",
+      "id": "current_price",
+      "label": "Current Price",
+      "default": "£24.99"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_savings",
+      "label": "Show Savings Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "savings_amount",
+      "label": "Savings Text",
+      "default": "£25"
+    },
+    {
+      "type": "header",
+      "content": "Stock Status"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stock_badge",
+      "label": "Show Stock Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "stock_text",
+      "label": "Stock Badge Text",
+      "default": "In Stock - Ships from UK"
+    },
+    {
+      "type": "header",
+      "content": "Value Points"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quality",
+      "label": "Show Quality Point",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "quality_title",
+      "label": "Quality Title",
+      "default": "Premium Materials"
+    },
+    {
+      "type": "text",
+      "id": "quality_desc",
+      "label": "Quality Description",
+      "default": "316L Stainless Steel with PVD Gold Plating"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_delivery",
+      "label": "Show Delivery Point",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "delivery_title",
+      "label": "Delivery Title",
+      "default": "Fast UK Delivery"
+    },
+    {
+      "type": "text",
+      "id": "delivery_desc",
+      "label": "Delivery Description",
+      "default": "2-3 Working Days via Royal Mail"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_warranty",
+      "label": "Show Warranty Point",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "warranty_title",
+      "label": "Warranty Title",
+      "default": "Lifetime Guarantee"
+    },
+    {
+      "type": "text",
+      "id": "warranty_desc",
+      "label": "Warranty Description",
+      "default": "Free replacement if tarnish occurs"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Value Proposition"
+    }
+  ]
+}
+{% endschema %}

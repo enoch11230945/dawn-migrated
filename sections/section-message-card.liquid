@@ -1,0 +1,327 @@
+{% comment %}
+  Message Card Generator - "The Emotional Payload"
+  PRD v2.0 Section 5.2: Core differentiation mechanism
+  
+  Allows customer to select emotional context for message card
+  Options: Wife, Girlfriend, Mum, Daughter, Soulmate, etc.
+  
+  Usage: Add as block in product template
+{% endcomment %}
+
+{%- style -%}
+  .message-card-generator {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(var(--color-button), 0.05) 0%, rgba(var(--color-button), 0.02) 100%);
+    border: 1px dashed rgba(var(--color-button), 0.3);
+    border-radius: var(--media-radius);
+  }
+
+  .mcg-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .mcg-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: rgb(var(--color-foreground));
+  }
+
+  .mcg-subtitle {
+    font-size: 1.3rem;
+    color: rgba(var(--color-foreground), 0.7);
+  }
+
+  .mcg-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .mcg-option {
+    position: relative;
+  }
+
+  .mcg-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .mcg-option label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 1rem;
+    border: 2px solid rgba(var(--color-foreground), 0.2);
+    border-radius: var(--buttons-radius);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: rgb(var(--color-background));
+    min-height: 100px;
+  }
+
+  .mcg-option label:hover {
+    border-color: rgb(var(--color-button));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+
+  .mcg-option input[type="radio"]:checked + label {
+    border-color: rgb(var(--color-button));
+    background: rgba(var(--color-button), 0.1);
+    font-weight: 600;
+  }
+
+  .mcg-emoji {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .mcg-label-text {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .mcg-preview {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--buttons-radius);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  .mcg-preview-content {
+    max-width: 500px;
+  }
+
+  .mcg-preview-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+
+  .mcg-preview-message {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    color: #666;
+    font-style: italic;
+  }
+
+  .mcg-custom-input {
+    margin-top: 1rem;
+  }
+
+  .mcg-custom-input input {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid rgba(var(--color-foreground), 0.2);
+    border-radius: var(--buttons-radius);
+    font-size: 1.4rem;
+  }
+
+  @media (max-width: 750px) {
+    .mcg-options {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .message-card-generator {
+      padding: 1.5rem;
+    }
+
+    .mcg-preview {
+      padding: 1.5rem;
+    }
+
+    .mcg-preview-title {
+      font-size: 1.6rem;
+    }
+
+    .mcg-preview-message {
+      font-size: 1.2rem;
+    }
+  }
+{%- endstyle -%}
+
+<div class="message-card-generator" id="message-card-generator">
+  <div class="mcg-header">
+    <h3 class="mcg-title">{{ section.settings.title }}</h3>
+    <p class="mcg-subtitle">{{ section.settings.subtitle }}</p>
+  </div>
+
+  <div class="mcg-options">
+    <div class="mcg-option">
+      <input type="radio" id="mcg-wife" name="message_card_recipient" value="wife" data-message="To My Wife|You are my today and all of my tomorrows. Every moment with you is a treasure I'll hold forever." checked>
+      <label for="mcg-wife">
+        <span class="mcg-emoji">💍</span>
+        <span class="mcg-label-text">To My Wife</span>
+      </label>
+    </div>
+
+    <div class="mcg-option">
+      <input type="radio" id="mcg-girlfriend" name="message_card_recipient" value="girlfriend" data-message="To My Girlfriend|I may not be your first love, but I want to be your last. You make every day brighter.">
+      <label for="mcg-girlfriend">
+        <span class="mcg-emoji">💕</span>
+        <span class="mcg-label-text">To My Girlfriend</span>
+      </label>
+    </div>
+
+    <div class="mcg-option">
+      <input type="radio" id="mcg-mum" name="message_card_recipient" value="mum" data-message="To Mum|Thank you for being my rock, my guide, and my biggest supporter. I love you more than words can say.">
+      <label for="mcg-mum">
+        <span class="mcg-emoji">🌸</span>
+        <span class="mcg-label-text">To Mum</span>
+      </label>
+    </div>
+
+    <div class="mcg-option">
+      <input type="radio" id="mcg-daughter" name="message_card_recipient" value="daughter" data-message="To My Daughter|You are my sunshine, my pride, and my joy. Never forget how special you are.">
+      <label for="mcg-daughter">
+        <span class="mcg-emoji">🎀</span>
+        <span class="mcg-label-text">To My Daughter</span>
+      </label>
+    </div>
+
+    <div class="mcg-option">
+      <input type="radio" id="mcg-sister" name="message_card_recipient" value="sister" data-message="To My Sister|Sisters by chance, friends by choice. Thank you for always being there.">
+      <label for="mcg-sister">
+        <span class="mcg-emoji">👭</span>
+        <span class="mcg-label-text">To My Sister</span>
+      </label>
+    </div>
+
+    <div class="mcg-option">
+      <input type="radio" id="mcg-soulmate" name="message_card_recipient" value="soulmate" data-message="To My Soulmate|In a sea of people, my eyes will always search for you. Forever and always.">
+      <label for="mcg-soulmate">
+        <span class="mcg-emoji">✨</span>
+        <span class="mcg-label-text">My Soulmate</span>
+      </label>
+    </div>
+  </div>
+
+  {% if section.settings.show_custom_option %}
+  <div class="mcg-custom-input">
+    <input type="text" id="mcg-custom-name" placeholder="Or enter a custom name..." aria-label="Custom recipient name">
+  </div>
+  {% endif %}
+
+  <div class="mcg-preview" id="mcg-preview">
+    <div class="mcg-preview-content">
+      <div class="mcg-preview-title">To My Wife</div>
+      <div class="mcg-preview-message">You are my today and all of my tomorrows. Every moment with you is a treasure I'll hold forever.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden input to pass selection to cart -->
+<input type="hidden" name="properties[Message Card]" id="mcg-selected-value" value="To My Wife">
+
+<script>
+(function() {
+  'use strict';
+  
+  const options = document.querySelectorAll('input[name="message_card_recipient"]');
+  const preview = document.getElementById('mcg-preview');
+  const previewTitle = preview.querySelector('.mcg-preview-title');
+  const previewMessage = preview.querySelector('.mcg-preview-message');
+  const hiddenInput = document.getElementById('mcg-selected-value');
+  const customInput = document.getElementById('mcg-custom-name');
+
+  function updatePreview(title, message) {
+    previewTitle.textContent = title;
+    previewMessage.textContent = message;
+    hiddenInput.value = title;
+  }
+
+  // Handle radio button changes
+  options.forEach(option => {
+    option.addEventListener('change', function() {
+      if (this.checked) {
+        const [title, message] = this.dataset.message.split('|');
+        updatePreview(title, message);
+        
+        // Clear custom input if user selects a preset
+        if (customInput) customInput.value = '';
+      }
+    });
+  });
+
+  // Handle custom name input
+  if (customInput) {
+    let debounceTimer;
+    customInput.addEventListener('input', function() {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        if (this.value.trim()) {
+          const customTitle = `To ${this.value.trim()}`;
+          const genericMessage = 'You mean the world to me. This gift is a small token of my love and appreciation.';
+          updatePreview(customTitle, genericMessage);
+          
+          // Uncheck all radio buttons
+          options.forEach(opt => opt.checked = false);
+        }
+      }, 500);
+    });
+  }
+
+  // Listen for variant change to ensure message card value persists
+  document.addEventListener('change', function(e) {
+    if (e.target.closest('variant-selects')) {
+      // Re-inject the hidden input value after variant change
+      setTimeout(() => {
+        const currentValue = hiddenInput.value;
+        if (currentValue) {
+          const newHiddenInput = document.getElementById('mcg-selected-value');
+          if (newHiddenInput) {
+            newHiddenInput.value = currentValue;
+          }
+        }
+      }, 100);
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Message Card Generator",
+  "tag": "section",
+  "class": "section-message-card-generator",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Personalise Your Message Card"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Every order includes a beautiful message card with your chosen sentiment"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_custom_option",
+      "label": "Allow Custom Names",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Message Card Generator"
+    }
+  ]
+}
+{% endschema %}
