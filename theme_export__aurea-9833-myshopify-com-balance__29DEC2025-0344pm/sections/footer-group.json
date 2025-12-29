@@ -1,68 +1,21 @@
 {
-    "name": "Footer",
     "type": "footer",
+    "name": "Footer",
     "sections": {
-        "footer": {
-            "type": "footer",
-            "blocks": {
-                "menu_left": {
-                    "type": "menu",
-                    "settings": {
-                        "heading": "Customer Service",
-                        "menu": "footer"
-                    }
-                },
-                "newsletter_social_group": {
-                    "type": "group",
-                    "settings": {
-                        "content_direction": "column",
-                        "vertical_alignment": "center",
-                        "horizontal_alignment": "center",
-                        "gap": 24
-                    },
-                    "blocks": {
-                        "newsletter_form": {
-                            "type": "email-signup",
-                            "settings": {
-                                "label": "Subscribe",
-                                "display_type": "text",
-                                "style_class": "button",
-                                "width": "fill"
-                            }
-                        },
-                        "social_icons": {
-                            "type": "social-links",
-                            "settings": {
-                                "icon_color": "text"
-                            }
-                        }
-                    },
-                    "block_order": [
-                        "newsletter_form",
-                        "social_icons"
-                    ]
-                },
-                "menu_right": {
-                    "type": "menu",
-                    "settings": {
-                        "heading": "About AUREA",
-                        "menu": "main-menu"
-                    }
-                }
-            },
-            "block_order": [
-                "menu_left",
-                "newsletter_social_group",
-                "menu_right"
-            ],
+        "aurea_footer": {
+            "type": "section-aurea-footer",
             "settings": {
-                "color_scheme": "scheme-1",
-                "padding_top": 60,
-                "padding_bottom": 60
+                "brand_heading": "AUREA London",
+                "brand_story": "Handcrafted in the heart of London. Creating timeless tokens of love with premium stainless steel and 18k gold.",
+                "instagram_url": "https://www.instagram.com/aurea.jewelry.uk",
+                "tiktok_url": "https://www.tiktok.com/@aurea.jewelry.uk",
+                "pinterest_url": "https://www.pinterest.com/aureajewelryuk",
+                "address": "AUREA Jewelry\n71-75 Shelton Street\nLondon, WC2H 9JQ\nUnited Kingdom",
+                "email": "support@aurea.com"
             }
         }
     },
     "order": [
-        "footer"
+        "aurea_footer"
     ]
 }
