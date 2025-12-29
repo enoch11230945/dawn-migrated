@@ -52,6 +52,9 @@
     product_resource: product_resource,
     show_sale_price_first: block_settings.show_sale_price_first
   %}
+  
+  {%- comment -%} AUREA: Smart Savings Badge {%- endcomment -%}
+  {% render 'savings-badge', product: product_resource %}
 
   {% if block_settings.show_tax_info %}
     <div class="tax-note">
