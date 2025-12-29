@@ -378,33 +378,9 @@ main section:not(.header-section):not(.footer-section) {
 }
 
 /* ============================================
-   15. HEADER FIXES - Proper icon alignment
+   15. HEADER FIXES - [REVERTED]
+   Native theme layout preferred.
    ============================================ */
-
-/* Ensure header icons align properly */
-.header-actions,
-header-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--gap-sm, 0.5rem);
-}
-
-.header-actions__action,
-.header__icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Fix header row vertical alignment */
-.header__row {
-    display: flex;
-    align-items: center;
-}
-
-.header__columns {
-    align-items: center;
-}
 
 /* ============================================
    16. AUREA SNIPPETS - Consolidated Component Styles
