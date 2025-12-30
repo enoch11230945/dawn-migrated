@@ -1,0 +1,205 @@
+{
+    "type": "footer",
+    "name": "Footer",
+    "sections": {
+        "footer_section": {
+            "type": "footer",
+            "blocks": {
+                "brand_group": {
+                    "type": "group",
+                    "settings": {
+                        "content_direction": "column",
+                        "vertical_on_mobile": true,
+                        "horizontal_alignment": "flex-start",
+                        "vertical_alignment": "flex-start",
+                        "gap": 16,
+                        "width": "fill",
+                        "inherit_color_scheme": true
+                    },
+                    "blocks": {
+                        "brand_logo": {
+                            "type": "logo",
+                            "settings": {
+                                "max_width": 150
+                            }
+                        },
+                        "brand_tagline": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<p>Discover timeless elegance with our exquisite jewellery collection. Crafted with love, designed to last.</p>",
+                                "width": "100%",
+                                "alignment": "left",
+                                "type_preset": "paragraph"
+                            }
+                        },
+                        "worldwide_shipping": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<p><strong>WORLDWIDE SHIPPING</strong></p>",
+                                "width": "100%",
+                                "alignment": "left",
+                                "type_preset": "h6"
+                            }
+                        },
+                        "payment_icons": {
+                            "type": "payment-icons",
+                            "settings": {
+                                "alignment": "left"
+                            }
+                        }
+                    },
+                    "block_order": [
+                        "brand_logo",
+                        "brand_tagline",
+                        "worldwide_shipping",
+                        "payment_icons"
+                    ]
+                },
+                "help_menu": {
+                    "type": "group",
+                    "settings": {
+                        "content_direction": "column",
+                        "vertical_on_mobile": true,
+                        "horizontal_alignment": "flex-start",
+                        "vertical_alignment": "flex-start",
+                        "gap": 8,
+                        "width": "fill",
+                        "inherit_color_scheme": true
+                    },
+                    "blocks": {
+                        "help_heading": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<p><strong>LET US HELP YOU</strong></p>",
+                                "width": "100%",
+                                "alignment": "left",
+                                "type_preset": "h6"
+                            }
+                        },
+                        "help_links": {
+                            "type": "menu",
+                            "settings": {
+                                "menu": "footer",
+                                "alignment": "left"
+                            }
+                        }
+                    },
+                    "block_order": [
+                        "help_heading",
+                        "help_links"
+                    ]
+                },
+                "collections_menu": {
+                    "type": "group",
+                    "settings": {
+                        "content_direction": "column",
+                        "vertical_on_mobile": true,
+                        "horizontal_alignment": "flex-start",
+                        "vertical_alignment": "flex-start",
+                        "gap": 8,
+                        "width": "fill",
+                        "inherit_color_scheme": true
+                    },
+                    "blocks": {
+                        "collections_heading": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<p><strong>COLLECTIONS</strong></p>",
+                                "width": "100%",
+                                "alignment": "left",
+                                "type_preset": "h6"
+                            }
+                        },
+                        "collections_links": {
+                            "type": "menu",
+                            "settings": {
+                                "menu": "footer-collections",
+                                "alignment": "left"
+                            }
+                        }
+                    },
+                    "block_order": [
+                        "collections_heading",
+                        "collections_links"
+                    ]
+                },
+                "newsletter_group": {
+                    "type": "group",
+                    "settings": {
+                        "content_direction": "column",
+                        "vertical_on_mobile": true,
+                        "horizontal_alignment": "flex-start",
+                        "vertical_alignment": "flex-start",
+                        "gap": 12,
+                        "width": "fill",
+                        "inherit_color_scheme": true
+                    },
+                    "blocks": {
+                        "newsletter_heading": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<p><strong>JOIN OUR NEWSLETTER</strong></p>",
+                                "width": "100%",
+                                "alignment": "left",
+                                "type_preset": "h6"
+                            }
+                        },
+                        "contact_text": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<p>CONTACT US: hello@aurea.com</p>",
+                                "width": "100%",
+                                "alignment": "left",
+                                "type_preset": "paragraph"
+                            }
+                        },
+                        "newsletter_form": {
+                            "type": "email-signup",
+                            "settings": {
+                                "width": "fill"
+                            }
+                        },
+                        "social_links": {
+                            "type": "social-links",
+                            "settings": {
+                                "alignment": "left"
+                            }
+                        }
+                    },
+                    "block_order": [
+                        "newsletter_heading",
+                        "contact_text",
+                        "newsletter_form",
+                        "social_links"
+                    ]
+                }
+            },
+            "block_order": [
+                "brand_group",
+                "help_menu",
+                "collections_menu",
+                "newsletter_group"
+            ],
+            "settings": {
+                "section_width": "page-width",
+                "gap": 32,
+                "color_scheme": "scheme-1",
+                "padding-block-start": 48,
+                "padding-block-end": 24
+            }
+        },
+        "footer_utilities": {
+            "type": "footer-utilities",
+            "settings": {
+                "section_width": "page-width",
+                "color_scheme": "scheme-1",
+                "padding-block-start": 16,
+                "padding-block-end": 16
+            }
+        }
+    },
+    "order": [
+        "footer_section",
+        "footer_utilities"
+    ]
+}
