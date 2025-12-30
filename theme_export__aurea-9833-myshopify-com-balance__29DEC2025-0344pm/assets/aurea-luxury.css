@@ -133,6 +133,46 @@ button[type="submit"]:hover::before {
     transform: scale(1.03);
 }
 
+/* Collection card hover effect - matching product card style */
+.collection-card,
+[class*="collection-card"] {
+    transition: transform var(--aurea-transition-medium),
+        box-shadow var(--aurea-transition-medium);
+}
+
+.collection-card:hover,
+[class*="collection-card"]:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+}
+
+/* Collection card images - elegant zoom */
+.collection-card img,
+.collection-card__image img,
+[class*="collection-card"] img {
+    transition: transform var(--aurea-transition-slow),
+        filter var(--aurea-transition-medium);
+}
+
+.collection-card:hover img,
+.collection-card:hover .collection-card__image img,
+[class*="collection-card"]:hover img {
+    transform: scale(1.06);
+    filter: brightness(1.03);
+}
+
+/* Collection card overlay enhancement */
+.collection-card--image-bg .collection-card__content {
+    transition: background var(--aurea-transition-medium);
+}
+
+.collection-card--image-bg:hover .collection-card__content {
+    background: linear-gradient(to top,
+            rgba(0, 0, 0, 0.55) 0%,
+            rgba(0, 0, 0, 0.25) 40%,
+            transparent 100%);
+}
+
 /* ============================================
    4. HERO SECTIONS - Dramatic & Immersive
    ============================================ */

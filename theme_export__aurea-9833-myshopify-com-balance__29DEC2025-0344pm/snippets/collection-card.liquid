@@ -78,6 +78,73 @@
     --fixed-card-height: var(--height-small);
 
     flex: 1 1 var(--card-width-small);
+    /* AUREA: Enable smooth transitions for hover effect */
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* AUREA: Premium collection card hover effect */
+  .collection-card:hover,
+  .collection-card:focus-within {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  /* AUREA: Image zoom on hover */
+  .collection-card .collection-card__image .image-block__image,
+  .collection-card .collection-card__image img {
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                filter 0.4s ease;
+  }
+
+  .collection-card:hover .collection-card__image .image-block__image,
+  .collection-card:hover .collection-card__image img,
+  .collection-card:focus-within .collection-card__image .image-block__image,
+  .collection-card:focus-within .collection-card__image img {
+    transform: scale(1.08);
+    filter: brightness(1.05);
+  }
+
+  /* AUREA: Content overlay enhancement on hover */
+  .collection-card__content {
+    transition: background-color 0.3s ease;
+  }
+
+  .collection-card--image-bg:hover .collection-card__content,
+  .collection-card--image-bg:focus-within .collection-card__content {
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.5) 0%,
+      rgba(0, 0, 0, 0.2) 50%,
+      transparent 100%
+    );
+  }
+
+  /* AUREA: Touch device optimization - reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .collection-card,
+    .collection-card .collection-card__image .image-block__image,
+    .collection-card .collection-card__image img,
+    .collection-card__content {
+      transition: none;
+    }
+
+    .collection-card:hover,
+    .collection-card:focus-within {
+      transform: none;
+    }
+
+    .collection-card:hover .collection-card__image .image-block__image,
+    .collection-card:hover .collection-card__image img {
+      transform: none;
+    }
+  }
+
+  /* AUREA: Active/pressed state for touch devices */
+  .collection-card:active {
+    transform: translateY(-2px) scale(0.98);
   }
 
   .collection-card > svg {
@@ -160,3 +227,4 @@
     }
   }
 {% endstylesheet %}
+
