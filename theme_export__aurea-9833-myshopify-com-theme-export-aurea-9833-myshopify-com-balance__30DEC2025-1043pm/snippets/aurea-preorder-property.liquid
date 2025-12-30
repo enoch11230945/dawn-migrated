@@ -1,0 +1,29 @@
+{%- comment -%}
+  AUREA Pre-order Hidden Input for Line Item Properties
+  Automatically adds a hidden property to the cart form when product is on pre-order
+  This property will appear in Shopify admin order details
+  
+  Usage: {% render 'aurea-preorder-property', product: product %}
+  Place this INSIDE your product form (between <form> and </form>)
+{%- endcomment -%}
+
+{%- assign variant = product.selected_or_first_available_variant -%}
+{%- assign is_preorder = false -%}
+
+{%- if variant.inventory_management == 'shopify' -%}
+  {%- if variant.inventory_quantity <= 0 and variant.inventory_policy == 'continue' and variant.available -%}
+    {%- assign is_preorder = true -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- if is_preorder -%}
+  {%- comment -%}
+    This hidden input adds a property to the line item
+    It will appear in:
+    - Shopify Admin → Orders → Order Details
+    - Order confirmation emails (if you display line item properties)
+    - Packing slips
+  {%- endcomment -%}
+  <input type="hidden" name="properties[_Pre-order]" value="Yes - Dispatches in 10-15 days">
+  <input type="hidden" name="properties[Estimated Dispatch]" value="{{ 'now' | date: '%s' | plus: 1296000 | date: '%d %B %Y' }}">
+{%- endif -%}

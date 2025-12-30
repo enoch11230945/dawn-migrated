@@ -1,0 +1,138 @@
+{%- comment -%}
+  AUREA Product Recommendations
+  "You May Also Like" section for cross-selling
+  
+  Usage: {% render 'aurea-recommendations', product: product %}
+  Place on product page after main content
+{%- endcomment -%}
+
+{%- if recommendations.performed and recommendations.products_count > 0 -%}
+<section class="aurea-recommendations" style="padding: 4rem 0; background: #FAFAFA;">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+    
+    <header style="text-align: center; margin-bottom: 2.5rem;">
+      <h2 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.75rem; font-weight: 400; color: #1A1A1A; margin: 0 0 0.5rem 0;">
+        {{ section.settings.title | default: 'You May Also Like' }}
+      </h2>
+      <p style="font-family: 'Cormorant', Georgia, serif; font-size: 1rem; color: #666;">
+        {{ section.settings.subtitle | default: 'Complete your collection' }}
+      </p>
+    </header>
+    
+    <div class="aurea-recommendations__grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem;">
+      {%- for product in recommendations.products limit: 4 -%}
+        <a href="{{ product.url }}" class="aurea-rec-card" style="text-decoration: none; background: #fff; border-radius: 8px; overflow: hidden; transition: box-shadow 0.3s ease, transform 0.3s ease;">
+          
+          {%- comment -%} Image {%- endcomment -%}
+          <div class="aurea-rec-card__image" style="position: relative; aspect-ratio: 1; overflow: hidden; background: #F5F0E6;">
+            {%- if product.featured_image -%}
+              <img 
+                src="{{ product.featured_image | image_url: width: 400 }}"
+                alt="{{ product.title }}"
+                loading="lazy"
+                style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;"
+              >
+            {%- endif -%}
+            
+            {%- comment -%} Badges {%- endcomment -%}
+            {%- if product.compare_at_price > product.price -%}
+              <span style="position: absolute; top: 10px; left: 10px; background: #C62828; color: #fff; font-family: 'Cormorant', Georgia, serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 0.6rem; border-radius: 2px;">
+                Sale
+              </span>
+            {%- endif -%}
+            
+            {%- comment -%} Pre-order badge {%- endcomment -%}
+            {%- assign variant = product.selected_or_first_available_variant -%}
+            {%- if variant.inventory_quantity <= 0 and variant.inventory_policy == 'continue' and variant.available -%}
+              <span style="position: absolute; top: 10px; left: 10px; background: linear-gradient(135deg, #B8860B 0%, #D4A574 100%); color: #fff; font-family: 'Cormorant', Georgia, serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 0.6rem; border-radius: 2px;">
+                Pre-order
+              </span>
+            {%- endif -%}
+          </div>
+          
+          {%- comment -%} Info {%- endcomment -%}
+          <div style="padding: 1rem;">
+            <h3 style="font-family: 'Cormorant', Georgia, serif; font-size: 1rem; font-weight: 500; color: #1A1A1A; margin: 0 0 0.5rem 0; line-height: 1.4;">
+              {{ product.title | truncate: 40 }}
+            </h3>
+            
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="font-family: 'Cormorant', Georgia, serif; font-size: 1rem; font-weight: 600; color: #B8860B;">
+                {{ product.price | money }}
+              </span>
+              {%- if product.compare_at_price > product.price -%}
+                <span style="font-family: 'Cormorant', Georgia, serif; font-size: 0.9rem; color: #999; text-decoration: line-through;">
+                  {{ product.compare_at_price | money }}
+                </span>
+              {%- endif -%}
+            </div>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+    
+  </div>
+</section>
+
+<style>
+  .aurea-rec-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    transform: translateY(-4px);
+  }
+  
+  .aurea-rec-card:hover img {
+    transform: scale(1.05);
+  }
+</style>
+{%- endif -%}
+
+{%- comment -%} Fetch recommendations if not already loaded {%- endcomment -%}
+{%- if product -%}
+  <script>
+    // Load recommendations via Shopify's Product Recommendations API
+    (function() {
+      const container = document.querySelector('.aurea-recommendations');
+      if (container) return; // Already rendered server-side
+      
+      const productId = {{ product.id | json }};
+      const url = `/recommendations/products.json?product_id=${productId}&limit=4`;
+      
+      fetch(url)
+        .then(r => r.json())
+        .then(data => {
+          if (data.products && data.products.length > 0) {
+            // Could dynamically render products here if needed
+            console.log('Recommendations loaded:', data.products.length);
+          }
+        })
+        .catch(() => {});
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product Recommendations",
+  "tag": "section",
+  "class": "section-recommendations",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "You May Also Like"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Complete your collection"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Recommendations"
+    }
+  ]
+}
+{% endschema %}

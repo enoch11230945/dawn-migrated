@@ -1,0 +1,78 @@
+{%- comment -%}
+  AUREA Cart Line Item Pre-order Label
+  Shows "Pre-order" or "In Stock" label next to each cart item
+  
+  Usage: {% render 'aurea-cart-item-label', item: item %}
+  Place this inside your cart line item loop, after the product title
+{%- endcomment -%}
+
+{%- assign variant = item.variant -%}
+{%- assign is_preorder = false -%}
+
+{%- if variant.inventory_management == 'shopify' -%}
+  {%- if variant.inventory_quantity <= 0 and variant.inventory_policy == 'continue' -%}
+    {%- assign is_preorder = true -%}
+  {%- endif -%}
+{%- endif -%}
+
+<style>
+  .aurea-line-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+  }
+  
+  .aurea-line-label--preorder {
+    background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+    color: #B8860B;
+    border: 1px solid #F5D0A9;
+  }
+  
+  .aurea-line-label--instock {
+    background: #E8F5E9;
+    color: #2E7D32;
+    border: 1px solid #C8E6C9;
+  }
+  
+  .aurea-line-label__icon {
+    font-size: 0.8rem;
+  }
+  
+  .aurea-line-dispatch {
+    display: block;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 0.25rem;
+  }
+  
+  .aurea-line-dispatch--preorder {
+    color: #B8860B;
+  }
+</style>
+
+{%- if is_preorder -%}
+  <span class="aurea-line-label aurea-line-label--preorder">
+    <span class="aurea-line-label__icon">⏳</span>
+    Pre-order
+  </span>
+  <span class="aurea-line-dispatch aurea-line-dispatch--preorder">
+    Dispatches in 10-15 working days
+  </span>
+{%- else -%}
+  <span class="aurea-line-label aurea-line-label--instock">
+    <span class="aurea-line-label__icon">✓</span>
+    In Stock
+  </span>
+  <span class="aurea-line-dispatch">
+    Ready to ship
+  </span>
+{%- endif -%}

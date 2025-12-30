@@ -1,0 +1,180 @@
+{% comment %}
+  Product Value Proposition Section
+  PRD v2.0: Price Anchoring + UK Stock Badge + Urgency
+  
+  Usage: {% section 'section-product-value' %}
+{% endcomment %}
+
+{{ 'section-product-value.css' | asset_url | stylesheet_tag }}
+
+<div class="product-value-wrapper">
+  {% if section.settings.show_price_anchor %}
+    <div class="price-anchor">
+      <span class="original-price">{{ section.settings.original_price }}</span>
+      <span class="current-price">{{ section.settings.current_price }}</span>
+      {% if section.settings.show_savings %}
+        <span class="savings-badge">Save {{ section.settings.savings_amount }}</span>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% if section.settings.show_stock_badge %}
+    <div style="text-align: center;">
+      <div class="stock-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        {{ section.settings.stock_text }}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="value-grid">
+    {% if section.settings.show_quality %}
+      <div class="value-item">
+        <div class="value-icon">💎</div>
+        <div class="value-title">{{ section.settings.quality_title }}</div>
+        <div class="value-description">{{ section.settings.quality_desc }}</div>
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_delivery %}
+      <div class="value-item">
+        <div class="value-icon">🚀</div>
+        <div class="value-title">{{ section.settings.delivery_title }}</div>
+        <div class="value-description">{{ section.settings.delivery_desc }}</div>
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_warranty %}
+      <div class="value-item">
+        <div class="value-icon">🛡️</div>
+        <div class="value-title">{{ section.settings.warranty_title }}</div>
+        <div class="value-description">{{ section.settings.warranty_desc }}</div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Value Proposition",
+  "tag": "section",
+  "class": "section-product-value",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Price Anchoring"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price_anchor",
+      "label": "Show Price Comparison",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "original_price",
+      "label": "Original Price",
+      "default": "£49.99"
+    },
+    {
+      "type": "text",
+      "id": "current_price",
+      "label": "Current Price",
+      "default": "£24.99"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_savings",
+      "label": "Show Savings Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "savings_amount",
+      "label": "Savings Text",
+      "default": "£25"
+    },
+    {
+      "type": "header",
+      "content": "Stock Status"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stock_badge",
+      "label": "Show Stock Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "stock_text",
+      "label": "Stock Badge Text",
+      "default": "In Stock - Ships from UK"
+    },
+    {
+      "type": "header",
+      "content": "Value Points"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quality",
+      "label": "Show Quality Point",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "quality_title",
+      "label": "Quality Title",
+      "default": "Premium Materials"
+    },
+    {
+      "type": "text",
+      "id": "quality_desc",
+      "label": "Quality Description",
+      "default": "316L Stainless Steel with PVD Gold Plating"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_delivery",
+      "label": "Show Delivery Point",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "delivery_title",
+      "label": "Delivery Title",
+      "default": "Fast UK Delivery"
+    },
+    {
+      "type": "text",
+      "id": "delivery_desc",
+      "label": "Delivery Description",
+      "default": "2-3 Working Days via Royal Mail"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_warranty",
+      "label": "Show Warranty Point",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "warranty_title",
+      "label": "Warranty Title",
+      "default": "Lifetime Guarantee"
+    },
+    {
+      "type": "text",
+      "id": "warranty_desc",
+      "label": "Warranty Description",
+      "default": "Free replacement if tarnish occurs"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Value Proposition"
+    }
+  ]
+}
+{% endschema %}

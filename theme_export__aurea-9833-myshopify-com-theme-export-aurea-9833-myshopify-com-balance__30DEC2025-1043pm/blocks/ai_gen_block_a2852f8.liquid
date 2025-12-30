@@ -1,0 +1,784 @@
+{% doc %}
+  @prompt
+    detail footer,1. Theme Settings (Visuals)
+    Background Color: #FFFFFF (Pure White) or #F9F9F9 (Very light beige/grey for texture).
+    
+    Text Color: #333333 (Dark Grey - softer and more luxurious than pure black).
+    
+    Headings Font: Use a Serif font that matches your main headings (e.g., Playfair Display).
+    
+    Column 1: Brand & Trust
+    Block Type: Brand Information / Image
+    
+    Logo: Upload your Aurea Logo.
+    
+    Tagline / Text: Daily Luxury for Everyone.
+    
+    Payment Icons: Check the box that says "Show payment icons".
+    
+    Ensure Visa, Mastercard, Amex, PayPal, Apple Pay, and Google Pay are enabled in your main Shopify settings.
+    
+    Column 2: Help & Care
+    Block Type: Menu (Link List)
+    
+    Heading: HERE TO HELP
+    
+    Select Menu: Create a menu named "Footer - Help" containing:
+    
+    Track My Order (Crucial for pre-orders)
+    
+    Shipping Policy
+    
+    Returns & Refunds
+    
+    Pre-order Info
+    
+    Contact Us
+    
+    Column 3: Legal & About
+    Block Type: Menu (Link List)
+    
+    Heading: INFO
+    
+    Select Menu: Create a menu named "Footer - Legal" containing:
+    
+    About Us
+    
+    Privacy Policy (GDPR Compliant)
+    
+    Terms of Service
+    
+    Materials & Care
+    
+    Column 4: Connect & Save
+    Block Type: Newsletter / Text
+    
+    Heading: JOIN THE CLUB
+    
+    Subtext / Description: Subscribe for new drops and get 10% OFF your first order.
+    
+    Email Signup: Ensure the input field is visible.
+    
+    Social Media: Check the box "Show social media icons" (Link your Instagram & TikTok in Theme Settings > Social Media).
+    
+    Country/Region Selector: Check "Enable country/region selector" (Default to United Kingdom GBP £).
+    
+    Bottom Bar (Copyright & Compliance)
+    Copyright Text: © 2025 AUREA Jewelry.
+    
+    Trust Badges: Upload a small image of the Judge.me badge or 5 stars on the right side (if your theme allows).
+    
+    UK Compliance Text: (Add this to the bottom text area or strict footer text to comply with UK Law):
+    
+    AUREA Trading, [Insert Your Virtual Address, London], UK. Contact: support@aurea.co.uk
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-footer-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    color: {{ block.settings.text_color }};
+    padding: {{ block.settings.padding_top }}px 0 {{ block.settings.padding_bottom }}px;
+  }
+
+  .ai-footer-container-{{ ai_gen_id }} {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-footer-main-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid {{ block.settings.border_color }};
+  }
+
+  .ai-footer-column-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ai-footer-brand-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .ai-footer-logo-{{ ai_gen_id }} {
+    max-width: {{ block.settings.logo_width }}px;
+    height: auto;
+  }
+
+  .ai-footer-tagline-{{ ai_gen_id }} {
+    font-size: {{ block.settings.tagline_size }}px;
+    line-height: 1.5;
+    color: {{ block.settings.text_color }};
+    margin: 0;
+  }
+
+  .ai-footer-payment-icons-{{ ai_gen_id }} {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .ai-footer-payment-icon-{{ ai_gen_id }} {
+    height: 24px;
+    width: auto;
+    opacity: 0.7;
+  }
+
+  .ai-footer-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0 0 12px 0;
+    color: {{ block.settings.heading_color }};
+  }
+
+  .ai-footer-menu-{{ ai_gen_id }} {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ai-footer-menu-item-{{ ai_gen_id }} {
+    margin: 0;
+  }
+
+  .ai-footer-link-{{ ai_gen_id }} {
+    color: {{ block.settings.link_color }};
+    text-decoration: none;
+    font-size: {{ block.settings.link_size }}px;
+    transition: color 0.3s ease;
+    display: inline-block;
+  }
+
+  .ai-footer-link-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.link_hover_color }};
+  }
+
+  .ai-footer-newsletter-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ai-footer-newsletter-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.text_size }}px;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .ai-footer-newsletter-form-{{ ai_gen_id }} {
+    display: flex;
+    gap: 8px;
+  }
+
+  .ai-footer-email-input-{{ ai_gen_id }} {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid {{ block.settings.input_border_color }};
+    background-color: {{ block.settings.input_background }};
+    color: {{ block.settings.text_color }};
+    font-size: 14px;
+    border-radius: {{ block.settings.input_border_radius }}px;
+  }
+
+  .ai-footer-email-input-{{ ai_gen_id }}::placeholder {
+    color: {{ block.settings.text_color }};
+    opacity: 0.6;
+  }
+
+  .ai-footer-submit-button-{{ ai_gen_id }} {
+    padding: 12px 24px;
+    background-color: {{ block.settings.button_background }};
+    color: {{ block.settings.button_text_color }};
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-footer-submit-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_background }};
+  }
+
+  .ai-footer-social-{{ ai_gen_id }} {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .ai-footer-social-link-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    transition: color 0.3s ease;
+  }
+
+  .ai-footer-social-link-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.link_hover_color }};
+  }
+
+  .ai-footer-social-icon-{{ ai_gen_id }} {
+    width: 24px;
+    height: 24px;
+  }
+
+  .ai-footer-bottom-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-top: 30px;
+  }
+
+  .ai-footer-copyright-{{ ai_gen_id }} {
+    font-size: {{ block.settings.small_text_size }}px;
+    margin: 0;
+  }
+
+  .ai-footer-compliance-{{ ai_gen_id }} {
+    font-size: {{ block.settings.small_text_size }}px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .ai-footer-trust-badge-{{ ai_gen_id }} {
+    max-width: 120px;
+    height: auto;
+  }
+
+  .ai-footer-country-selector-{{ ai_gen_id }} {
+    padding: 8px 12px;
+    border: 1px solid {{ block.settings.border_color }};
+    background-color: {{ block.settings.input_background }};
+    color: {{ block.settings.text_color }};
+    font-size: 14px;
+    border-radius: {{ block.settings.input_border_radius }}px;
+    cursor: pointer;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-footer-main-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .ai-footer-bottom-{{ ai_gen_id }} {
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .ai-footer-newsletter-form-{{ ai_gen_id }} {
+      flex-direction: column;
+    }
+
+    .ai-footer-submit-button-{{ ai_gen_id }} {
+      width: 100%;
+    }
+  }
+{% endstyle %}
+
+<footer-block-{{ ai_gen_id }} class="ai-footer-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-footer-container-{{ ai_gen_id }}">
+    <div class="ai-footer-main-{{ ai_gen_id }}">
+      
+      <div class="ai-footer-column-{{ ai_gen_id }}">
+        <div class="ai-footer-brand-{{ ai_gen_id }}">
+          {%- if block.settings.logo != blank -%}
+            <img
+              src="{{ block.settings.logo | image_url: width: 400 }}"
+              alt="{{ shop.name }}"
+              class="ai-footer-logo-{{ ai_gen_id }}"
+              loading="lazy"
+              width="{{ block.settings.logo.width }}"
+              height="{{ block.settings.logo.height }}"
+            >
+          {%- else -%}
+            <h3 class="ai-footer-heading-{{ ai_gen_id }}">{{ shop.name }}</h3>
+          {%- endif -%}
+
+          {%- if block.settings.tagline != blank -%}
+            <p class="ai-footer-tagline-{{ ai_gen_id }}">{{ block.settings.tagline }}</p>
+          {%- endif -%}
+
+          {%- if block.settings.show_payment_icons -%}
+            <div class="ai-footer-payment-icons-{{ ai_gen_id }}">
+              {%- for type in shop.enabled_payment_types -%}
+                {{ type | payment_type_svg_tag: class: 'ai-footer-payment-icon-' | append: ai_gen_id }}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- if block.settings.menu_help != blank -%}
+        <div class="ai-footer-column-{{ ai_gen_id }}">
+          <h4 class="ai-footer-heading-{{ ai_gen_id }}">{{ block.settings.menu_help_heading }}</h4>
+          <ul class="ai-footer-menu-{{ ai_gen_id }}">
+            {%- for link in linklists[block.settings.menu_help].links -%}
+              <li class="ai-footer-menu-item-{{ ai_gen_id }}">
+                <a href="{{ link.url }}" class="ai-footer-link-{{ ai_gen_id }}">
+                  {{ link.title }}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      {%- if block.settings.menu_legal != blank -%}
+        <div class="ai-footer-column-{{ ai_gen_id }}">
+          <h4 class="ai-footer-heading-{{ ai_gen_id }}">{{ block.settings.menu_legal_heading }}</h4>
+          <ul class="ai-footer-menu-{{ ai_gen_id }}">
+            {%- for link in linklists[block.settings.menu_legal].links -%}
+              <li class="ai-footer-menu-item-{{ ai_gen_id }}">
+                <a href="{{ link.url }}" class="ai-footer-link-{{ ai_gen_id }}">
+                  {{ link.title }}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      <div class="ai-footer-column-{{ ai_gen_id }}">
+        <div class="ai-footer-newsletter-{{ ai_gen_id }}">
+          <h4 class="ai-footer-heading-{{ ai_gen_id }}">{{ block.settings.newsletter_heading }}</h4>
+          
+          {%- if block.settings.newsletter_text != blank -%}
+            <p class="ai-footer-newsletter-text-{{ ai_gen_id }}">{{ block.settings.newsletter_text }}</p>
+          {%- endif -%}
+
+          {%- form 'customer', class: 'ai-footer-newsletter-form-' | append: ai_gen_id -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input
+              type="email"
+              name="contact[email]"
+              class="ai-footer-email-input-{{ ai_gen_id }}"
+              placeholder="{{ block.settings.email_placeholder }}"
+              aria-label="Email address"
+              required
+            >
+            <button type="submit" class="ai-footer-submit-button-{{ ai_gen_id }}">
+              {{ block.settings.button_text }}
+            </button>
+          {%- endform -%}
+
+          {%- if block.settings.show_social_icons -%}
+            <div class="ai-footer-social-{{ ai_gen_id }}">
+              {%- if settings.social_instagram_link != blank -%}
+                <a href="{{ settings.social_instagram_link }}" class="ai-footer-social-link-{{ ai_gen_id }}" target="_blank" rel="noopener" aria-label="Instagram">
+                  <svg class="ai-footer-social-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                </a>
+              {%- endif -%}
+              {%- if settings.social_tiktok_link != blank -%}
+                <a href="{{ settings.social_tiktok_link }}" class="ai-footer-social-link-{{ ai_gen_id }}" target="_blank" rel="noopener" aria-label="TikTok">
+                  <svg class="ai-footer-social-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                  </svg>
+                </a>
+              {%- endif -%}
+              {%- if settings.social_facebook_link != blank -%}
+                <a href="{{ settings.social_facebook_link }}" class="ai-footer-social-link-{{ ai_gen_id }}" target="_blank" rel="noopener" aria-label="Facebook">
+                  <svg class="ai-footer-social-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                  </svg>
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if block.settings.show_country_selector -%}
+            <div>
+              <select class="ai-footer-country-selector-{{ ai_gen_id }}" aria-label="Country selector">
+                <option value="GB">United Kingdom (GBP £)</option>
+                <option value="EU">European Union (EUR €)</option>
+                <option value="US">United States (USD $)</option>
+              </select>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    <div class="ai-footer-bottom-{{ ai_gen_id }}">
+      <div>
+        <p class="ai-footer-copyright-{{ ai_gen_id }}">
+          {{ block.settings.copyright_text }}
+        </p>
+        {%- if block.settings.compliance_text != blank -%}
+          <p class="ai-footer-compliance-{{ ai_gen_id }}">
+            {{ block.settings.compliance_text }}
+          </p>
+        {%- endif -%}
+      </div>
+
+      {%- if block.settings.trust_badge != blank -%}
+        <img
+          src="{{ block.settings.trust_badge | image_url: width: 240 }}"
+          alt="Trust badge"
+          class="ai-footer-trust-badge-{{ ai_gen_id }}"
+          loading="lazy"
+          width="{{ block.settings.trust_badge.width }}"
+          height="{{ block.settings.trust_badge.height }}"
+        >
+      {%- endif -%}
+    </div>
+  </div>
+</footer-block-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class FooterBlock{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        const form = this.querySelector('.ai-footer-newsletter-form-{{ ai_gen_id }}');
+        if (form) {
+          form.addEventListener('submit', this.handleSubmit.bind(this));
+        }
+      }
+
+      handleSubmit(event) {
+        const emailInput = event.target.querySelector('input[type="email"]');
+        if (emailInput && !emailInput.value) {
+          event.preventDefault();
+        }
+      }
+    }
+
+    customElements.define('footer-block-{{ ai_gen_id }}', FooterBlock{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Luxury footer",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand & trust"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 150
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Daily Luxury for Everyone"
+    },
+    {
+      "type": "range",
+      "id": "tagline_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Tagline size",
+      "default": 14
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Help menu"
+    },
+    {
+      "type": "text",
+      "id": "menu_help_heading",
+      "label": "Heading",
+      "default": "HERE TO HELP"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_help",
+      "label": "Menu"
+    },
+    {
+      "type": "header",
+      "content": "Legal menu"
+    },
+    {
+      "type": "text",
+      "id": "menu_legal_heading",
+      "label": "Heading",
+      "default": "INFO"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_legal",
+      "label": "Menu"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Heading",
+      "default": "JOIN THE CLUB"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_text",
+      "label": "Description",
+      "default": "Subscribe for new drops and get 10% OFF your first order."
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "Your email"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Subscribe"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_icons",
+      "label": "Show social media icons",
+      "default": true,
+      "info": "Configure social links in Theme Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_country_selector",
+      "label": "Show country selector",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Bottom bar"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright text",
+      "default": "© 2025 AUREA Jewelry"
+    },
+    {
+      "type": "textarea",
+      "id": "compliance_text",
+      "label": "Compliance text",
+      "default": "AUREA Trading, London, UK. Contact: support@aurea.co.uk"
+    },
+    {
+      "type": "image_picker",
+      "id": "trust_badge",
+      "label": "Trust badge"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Headings",
+      "default": "#0D0D0D"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Links",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Links hover",
+      "default": "#B8860B"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Borders",
+      "default": "#E8E4DF"
+    },
+    {
+      "type": "color",
+      "id": "input_background",
+      "label": "Input background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "Input border",
+      "default": "#D4D0CB"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#0D0D0D"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button hover",
+      "default": "#B8860B"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "link_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Link size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "small_text_size",
+      "min": 10,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "input_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Input border radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Button border radius",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury footer"
+    }
+  ]
+}
+{% endschema %}

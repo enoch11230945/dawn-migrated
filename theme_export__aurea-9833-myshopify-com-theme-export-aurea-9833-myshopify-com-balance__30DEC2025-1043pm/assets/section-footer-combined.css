@@ -1,0 +1,130 @@
+/* Merged Footer CSS - Linus Clean */
+
+/* component-newsletter.css */
+.newsletter-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+@media screen and (min-width: 750px) {
+    .newsletter-form {
+        align-items: flex-start;
+        margin: 0 auto;
+        max-width: 36rem;
+    }
+}
+
+.newsletter-form__field-wrapper {
+    width: 100%;
+}
+
+.newsletter-form__field-wrapper .field__input {
+    padding-right: 5rem;
+}
+
+.newsletter-form__field-wrapper .field {
+    z-index: 0;
+}
+
+.newsletter-form__message {
+    justify-content: center;
+    margin-bottom: 0;
+}
+
+.newsletter-form__message--success {
+    margin-top: 2rem;
+}
+
+@media screen and (min-width: 750px) {
+    .newsletter-form__message {
+        justify-content: flex-start;
+    }
+}
+
+.newsletter-form__button {
+    width: 4.4rem;
+    margin: 0;
+    right: var(--inputs-border-width);
+    top: 0;
+    height: 100%;
+    z-index: 2;
+}
+
+.newsletter-form__button:focus-visible {
+    box-shadow: 0 0 0 0.3rem rgb(var(--color-background)), 0 0 0 0.4rem rgba(var(--color-foreground));
+    background-color: rgb(var(--color-background));
+}
+
+.newsletter-form__button:focus {
+    box-shadow: 0 0 0 0.3rem rgb(var(--color-background)), 0 0 0 0.4rem rgba(var(--color-foreground));
+    background-color: rgb(var(--color-background));
+}
+
+.newsletter-form__button:not(:focus-visible):not(.focused) {
+    box-shadow: inherit;
+    background-color: inherit;
+}
+
+.newsletter-form__button .icon {
+    width: 1.5rem;
+}
+
+/* component-list-menu.css */
+.list-menu--right {
+    right: 0;
+}
+
+.list-menu--disclosure {
+    position: absolute;
+    min-width: 100%;
+    width: 20rem;
+    border: 1px solid rgba(var(--color-foreground), 0.2);
+}
+
+.list-menu--disclosure:focus {
+    outline: none;
+}
+
+.list-menu__item--active {
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+}
+
+.list-menu__item--active:hover {
+    text-decoration-thickness: 0.2rem;
+}
+
+.list-menu--disclosure.localization-selector {
+    max-height: 18rem;
+    overflow: auto;
+    width: 10rem;
+    padding: 0.5rem;
+}
+
+/* component-list-payment.css */
+.list-payment {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: -0.5rem 0;
+    padding-top: 1rem;
+    padding-left: 0;
+}
+
+@media screen and (min-width: 750px) {
+    .list-payment {
+        justify-content: flex-end;
+        margin: -0.5rem;
+        padding-top: 0;
+    }
+}
+
+.list-payment__item {
+    align-items: center;
+    display: flex;
+    padding: 0.5rem;
+}

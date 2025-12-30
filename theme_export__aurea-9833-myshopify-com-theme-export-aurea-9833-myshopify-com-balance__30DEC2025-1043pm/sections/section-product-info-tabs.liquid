@@ -1,0 +1,277 @@
+{%- comment -%}
+  AUREA Product Info Tabs Section
+  Displays customizable tabbed content below the product
+  Each tab can be edited in Shopify Theme Editor
+  
+  Usage: Add to product template via Theme Editor > Add Section > "Product Info Tabs"
+{%- endcomment -%}
+
+{{ 'section-product-info-tabs.css' | asset_url | stylesheet_tag }}
+
+<div class="product-info-tabs page-width section-{{ section.id }}">
+  {%- if section.blocks.size > 0 -%}
+    {%- comment -%} Tab Navigation {%- endcomment -%}
+    <div class="product-info-tabs__nav" role="tablist" aria-label="{{ 'products.product.product_information' | t }}">
+      {%- for block in section.blocks -%}
+        <button
+          type="button"
+          role="tab"
+          class="product-info-tabs__tab{% if forloop.first %} product-info-tabs__tab--active{% endif %}"
+          id="tab-{{ block.id }}"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+          aria-controls="panel-{{ block.id }}"
+          tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+          {{ block.shopify_attributes }}
+        >
+          {%- if block.settings.icon != 'none' -%}
+            <span class="product-info-tabs__tab-icon">
+              {%- case block.settings.icon -%}
+                {%- when 'gift' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+                {%- when 'truck' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8zM5.5 21a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM18.5 21a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/></svg>
+                {%- when 'diamond' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h12l4 6-10 13L2 9z"/><path d="M2 9h20M12 22l4-13M12 22l-4-13M16 3l-4 6-4-6"/></svg>
+                {%- when 'shield' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+                {%- when 'heart' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                {%- when 'star' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                {%- when 'info' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              {%- endcase -%}
+            </span>
+          {%- endif -%}
+          <span class="product-info-tabs__tab-text">{{ block.settings.title }}</span>
+        </button>
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} Tab Panels {%- endcomment -%}
+    <div class="product-info-tabs__panels">
+      {%- for block in section.blocks -%}
+        <div
+          role="tabpanel"
+          class="product-info-tabs__panel{% if forloop.first %} product-info-tabs__panel--active{% endif %}"
+          id="panel-{{ block.id }}"
+          aria-labelledby="tab-{{ block.id }}"
+          {% unless forloop.first %}hidden{% endunless %}
+        >
+          <div class="product-info-tabs__content rte">
+            {{ block.settings.content }}
+          </div>
+          
+          {%- if block.settings.image != blank -%}
+            <div class="product-info-tabs__image">
+              {{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', class: 'product-info-tabs__img' }}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <div class="product-info-tabs__empty">
+      <p>{{ 'Add tabs using the Theme Editor' }}</p>
+    </div>
+  {%- endif -%}
+</div>
+
+<script>
+  // Tab switching functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const tabSection = document.querySelector('.section-{{ section.id }}');
+    if (!tabSection) return;
+
+    const tabs = tabSection.querySelectorAll('.product-info-tabs__tab');
+    const panels = tabSection.querySelectorAll('.product-info-tabs__panel');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Deactivate all tabs
+        tabs.forEach(t => {
+          t.classList.remove('product-info-tabs__tab--active');
+          t.setAttribute('aria-selected', 'false');
+          t.setAttribute('tabindex', '-1');
+        });
+
+        // Hide all panels
+        panels.forEach(p => {
+          p.classList.remove('product-info-tabs__panel--active');
+          p.setAttribute('hidden', '');
+        });
+
+        // Activate clicked tab
+        tab.classList.add('product-info-tabs__tab--active');
+        tab.setAttribute('aria-selected', 'true');
+        tab.setAttribute('tabindex', '0');
+
+        // Show corresponding panel
+        const panelId = tab.getAttribute('aria-controls');
+        const panel = tabSection.querySelector('#' + panelId);
+        if (panel) {
+          panel.classList.add('product-info-tabs__panel--active');
+          panel.removeAttribute('hidden');
+        }
+      });
+
+      // Keyboard navigation
+      tab.addEventListener('keydown', (e) => {
+        const tabsList = Array.from(tabs);
+        const currentIndex = tabsList.indexOf(tab);
+        let newIndex;
+
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          newIndex = (currentIndex + 1) % tabsList.length;
+          tabsList[newIndex].click();
+          tabsList[newIndex].focus();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          newIndex = (currentIndex - 1 + tabsList.length) % tabsList.length;
+          tabsList[newIndex].click();
+          tabsList[newIndex].focus();
+        }
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Info Tabs",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "tab_alignment",
+      "label": "Tab alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "stretch", "label": "Stretch" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "active_tab_color",
+      "label": "Active tab color",
+      "default": "#C45E30"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Tab title",
+          "default": "Tab Title"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "gift", "label": "Gift" },
+            { "value": "truck", "label": "Delivery" },
+            { "value": "diamond", "label": "Quality" },
+            { "value": "shield", "label": "Guarantee" },
+            { "value": "heart", "label": "Care" },
+            { "value": "star", "label": "Features" },
+            { "value": "info", "label": "Information" }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Add your content here. You can include text, lists, and formatting.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Optional image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Info Tabs",
+      "blocks": [
+        {
+          "type": "tab",
+          "settings": {
+            "title": "DETAILS & SPECIFICATIONS",
+            "icon": "info",
+            "content": "<p>Add product details, dimensions, materials, and care instructions here.</p>"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "title": "DELIVERY & RETURNS",
+            "icon": "truck",
+            "content": "<p>Free UK delivery on orders over £50. Express delivery available. 30-day returns policy.</p>"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "title": "QUALITY & MATERIALS",
+            "icon": "diamond",
+            "content": "<p>All our pieces are crafted from premium materials with attention to every detail.</p>"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "title": "JEWELLERY CARE",
+            "icon": "heart",
+            "content": "<p>Keep your jewellery looking its best with our care tips.</p>"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "title": "GIFTING OPTIONS",
+            "icon": "gift",
+            "content": "<p>As the home of personalised gifting, we believe in creating moments that show just how much you care. That's why every design comes wrapped with love in recyclable luxury packaging.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

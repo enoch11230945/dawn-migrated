@@ -20,7 +20,8 @@
 | 新功能 | - | 24 | 0 | ✅ |
 | Session 13 內存洩漏修復 | - | 4 | 0 | ✅ |
 | Session 14 新功能 | - | 3 | 0 | ✅ |
-| **總計** | **77** | **73** | **44** | **🏆** |
+| Session 15 佈局修復 | - | 3 | 0 | ✅ |
+| **總計** | **77** | **76** | **44** | **🏆** |
 
 ### 不需修復的問題（Linus 裁決）
 
@@ -38,6 +39,107 @@
 
 ---
 
+## 📋 SESSION 14 完整審查日誌 (2025-12-30)
+
+### ✅ JavaScript 文件審查
+
+| 文件 | 狀態 | 發現問題 | 修復狀態 |
+|------|------|----------|----------|
+| `product-title-truncation.js` | ✅ 已審查 | `.bind(this)` 內存洩漏 | ✅ 已修復 |
+| `quick-add.js` | ✅ 已審查 | `#updateQuickAddButtonState.bind(this)` 洩漏 | ✅ 已修復 |
+| `header.js` | ✅ 已審查 | `#timeout` 未清理 | ✅ 已修復 |
+| `sticky-add-to-cart.js` | ✅ 已審查 | `#resetTimeout` 未清理 | ✅ 已修復 |
+| `variant-picker.js` | ✅ 已審查 | `.bind(this)` 在 `this.addEventListener` - 安全 | 🟢 無需修復 |
+| `section-renderer.js` | ✅ 已審查 | 單例 + `load` 事件只觸發一次 - 安全 | 🟢 無需修復 |
+| `marquee.js` | ✅ 已審查 | 使用箭頭函數 - 安全 | 🟢 無需修復 |
+| `jumbo-text.js` | ✅ 已審查 | 使用箭頭函數 - 安全 | 🟢 無需修復 |
+| `product-hotspot.js` | ✅ 已審查 | 有 `disconnectedCallback` + `#removeDesktopListeners` | 🟢 無需修復 |
+| `wishlist.js` | ✅ 已審查 | localStorage 有 try-catch | 🟢 無需修復 |
+| `recently-viewed-products.js` | ✅ 已審查 | localStorage 有 try-catch | 🟢 無需修復 |
+| `section-hydration.js` | ✅ 已審查 | 調用 sectionRenderer (已有錯誤處理) | 🟢 無需修復 |
+| `product-form.js` | ✅ 已審查 | fetch 有 try-catch | 🟢 無需修復 |
+| `cart-note.js` | ✅ 已審查 | fetch 有 try-catch | 🟢 無需修復 |
+| `slideshow.js` | ✅ 已審查 | 有 `disconnectedCallback` 調用 `suspend()` | 🟢 無需修復 |
+| `announcement-bar.js` | ✅ 已審查 | 有 `disconnectedCallback` 調用 `suspend()` | 🟢 無需修復 |
+| `timer-manager.js` | ✅ 已審查 | 工具類，已整合到 scripts.liquid | 🟢 已整合 |
+| `logger.js` | ✅ 已審查 | 工具類，已整合到 scripts.liquid | 🟢 已整合 |
+| `cart-api.js` | ✅ 已審查 | 低階 API 類，調用者負責錯誤處理 | 🟢 可接受 |
+| `global.js` (BulkAdd) | ✅ 已審查 | Race condition 已修復 (v15.0) | 🟢 已修復 |
+
+### ✅ Liquid 文件審查
+
+| 文件 | 狀態 | 發現問題 | 修復狀態 |
+|------|------|----------|----------|
+| `shipping-countdown.liquid` | ✅ 已審查 | 已整合 TimerManager | 🟢 已修復 |
+| `collection-card.liquid` | ✅ 已審查 | 無 hover 效果 | ✅ 已添加 |
+| `product-card.liquid` | ✅ 已審查 | 結構良好 | 🟢 無需修復 |
+| `card-gallery.liquid` | ✅ 已審查 | 支持 show_second_image_on_hover | 🟢 已內建 |
+| `scripts.liquid` | ✅ 已審查 | 已整合所有 AUREA 工具腳本 | 🟢 已整合 |
+| `theme.liquid` (layout) | ✅ 已審查 | 使用 Aurea 命名空間 | 🟢 無需修復 |
+
+### ✅ CSS 文件審查
+
+| 文件 | 狀態 | 發現問題 | 修復狀態 |
+|------|------|----------|----------|
+| `aurea-luxury.css` | ✅ 已審查 | 缺少 collection card hover | ✅ 已添加 |
+| `component-wishlist-buttons.css` | ✅ 已審查 | 已整合到 scripts.liquid | 🟢 已整合 |
+| `section-product-info-tabs.css` | ✅ 已創建 | 新功能 CSS | ✅ 已創建 |
+
+### ✅ 配置文件審查
+
+| 文件 | 狀態 | 發現問題 | 修復狀態 |
+|------|------|----------|----------|
+| `settings_schema.json` | ✅ 已審查 | `show_second_image_on_hover` 默認 true | 🟢 已內建 |
+
+---
+
+## 📋 SESSION 15 完整審查日誌 (2025-12-30 22:58)
+
+### 問題描述
+用戶報告：產品頁面的 **Bundle Selector**、**Trust & Delivery**、**Accordion** 等區塊顯示在產品區塊**下方全寬**，應該顯示在產品圖片的**右側**。
+
+### 根本原因分析
+這些組件被創建為獨立的 **Sections**（在 `product.json` 的 `order` 陣列中），而不是 `product-details` block 內部的 **Blocks**。在 Shopify Theme 2.0 架構中，sections 總是渲染為全寬。
+
+### 解決方案 
+使用 **CSS Grid** 將這些 sections 對齊到頁面右側，模擬它們在 `product-details` 列中的位置。
+
+### ✅ 修復的文件
+
+| 文件 | 變更 | 狀態 |
+|------|------|------|
+| `section-bundle-selector.liquid` | 添加 `.aurea-bundle-section` Grid 容器 + 左側 spacer | ✅ 已修復 |
+| `section-trust-delivery.liquid` | 添加 `.aurea-trust-section` Grid 容器 + 左側 spacer | ✅ 已修復 |
+| `section-product-accordion.liquid` | 添加 `.aurea-accordion-section` Grid 容器 + 左側 spacer | ✅ 已修復 |
+
+### CSS 解決方案
+```css
+.aurea-*-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* 左右各 50% */
+  gap: 48px;                       /* 與產品頁面 gap 匹配 */
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 0 var(--page-margin);
+}
+
+.aurea-*-section__spacer {
+  display: block;  /* 佔據左側 50% */
+}
+
+@media (max-width: 749px) {
+  .aurea-*-section {
+    display: block;  /* 手機版全寬 */
+  }
+  .aurea-*-section__spacer {
+    display: none;
+  }
+}
+```
+
+---
+
+
 ## 1. 【Linus 的直覺判斷】 (The Intuitive Verdict)
 
 **⚠️ 以下為歷史審計記錄，所有可修復問題已處理完畢。**
@@ -47,6 +149,7 @@
 雖然之前做過一些所謂的「修復」，但這套系統的核心依然充滿了令人尷尬的設計。從語法錯誤到毀滅性的性能殺手，這套主題在「好品味」（Good Taste）測試中拿到的是負分。它試圖用華麗的抽象（ES Modules, Morphing）來掩蓋底下腐爛的邏輯，但物理規則不會騙人。
 
 ---
+
 
 ## 2. 【致命缺陷與風險】 (Critical Bugs & Risks)
 

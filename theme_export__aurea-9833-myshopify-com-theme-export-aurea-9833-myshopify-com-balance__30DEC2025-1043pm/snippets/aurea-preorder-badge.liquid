@@ -1,0 +1,65 @@
+{%- comment -%}
+  AUREA Pre-order Badge for Product Cards
+  Displays a "Pre-order" badge on collection/grid pages when product is out of stock
+  
+  Usage: {% render 'aurea-preorder-badge', product: product %}
+  Place this inside your product-card.liquid, typically near the product image
+{%- endcomment -%}
+
+{%- assign is_preorder = false -%}
+{%- assign variant = product.selected_or_first_available_variant -%}
+
+{%- comment -%} Check if this product is in pre-order state {%- endcomment -%}
+{%- if variant.inventory_management == 'shopify' -%}
+  {%- if variant.inventory_quantity <= 0 and variant.inventory_policy == 'continue' and variant.available -%}
+    {%- assign is_preorder = true -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- if is_preorder -%}
+<style>
+  .aurea-preorder-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+    background: linear-gradient(135deg, #B8860B 0%, #D4A574 100%);
+    color: #fff;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.75rem;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(184, 134, 11, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  
+  .aurea-preorder-badge::before {
+    content: '⏳';
+    font-size: 0.75rem;
+  }
+  
+  /* Animation for attention */
+  .aurea-preorder-badge--animated {
+    animation: badge-pulse 2s ease-in-out infinite;
+  }
+  
+  @keyframes badge-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  
+  /* Alternative: Simple white badge */
+  .aurea-preorder-badge--minimal {
+    background: rgba(255,255,255,0.95);
+    color: #B8860B;
+    border: 1px solid #B8860B;
+  }
+</style>
+
+<span class="aurea-preorder-badge">Pre-order</span>
+{%- endif -%}

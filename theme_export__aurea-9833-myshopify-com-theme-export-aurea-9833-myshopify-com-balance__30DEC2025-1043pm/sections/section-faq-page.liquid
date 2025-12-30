@@ -1,0 +1,285 @@
+{%- comment -%}
+  AUREA FAQ Page Section
+  Elegant accordion FAQ with categories
+{%- endcomment -%}
+
+<div class="aurea-faq page-width" style="padding: 4rem 2rem;">
+  
+  <div style="max-width: 800px; margin: 0 auto;">
+    
+    {%- comment -%} Header {%- endcomment -%}
+    <div style="text-align: center; margin-bottom: 4rem;">
+      <p style="
+        font-family: 'Cormorant', Georgia, serif;
+        font-size: 0.85rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: #B8860B;
+        margin-bottom: 1rem;
+      ">{{ section.settings.preheading }}</p>
+      <h1 style="
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 400;
+        margin-bottom: 1rem;
+      ">{{ section.settings.heading }}</h1>
+      <p style="
+        font-family: 'Cormorant', Georgia, serif;
+        font-size: 1.1rem;
+        color: rgba(26,26,26,0.7);
+      ">{{ section.settings.subheading }}</p>
+    </div>
+    
+    {%- comment -%} FAQ Categories {%- endcomment -%}
+    {% assign categories = section.blocks | map: 'settings' | map: 'category' | uniq %}
+    
+    {% for category in categories %}
+      <div class="aurea-faq__category" style="margin-bottom: 3rem;">
+        <h2 style="
+          font-family: 'Playfair Display', Georgia, serif;
+          font-size: 1.5rem;
+          font-weight: 400;
+          margin-bottom: 1.5rem;
+          padding-bottom: 1rem;
+          border-bottom: 1px solid #E8E4DF;
+        ">{{ category }}</h2>
+        
+        {% for block in section.blocks %}
+          {% if block.settings.category == category %}
+            <details class="aurea-faq__item" style="
+              margin-bottom: 1rem;
+              border: 1px solid #E8E4DF;
+              background: #FFFFFF;
+            ">
+              <summary style="
+                padding: 1.25rem 1.5rem;
+                cursor: pointer;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-family: 'Cormorant', Georgia, serif;
+                font-weight: 600;
+                font-size: 1.1rem;
+                list-style: none;
+              ">
+                {{ block.settings.question }}
+                <svg class="aurea-faq__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="
+                  flex-shrink: 0;
+                  transition: transform 0.3s ease;
+                ">
+                  <path d="M6 9L12 15L18 9"/>
+                </svg>
+              </summary>
+              <div style="
+                padding: 0 1.5rem 1.5rem;
+                font-family: 'Cormorant', Georgia, serif;
+                font-size: 1rem;
+                line-height: 1.8;
+                color: rgba(26,26,26,0.8);
+              ">
+                {{ block.settings.answer }}
+              </div>
+            </details>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endfor %}
+    
+    {%- comment -%} Still Need Help {%- endcomment -%}
+    <div style="
+      text-align: center;
+      padding: 3rem;
+      background: #F5F0E6;
+      margin-top: 3rem;
+    ">
+      <h3 style="
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1.5rem;
+        font-weight: 400;
+        margin-bottom: 1rem;
+      ">{{ section.settings.cta_heading }}</h3>
+      <p style="
+        font-family: 'Cormorant', Georgia, serif;
+        font-size: 1rem;
+        color: rgba(26,26,26,0.7);
+        margin-bottom: 1.5rem;
+      ">{{ section.settings.cta_text }}</p>
+      <a 
+        href="{{ section.settings.cta_link }}"
+        class="aurea-faq-cta-btn"
+      >{{ section.settings.cta_button }}</a>
+    </div>
+    
+  </div>
+  
+</div>
+
+<style>
+  .aurea-faq__item[open] .aurea-faq__icon {
+    transform: rotate(180deg);
+  }
+  
+  .aurea-faq__item summary::-webkit-details-marker {
+    display: none;
+  }
+  
+  .aurea-faq__item summary:hover {
+    background: #FAF8F5;
+  }
+  
+  .aurea-faq-cta-btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    font-family: 'Cormorant', Georgia, serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    background: #0D0D0D;
+    text-decoration: none;
+    transition: background 0.3s ease;
+  }
+  
+  .aurea-faq-cta-btn:hover {
+    background: #D4AF37;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "FAQ Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text",
+      "id": "preheading",
+      "label": "Preheading",
+      "default": "Help Center"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Find answers to common questions about orders, shipping, and returns."
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "cta_heading",
+      "label": "CTA Heading",
+      "default": "Still Have Questions?"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "Our customer support team is here to help."
+    },
+    {
+      "type": "text",
+      "id": "cta_button",
+      "label": "Button Text",
+      "default": "Contact Us"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "category",
+          "label": "Category",
+          "default": "Shipping"
+        },
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How long does delivery take?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "UK delivery typically takes 2-3 business days via Royal Mail. Orders placed before 2pm are dispatched the same day."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Page",
+      "blocks": [
+        {
+          "type": "faq",
+          "settings": {
+            "category": "Shipping",
+            "question": "How long does UK delivery take?",
+            "answer": "UK delivery typically takes 2-3 business days via Royal Mail. Orders placed before 2pm Monday-Friday are dispatched the same day."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "category": "Shipping",
+            "question": "Do you offer free shipping?",
+            "answer": "Yes! We offer free UK shipping on all orders over £30. For orders under £30, shipping is £2.99."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "category": "Returns",
+            "question": "What is your return policy?",
+            "answer": "We offer a 30-day return policy. If you're not completely happy with your purchase, simply return it in its original packaging for a full refund."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "category": "Returns",
+            "question": "How do I return an item?",
+            "answer": "Email us at hello@aurea.co.uk with your order number and reason for return. We'll send you a prepaid return label within 24 hours."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "category": "Products",
+            "question": "Will your jewelry tarnish?",
+            "answer": "No. All our pieces are made from 316L surgical stainless steel with 18k gold PVD coating. They're waterproof, hypoallergenic, and designed to last a lifetime."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "category": "Products",
+            "question": "Are your products hypoallergenic?",
+            "answer": "Yes! Our jewelry is made from 316L stainless steel, which is hypoallergenic and safe for sensitive skin."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

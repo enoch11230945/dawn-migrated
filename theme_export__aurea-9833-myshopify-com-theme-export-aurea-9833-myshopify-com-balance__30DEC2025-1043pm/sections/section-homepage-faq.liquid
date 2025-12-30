@@ -1,0 +1,150 @@
+{%- comment -%}
+  Homepage FAQ Section - Minimalist Accordion
+  Based on page.md Block 6 specification
+  Using <details>/<summary> for pure HTML/CSS, no JS
+{%- endcomment -%}
+
+<section class="aurea-homepage-faq page-width" style="
+  padding: 5rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+">
+  
+  <div style="text-align: center; margin-bottom: 3rem;">
+    <p style="
+      font-family: 'Cormorant', Georgia, serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #B8860B;
+      margin-bottom: 0.75rem;
+    ">{{ section.settings.preheading }}</p>
+    <h2 style="
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 400;
+    ">{{ section.settings.heading }}</h2>
+  </div>
+  
+  <div class="aurea-faq-list">
+    {% for block in section.blocks %}
+      <details style="
+        border-bottom: 1px solid #E8E4DF;
+      " {{ block.shopify_attributes }}>
+        <summary style="
+          padding: 1.5rem 0;
+          cursor: pointer;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-family: 'Cormorant', Georgia, serif;
+          font-weight: 600;
+          font-size: 1.1rem;
+          list-style: none;
+        ">
+          {{ block.settings.question }}
+          <span style="
+            font-size: 1.5rem;
+            color: #B8860B;
+            transition: transform 0.3s ease;
+          " class="aurea-faq-icon">+</span>
+        </summary>
+        <div style="
+          padding: 0 0 1.5rem 0;
+          font-family: 'Cormorant', Georgia, serif;
+          font-size: 1rem;
+          line-height: 1.8;
+          color: rgba(26,26,26,0.75);
+        ">
+          {{ block.settings.answer }}
+        </div>
+      </details>
+    {% endfor %}
+  </div>
+  
+</section>
+
+<style>
+  .aurea-faq-list details[open] .aurea-faq-icon {
+    transform: rotate(45deg);
+  }
+  
+  .aurea-faq-list summary::-webkit-details-marker {
+    display: none;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Homepage FAQ",
+  "settings": [
+    {
+      "type": "text",
+      "id": "preheading",
+      "label": "Preheading",
+      "default": "Got Questions?"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How long does shipping take?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "Royal Mail Tracked 48 delivers in 2-3 business days. Orders placed before 2pm are dispatched same day."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Homepage FAQ",
+      "blocks": [
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "Royal Mail Tracked 48 delivers in 2-3 business days. Orders placed before 2pm are dispatched same day."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Will it tarnish or fade?",
+            "answer": "Never. All our pieces are made from 316L surgical stainless steel with 18k gold PVD coating. That's our lifetime guarantee."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Can I return it?",
+            "answer": "Yes, we offer a 30-day happiness guarantee. If you're not completely satisfied, return it for a full refund."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "What's in the box?",
+            "answer": "Every order includes: Your necklace, a heartfelt message card, and our signature luxury gift box—ready to give."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

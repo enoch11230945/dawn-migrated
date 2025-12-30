@@ -1,0 +1,170 @@
+{%- comment -%}
+  AUREA Product Accordion Section
+  Collapsible FAQ/Info blocks for product pages.
+  Aligned to Right Side on Desktop
+{%- endcomment -%}
+
+<div class="aurea-accordion-section">
+  <div class="aurea-accordion-section__spacer"></div>
+  <div class="aurea-product-accordion">
+    {% for block in section.blocks %}
+      <details class="aurea-accordion-item" {{ block.shopify_attributes }}>
+        <summary class="aurea-accordion-summary">
+          <span class="aurea-accordion-title">{{ block.settings.title }}</span>
+          <span class="aurea-accordion-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </span>
+        </summary>
+        <div class="aurea-accordion-content">
+          {{ block.settings.content }}
+        </div>
+      </details>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .aurea-accordion-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 var(--page-margin);
+  }
+  
+  .aurea-accordion-section__spacer {
+    display: block;
+  }
+  
+  @media screen and (max-width: 749px) {
+    .aurea-accordion-section {
+      display: block;
+      padding: 0 1rem;
+    }
+    
+    .aurea-accordion-section__spacer {
+      display: none;
+    }
+  }
+  
+  .aurea-product-accordion {
+    max-width: 100%;
+  }
+
+
+  .aurea-accordion-item {
+    border-bottom: 1px solid #E5E5E5;
+  }
+
+  .aurea-accordion-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 0;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .aurea-accordion-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .aurea-accordion-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1A1A1A;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .aurea-accordion-icon {
+    color: #666;
+    transition: transform 0.2s ease;
+    display: flex;
+  }
+
+  .aurea-accordion-item[open] .aurea-accordion-icon {
+    transform: rotate(90deg);
+  }
+
+  .aurea-accordion-content {
+    padding: 0 0 1.25rem 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #555;
+  }
+
+  .aurea-accordion-content p {
+    margin: 0 0 1rem 0;
+  }
+
+  .aurea-accordion-content ul {
+    padding-left: 1.25rem;
+    margin: 0;
+  }
+
+  .aurea-accordion-content li {
+    margin-bottom: 0.5rem;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Product Accordion",
+  "class": "section-product-accordion",
+  "tag": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "accordion_item",
+      "name": "Accordion Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Description"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Add your content here. You can use <strong>bold</strong>, <em>italic</em>, and bullet lists.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Accordion",
+      "blocks": [
+        {
+          "type": "accordion_item",
+          "settings": {
+            "title": "Quality & Details",
+            "content": "<p>Our rings are crafted with precision and care, featuring high-quality materials that ensure lasting beauty.</p><ul><li>18kt Yellow Gold Vermeil</li><li>925 Sterling Silver base</li><li>Hypoallergenic and nickel-free</li></ul>"
+          }
+        },
+        {
+          "type": "accordion_item",
+          "settings": {
+            "title": "Properties of Black Obsidian",
+            "content": "<p><strong>Black Obsidian | Stone of Strength</strong></p><p>This formidable stone is renowned for its strength and resilience. The deep, lustrous black surface reflects a powerful energy that aids in protection and grounding.</p>"
+          }
+        },
+        {
+          "type": "accordion_item",
+          "settings": {
+            "title": "Shipping & Returns",
+            "content": "<p><strong>Shipping:</strong> Free UK delivery on orders over £50. Royal Mail Tracked 48.</p><p><strong>Returns:</strong> 30-day hassle-free returns. No questions asked.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

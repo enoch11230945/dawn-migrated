@@ -1,0 +1,177 @@
+{%- comment -%}
+  AUREA About Us Section
+  Elegant About page section with brand story and values
+  Use in template: pages/about.json
+{%- endcomment -%}
+
+<section class="aurea-about" style="padding: 4rem 0;">
+  <div class="aurea-about__container" style="max-width: 900px; margin: 0 auto; padding: 0 1.5rem;">
+    
+    {%- comment -%} Hero Section {%- endcomment -%}
+    <header class="aurea-about__hero" style="text-align: center; margin-bottom: 4rem;">
+      <h1 class="aurea-about__title" style="font-family: 'Playfair Display', Georgia, serif; font-size: 2.5rem; font-weight: 400; color: #1A1A1A; margin: 0 0 1rem 0;">
+        {{ section.settings.title | default: 'Our Story' }}
+      </h1>
+      <p class="aurea-about__subtitle" style="font-family: 'Cormorant', Georgia, serif; font-size: 1.25rem; color: #666; max-width: 600px; margin: 0 auto;">
+        {{ section.settings.subtitle | default: 'Where everyday luxury meets conscious craftsmanship.' }}
+      </p>
+    </header>
+    
+    {%- comment -%} Story Section {%- endcomment -%}
+    <div class="aurea-about__story" style="font-family: 'Cormorant', Georgia, serif; font-size: 1.1rem; line-height: 1.8; color: #333; margin-bottom: 4rem;">
+      {{ section.settings.story_content }}
+    </div>
+    
+    {%- comment -%} Values Grid {%- endcomment -%}
+    {%- if section.blocks.size > 0 -%}
+    <div class="aurea-about__values" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 4rem;">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'value' -%}
+        <div class="aurea-value" style="text-align: center; padding: 2rem; background: #FAFAFA; border-radius: 8px;" {{ block.shopify_attributes }}>
+          <div class="aurea-value__icon" style="font-size: 2.5rem; margin-bottom: 1rem;">
+            {{ block.settings.icon | default: '✨' }}
+          </div>
+          <h3 class="aurea-value__title" style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.25rem; font-weight: 500; color: #1A1A1A; margin: 0 0 0.75rem 0;">
+            {{ block.settings.title }}
+          </h3>
+          <p class="aurea-value__text" style="font-family: 'Cormorant', Georgia, serif; font-size: 1rem; color: #666; margin: 0; line-height: 1.6;">
+            {{ block.settings.description }}
+          </p>
+        </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+    
+    {%- comment -%} Promise Section {%- endcomment -%}
+    {%- if section.settings.promise_content != blank -%}
+    <div class="aurea-about__promise" style="background: linear-gradient(135deg, #F5F0E6 0%, #FFFBF5 100%); padding: 3rem; border-radius: 8px; text-align: center;">
+      <h2 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.75rem; font-weight: 400; color: #B8860B; margin: 0 0 1rem 0;">
+        {{ section.settings.promise_title | default: 'Our Promise' }}
+      </h2>
+      <p style="font-family: 'Cormorant', Georgia, serif; font-size: 1.1rem; line-height: 1.8; color: #333; max-width: 600px; margin: 0 auto;">
+        {{ section.settings.promise_content }}
+      </p>
+    </div>
+    {%- endif -%}
+    
+    {%- comment -%} Signature {%- endcomment -%}
+    <footer class="aurea-about__signature" style="text-align: center; margin-top: 3rem;">
+      <p style="font-family: 'Cormorant', Georgia, serif; font-style: italic; font-size: 1.1rem; color: #666;">
+        {{ section.settings.signature | default: '— The AUREA London Team ✨' }}
+      </p>
+    </footer>
+    
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About Us",
+  "tag": "section",
+  "class": "section-about-us",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Our Story"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Where everyday luxury meets conscious craftsmanship."
+    },
+    {
+      "type": "richtext",
+      "id": "story_content",
+      "label": "Your Story",
+      "default": "<p>Welcome to AUREA London – where everyday luxury meets conscious craftsmanship.</p><p>Founded in 2024, we started with a simple mission: to bring beautifully crafted, affordable jewellery to women who appreciate the finer details without the designer price tag.</p><p>Each piece in our collection is carefully selected from artisan workshops, ensuring that what you wear is not just an accessory, but a statement of quality and intention.</p>"
+    },
+    {
+      "type": "text",
+      "id": "promise_title",
+      "label": "Promise Section Title",
+      "default": "Our Promise"
+    },
+    {
+      "type": "textarea",
+      "id": "promise_content",
+      "label": "Promise Content",
+      "default": "Every piece is chosen with love. Every order is packed with care. And if you're not completely happy, our hassle-free returns have you covered."
+    },
+    {
+      "type": "text",
+      "id": "signature",
+      "label": "Signature",
+      "default": "— The AUREA London Team ✨"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Brand Value",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (emoji)",
+          "default": "✨"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Quality First"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "18K Gold Vermeil & 925 Sterling Silver. Only the finest materials."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Us",
+      "blocks": [
+        {
+          "type": "value",
+          "settings": {
+            "icon": "💎",
+            "title": "Curated Selection",
+            "description": "We personally select each piece to ensure exceptional quality and timeless design."
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "icon": "🇬🇧",
+            "title": "UK-Based",
+            "description": "Fast shipping from our London warehouse. Your order arrives in 2-3 days."
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "icon": "✨",
+            "title": "Quality First",
+            "description": "18K Gold Vermeil & 925 Sterling Silver. Only the finest materials."
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "icon": "🌿",
+            "title": "Sustainable",
+            "description": "Minimal packaging, maximum beauty. We care about our planet."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

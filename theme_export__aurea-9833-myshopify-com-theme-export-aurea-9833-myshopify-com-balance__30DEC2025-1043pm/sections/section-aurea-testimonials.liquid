@@ -1,0 +1,265 @@
+{%- comment -%}
+  AUREA Testimonials Section
+  Customer reviews/testimonials for social proof
+  
+  Usage: Add to homepage or any page via Theme Editor
+{%- endcomment -%}
+
+<section class="aurea-testimonials" style="padding: 4rem 0; background: #FAFAFA;">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+    
+    {%- comment -%} Header {%- endcomment -%}
+    <header style="text-align: center; margin-bottom: 3rem;">
+      <p style="font-family: 'Cormorant', Georgia, serif; font-size: 1rem; color: #B8860B; letter-spacing: 0.15em; text-transform: uppercase; margin: 0 0 0.5rem 0;">
+        {{ section.settings.eyebrow | default: 'Loved by Thousands' }}
+      </p>
+      <h2 style="font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; font-weight: 400; color: #1A1A1A; margin: 0 0 0.5rem 0;">
+        {{ section.settings.title | default: 'What Our Customers Say' }}
+      </h2>
+      <p style="font-family: 'Cormorant', Georgia, serif; font-size: 1.1rem; color: #666;">
+        {{ section.settings.subtitle | default: 'Real reviews from real customers' }}
+      </p>
+    </header>
+    
+    {%- comment -%} Testimonials Grid {%- endcomment -%}
+    <div class="aurea-testimonials__grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'testimonial' -%}
+        <div class="aurea-testimonial" {{ block.shopify_attributes }} style="background: #fff; border-radius: 8px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+          
+          {%- comment -%} Stars {%- endcomment -%}
+          <div class="aurea-testimonial__stars" style="color: #F5A623; margin-bottom: 1rem; font-size: 1.25rem; letter-spacing: 2px;">
+            {%- assign stars = block.settings.rating | default: 5 -%}
+            {%- for i in (1..5) -%}
+              {%- if i <= stars -%}★{%- else -%}☆{%- endif -%}
+            {%- endfor -%}
+          </div>
+          
+          {%- comment -%} Quote {%- endcomment -%}
+          <blockquote style="font-family: 'Cormorant', Georgia, serif; font-size: 1.1rem; font-style: italic; line-height: 1.7; color: #333; margin: 0 0 1.5rem 0;">
+            "{{ block.settings.quote }}"
+          </blockquote>
+          
+          {%- comment -%} Author {%- endcomment -%}
+          <div class="aurea-testimonial__author" style="display: flex; align-items: center; gap: 1rem;">
+            {%- if block.settings.image -%}
+              <img 
+                src="{{ block.settings.image | image_url: width: 100 }}"
+                alt="{{ block.settings.author }}"
+                style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover;"
+              >
+            {%- else -%}
+              <div style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #B8860B 0%, #D4A574 100%); display: flex; align-items: center; justify-content: center; color: #fff; font-family: 'Playfair Display', Georgia, serif; font-size: 1.25rem;">
+                {{ block.settings.author | slice: 0, 1 | upcase }}
+              </div>
+            {%- endif -%}
+            <div>
+              <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; font-weight: 500; color: #1A1A1A; margin: 0;">
+                {{ block.settings.author | default: 'Happy Customer' }}
+              </p>
+              {%- if block.settings.location -%}
+              <p style="font-family: 'Cormorant', Georgia, serif; font-size: 0.9rem; color: #666; margin: 0;">
+                {{ block.settings.location }}
+              </p>
+              {%- endif -%}
+            </div>
+          </div>
+          
+          {%- comment -%} Verified Badge {%- endcomment -%}
+          {%- if block.settings.verified -%}
+          <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #E5E5E5;">
+            <span style="font-family: 'Cormorant', Georgia, serif; font-size: 0.8rem; color: #2E7D32; display: flex; align-items: center; gap: 0.25rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#2E7D32"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              Verified Purchase
+            </span>
+          </div>
+          {%- endif -%}
+          
+        </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    
+    {%- comment -%} Trust Summary {%- endcomment -%}
+    {%- if section.settings.show_summary -%}
+    <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: #fff; border-radius: 8px;">
+      <div style="display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap;">
+        <div>
+          <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 2.5rem; font-weight: 400; color: #B8860B; margin: 0;">
+            {{ section.settings.avg_rating | default: '4.9' }}
+          </p>
+          <p style="font-family: 'Cormorant', Georgia, serif; font-size: 0.9rem; color: #666; margin: 0;">
+            Average Rating
+          </p>
+        </div>
+        <div style="width: 1px; height: 40px; background: #E5E5E5;"></div>
+        <div>
+          <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 2.5rem; font-weight: 400; color: #B8860B; margin: 0;">
+            {{ section.settings.total_reviews | default: '500+' }}
+          </p>
+          <p style="font-family: 'Cormorant', Georgia, serif; font-size: 0.9rem; color: #666; margin: 0;">
+            Happy Customers
+          </p>
+        </div>
+        <div style="width: 1px; height: 40px; background: #E5E5E5;"></div>
+        <div>
+          <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 2.5rem; font-weight: 400; color: #B8860B; margin: 0;">
+            {{ section.settings.recommend_percent | default: '98%' }}
+          </p>
+          <p style="font-family: 'Cormorant', Georgia, serif; font-size: 0.9rem; color: #666; margin: 0;">
+            Would Recommend
+          </p>
+        </div>
+      </div>
+    </div>
+    {%- endif -%}
+    
+  </div>
+</section>
+
+<style>
+  @media (max-width: 768px) {
+    .aurea-testimonials__grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "tag": "section",
+  "class": "section-testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Loved by Thousands"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Real reviews from real customers"
+    },
+    {
+      "type": "header",
+      "content": "Trust Summary"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_summary",
+      "label": "Show Trust Summary",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "avg_rating",
+      "label": "Average Rating",
+      "default": "4.9"
+    },
+    {
+      "type": "text",
+      "id": "total_reviews",
+      "label": "Total Reviews",
+      "default": "500+"
+    },
+    {
+      "type": "text",
+      "id": "recommend_percent",
+      "label": "Recommend Percentage",
+      "default": "98%"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "Absolutely stunning! The quality is amazing and it arrived so quickly. I've already bought three pieces and get compliments every time I wear them."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author Name",
+          "default": "Sarah M."
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location",
+          "default": "London, UK"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Author Photo (optional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Show Verified Badge",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Absolutely stunning! The quality is amazing and it arrived so quickly. I've already bought three pieces and get compliments every time I wear them.",
+            "author": "Sarah M.",
+            "location": "London, UK",
+            "verified": true
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Beautiful jewellery at such great prices. The packaging was gorgeous too - perfect for gifting. Will definitely be ordering again!",
+            "author": "Emma T.",
+            "location": "Manchester, UK",
+            "verified": true
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "I was hesitant to order online but the photos are accurate and the pieces are even prettier in person. Fast delivery and great customer service.",
+            "author": "Jessica L.",
+            "location": "Edinburgh, UK",
+            "verified": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

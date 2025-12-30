@@ -1,0 +1,427 @@
+{%- comment -%}
+  Bundle Selector Block
+  Renders inside product-details for right-side positioning
+{%- endcomment -%}
+
+{% liquid
+  assign product_resource = closest.product
+%}
+
+<div class="aurea-bundle-block" {{ block.shopify_attributes }}>
+  {%- comment -%} Section Title {%- endcomment -%}
+  <div class="aurea-bundle-block__header">
+    <div class="aurea-bundle-block__line"></div>
+    <span class="aurea-bundle-block__title">{{ block.settings.title }}</span>
+    <div class="aurea-bundle-block__line"></div>
+  </div>
+
+  {%- comment -%} Bundle Options {%- endcomment -%}
+  <div class="aurea-bundle-block__options">
+    {%- comment -%} Tier 1 {%- endcomment -%}
+    {% if block.settings.tier1_show %}
+      {%- liquid
+        assign quantity = block.settings.tier1_quantity
+        assign discount_percent = block.settings.tier1_discount
+        assign original_price = product_resource.selected_or_first_available_variant.price | times: quantity
+        
+        if discount_percent > 0
+          assign discount_multiplier = 100 | minus: discount_percent | divided_by: 100.0
+          assign final_price = original_price | times: discount_multiplier
+        else
+          assign final_price = original_price
+        endif
+      -%}
+      
+      <label class="aurea-bundle-block__option {% if block.settings.tier1_popular %}aurea-bundle-block__option--popular{% endif %}">
+        {% if block.settings.tier1_popular %}
+          <span class="aurea-bundle-block__badge">Most Popular</span>
+        {% endif %}
+        
+        <div class="aurea-bundle-block__content">
+          <div class="aurea-bundle-block__info-wrapper">
+            <input type="radio" name="bundle_option_block" value="{{ quantity }}" data-price="{{ final_price }}" checked class="aurea-bundle-block__radio">
+            <div>
+              <div class="aurea-bundle-block__label-text">
+                Buy {{ quantity }}
+                {% if block.settings.tier1_free_shipping %}
+                  <span class="aurea-bundle-block__tag">+ Free Shipping</span>
+                {% endif %}
+              </div>
+              <div class="aurea-bundle-block__subtext">
+                {% if discount_percent > 0 %}{{ discount_percent }}% off{% else %}Regular Price{% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="aurea-bundle-block__price-wrapper">
+            <div class="aurea-bundle-block__price">{{ final_price | money }}</div>
+            {% if discount_percent > 0 %}
+              <div class="aurea-bundle-block__compare-price">{{ original_price | money }}</div>
+            {% endif %}
+          </div>
+        </div>
+      </label>
+    {% endif %}
+    
+    {%- comment -%} Tier 2 {%- endcomment -%}
+    {% if block.settings.tier2_show %}
+      {%- liquid
+        assign quantity = block.settings.tier2_quantity
+        assign discount_percent = block.settings.tier2_discount
+        assign original_price = product_resource.selected_or_first_available_variant.price | times: quantity
+        
+        if discount_percent > 0
+          assign discount_multiplier = 100 | minus: discount_percent | divided_by: 100.0
+          assign final_price = original_price | times: discount_multiplier
+        else
+          assign final_price = original_price
+        endif
+      -%}
+      
+      <label class="aurea-bundle-block__option {% if block.settings.tier2_popular %}aurea-bundle-block__option--popular{% endif %}">
+        {% if block.settings.tier2_popular %}
+          <span class="aurea-bundle-block__badge">Most Popular</span>
+        {% endif %}
+        
+        <div class="aurea-bundle-block__content">
+          <div class="aurea-bundle-block__info-wrapper">
+            <input type="radio" name="bundle_option_block" value="{{ quantity }}" data-price="{{ final_price }}" class="aurea-bundle-block__radio">
+            <div>
+              <div class="aurea-bundle-block__label-text">
+                Buy {{ quantity }}
+                {% if block.settings.tier2_free_shipping %}
+                  <span class="aurea-bundle-block__tag">+ Free Shipping</span>
+                {% endif %}
+              </div>
+              <div class="aurea-bundle-block__subtext">
+                {% if discount_percent > 0 %}{{ discount_percent }}% off{% else %}Regular Price{% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="aurea-bundle-block__price-wrapper">
+            <div class="aurea-bundle-block__price">{{ final_price | money }}</div>
+            {% if discount_percent > 0 %}
+              <div class="aurea-bundle-block__compare-price">{{ original_price | money }}</div>
+            {% endif %}
+          </div>
+        </div>
+      </label>
+    {% endif %}
+    
+    {%- comment -%} Tier 3 {%- endcomment -%}
+    {% if block.settings.tier3_show %}
+      {%- liquid
+        assign quantity = block.settings.tier3_quantity
+        assign discount_percent = block.settings.tier3_discount
+        assign original_price = product_resource.selected_or_first_available_variant.price | times: quantity
+        
+        if discount_percent > 0
+          assign discount_multiplier = 100 | minus: discount_percent | divided_by: 100.0
+          assign final_price = original_price | times: discount_multiplier
+        else
+          assign final_price = original_price
+        endif
+      -%}
+      
+      <label class="aurea-bundle-block__option {% if block.settings.tier3_popular %}aurea-bundle-block__option--popular{% endif %}">
+        {% if block.settings.tier3_popular %}
+          <span class="aurea-bundle-block__badge">Most Popular</span>
+        {% endif %}
+        
+        <div class="aurea-bundle-block__content">
+          <div class="aurea-bundle-block__info-wrapper">
+            <input type="radio" name="bundle_option_block" value="{{ quantity }}" data-price="{{ final_price }}" class="aurea-bundle-block__radio">
+            <div>
+              <div class="aurea-bundle-block__label-text">
+                Buy {{ quantity }}
+                {% if block.settings.tier3_free_shipping %}
+                  <span class="aurea-bundle-block__tag">+ Free Shipping</span>
+                {% endif %}
+                {% if block.settings.tier3_bonus != blank %}
+                  <span class="aurea-bundle-block__tag">+ {{ block.settings.tier3_bonus }}</span>
+                {% endif %}
+              </div>
+              <div class="aurea-bundle-block__subtext">
+                {% if discount_percent > 0 %}{{ discount_percent }}% off{% else %}Regular Price{% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="aurea-bundle-block__price-wrapper">
+            <div class="aurea-bundle-block__price">{{ final_price | money }}</div>
+            {% if discount_percent > 0 %}
+              <div class="aurea-bundle-block__compare-price">{{ original_price | money }}</div>
+            {% endif %}
+          </div>
+        </div>
+      </label>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .aurea-bundle-block {
+    width: 100%;
+    margin: 1rem 0;
+  }
+  
+  .aurea-bundle-block__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .aurea-bundle-block__line {
+    flex: 1;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+  }
+  
+  .aurea-bundle-block__title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .aurea-bundle-block__options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .aurea-bundle-block__option {
+    position: relative;
+    display: block;
+    padding: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  
+  .aurea-bundle-block__option:hover {
+    border-color: rgba(0, 0, 0, 0.3);
+  }
+  
+  .aurea-bundle-block__option:has(input:checked) {
+    border-color: #000;
+    box-shadow: 0 0 0 1px #000;
+  }
+  
+  .aurea-bundle-block__option--popular {
+    border-color: #C45E30;
+  }
+  
+  .aurea-bundle-block__option--popular:has(input:checked) {
+    border-color: #C45E30;
+    box-shadow: 0 0 0 1px #C45E30;
+  }
+  
+  .aurea-bundle-block__badge {
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    background: #1a1a2e;
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .aurea-bundle-block__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .aurea-bundle-block__info-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .aurea-bundle-block__radio {
+    margin-top: 4px;
+    accent-color: #C45E30;
+  }
+  
+  .aurea-bundle-block__label-text {
+    font-weight: 500;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .aurea-bundle-block__tag {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #C45E30;
+    background: rgba(196, 94, 48, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  
+  .aurea-bundle-block__subtext {
+    font-size: 0.8rem;
+    color: rgba(0, 0, 0, 0.5);
+    margin-top: 2px;
+  }
+  
+  .aurea-bundle-block__price-wrapper {
+    text-align: right;
+  }
+  
+  .aurea-bundle-block__price {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  
+  .aurea-bundle-block__compare-price {
+    font-size: 0.8rem;
+    color: rgba(0, 0, 0, 0.4);
+    text-decoration: line-through;
+  }
+</style>
+
+<script>
+  (function() {
+    const radios = document.querySelectorAll('.aurea-bundle-block__option input[type="radio"]');
+    radios.forEach(radio => {
+      radio.addEventListener('change', function() {
+        const quantity = parseInt(this.value, 10);
+        const quantityInputs = document.querySelectorAll('input[name="quantity"]');
+        quantityInputs.forEach(input => {
+          input.value = quantity;
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Bundle Selector",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "BUNDLE"
+    },
+    {
+      "type": "header",
+      "content": "Tier 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "tier1_show",
+      "label": "Show Tier 1",
+      "default": true
+    },
+    {
+      "type": "number",
+      "id": "tier1_quantity",
+      "label": "Quantity",
+      "default": 1
+    },
+    {
+      "type": "number",
+      "id": "tier1_discount",
+      "label": "Discount %",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "tier1_free_shipping",
+      "label": "Free Shipping",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "tier1_popular",
+      "label": "Most Popular",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Tier 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "tier2_show",
+      "label": "Show Tier 2",
+      "default": true
+    },
+    {
+      "type": "number",
+      "id": "tier2_quantity",
+      "label": "Quantity",
+      "default": 2
+    },
+    {
+      "type": "number",
+      "id": "tier2_discount",
+      "label": "Discount %",
+      "default": 10
+    },
+    {
+      "type": "checkbox",
+      "id": "tier2_free_shipping",
+      "label": "Free Shipping",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "tier2_popular",
+      "label": "Most Popular",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Tier 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "tier3_show",
+      "label": "Show Tier 3",
+      "default": true
+    },
+    {
+      "type": "number",
+      "id": "tier3_quantity",
+      "label": "Quantity",
+      "default": 3
+    },
+    {
+      "type": "number",
+      "id": "tier3_discount",
+      "label": "Discount %",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "tier3_free_shipping",
+      "label": "Free Shipping",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "tier3_popular",
+      "label": "Most Popular",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "tier3_bonus",
+      "label": "Bonus Text",
+      "default": "Mystery Gift"
+    }
+  ]
+}
+{% endschema %}

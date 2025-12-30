@@ -1,0 +1,103 @@
+{
+    "sections": {
+        "main": {
+            "type": "section-faq-page",
+            "blocks": {
+                "faq_ship_1": {
+                    "type": "faq",
+                    "settings": {
+                        "category": "Shipping & Delivery",
+                        "question": "How long will my order take to arrive?",
+                        "answer": "We ship all orders from London via Royal Mail Tracked 48.\n\n• Processing Time: 1 business day (we pack it)\n• Delivery Time: 2-3 business days\n\nYou will receive a tracking number via email as soon as your order is dispatched."
+                    }
+                },
+                "faq_ship_2": {
+                    "type": "faq",
+                    "settings": {
+                        "category": "Shipping & Delivery",
+                        "question": "Do you offer Next Day Delivery?",
+                        "answer": "Currently, we prioritize reliability over speed. Our standard Royal Mail Tracked 48 service is free on orders over £50 and very reliable. If you need it urgently, please email us before ordering."
+                    }
+                },
+                "faq_ship_3": {
+                    "type": "faq",
+                    "settings": {
+                        "category": "Shipping & Delivery",
+                        "question": "Where do you ship from?",
+                        "answer": "All orders are packed and shipped from our facility in the UK. No long waits from overseas."
+                    }
+                },
+                "faq_prod_1": {
+                    "type": "faq",
+                    "settings": {
+                        "category": "Product & Quality",
+                        "question": "Will the jewelry turn my skin green?",
+                        "answer": "No. We use 316L Surgical Grade Stainless Steel.\n\nUnlike cheap alloy jewelry that rusts, our pieces are hypoallergenic, lead-free, and nickel-free. It is safe for sensitive skin."
+                    }
+                },
+                "faq_prod_2": {
+                    "type": "faq",
+                    "settings": {
+                        "category": "Product & Quality",
+                        "question": "Is it waterproof?",
+                        "answer": "Yes. Our Gold finish is applied using PVD (Physical Vapor Deposition) technology, which bonds to the steel at a molecular level. You can wear it in the shower or gym without worrying about fading or tarnishing."
+                    }
+                },
+                "faq_prod_3": {
+                    "type": "faq",
+                    "settings": {
+                        "category": "Product & Quality",
+                        "question": "Does it come with a box?",
+                        "answer": "Yes. Every necklace comes in a premium soft-touch jewelry box, ready for gifting. The emotional message card shown in the photos is included inside the box."
+                    }
+                },
+                "faq_ret_1": {
+                    "type": "faq",
+                    "settings": {
+                        "category": "Returns & Warranty",
+                        "question": "What is your return policy?",
+                        "answer": "We offer a 30-Day Happiness Guarantee.\n\nIf she doesn't love it, or if you change your mind, simply contact us within 30 days of receiving your order for a full refund.\n\nNote: The item must be unworn and in its original packaging."
+                    }
+                },
+                "faq_ret_2": {
+                    "type": "faq",
+                    "settings": {
+                        "category": "Returns & Warranty",
+                        "question": "How do I start a return?",
+                        "answer": "Please email our support team at support@aurea.co.uk with your Order #, and we will send you the return instructions."
+                    }
+                },
+                "faq_ret_3": {
+                    "type": "faq",
+                    "settings": {
+                        "category": "Returns & Warranty",
+                        "question": "Do you offer a warranty?",
+                        "answer": "Yes. We stand by our craftsmanship. If your item breaks or tarnishes within 1 year of purchase, we will replace it for free."
+                    }
+                }
+            },
+            "block_order": [
+                "faq_ship_1",
+                "faq_ship_2",
+                "faq_ship_3",
+                "faq_prod_1",
+                "faq_prod_2",
+                "faq_prod_3",
+                "faq_ret_1",
+                "faq_ret_2",
+                "faq_ret_3"
+            ],
+            "settings": {
+                "preheading": "Help Center",
+                "heading": "Frequently Asked Questions",
+                "subheading": "Find answers to common questions about orders, shipping, and our products.",
+                "cta_heading": "Still Have Questions?",
+                "cta_text": "Our customer support team replies within hours, not days.",
+                "cta_button": "Contact Us"
+            }
+        }
+    },
+    "order": [
+        "main"
+    ]
+}

@@ -1,0 +1,156 @@
+{%- comment -%}
+  AUREA Wishlist Button (Simple LocalStorage Version)
+  No app required - uses browser localStorage
+  
+  Usage: {% render 'aurea-wishlist-button', product: product %}
+  Place after Add to Cart button
+{%- endcomment -%}
+
+<style>
+  .aurea-wishlist-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: none;
+    border: 1px solid #E5E5E5;
+    border-radius: 4px;
+    padding: 0.75rem 1.25rem;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 0.9rem;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.75rem;
+    width: 100%;
+  }
+  
+  .aurea-wishlist-btn:hover {
+    border-color: #B8860B;
+    color: #B8860B;
+  }
+  
+  .aurea-wishlist-btn.is-active {
+    background: #FFF8F0;
+    border-color: #B8860B;
+    color: #B8860B;
+  }
+  
+  .aurea-wishlist-btn__icon {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.2s ease;
+  }
+  
+  .aurea-wishlist-btn:hover .aurea-wishlist-btn__icon {
+    transform: scale(1.15);
+  }
+  
+  .aurea-wishlist-btn__icon--filled {
+    display: none;
+  }
+  
+  .aurea-wishlist-btn.is-active .aurea-wishlist-btn__icon--outline {
+    display: none;
+  }
+  
+  .aurea-wishlist-btn.is-active .aurea-wishlist-btn__icon--filled {
+    display: block;
+  }
+</style>
+
+<button 
+  type="button" 
+  class="aurea-wishlist-btn" 
+  id="wishlist-btn-{{ product.id }}"
+  data-product-id="{{ product.id }}"
+  data-product-handle="{{ product.handle }}"
+  data-product-title="{{ product.title | escape }}"
+  data-product-image="{{ product.featured_image | image_url: width: 200 }}"
+  data-product-price="{{ product.price | money }}"
+>
+  <svg class="aurea-wishlist-btn__icon aurea-wishlist-btn__icon--outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+  </svg>
+  <svg class="aurea-wishlist-btn__icon aurea-wishlist-btn__icon--filled" viewBox="0 0 24 24" fill="#B8860B" stroke="#B8860B" stroke-width="1.5">
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+  </svg>
+  <span class="aurea-wishlist-btn__text">Add to Wishlist</span>
+</button>
+
+<script>
+(function() {
+  const WISHLIST_KEY = 'aurea_wishlist';
+  
+  // Get wishlist from localStorage
+  function getWishlist() {
+    try {
+      return JSON.parse(localStorage.getItem(WISHLIST_KEY)) || [];
+    } catch {
+      return [];
+    }
+  }
+  
+  // Save wishlist to localStorage
+  function saveWishlist(wishlist) {
+    localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist));
+  }
+  
+  // Check if product is in wishlist
+  function isInWishlist(productId) {
+    return getWishlist().some(item => item.id === productId);
+  }
+  
+  // Add product to wishlist
+  function addToWishlist(product) {
+    const wishlist = getWishlist();
+    if (!isInWishlist(product.id)) {
+      wishlist.push(product);
+      saveWishlist(wishlist);
+    }
+  }
+  
+  // Remove product from wishlist
+  function removeFromWishlist(productId) {
+    const wishlist = getWishlist().filter(item => item.id !== productId);
+    saveWishlist(wishlist);
+  }
+  
+  // Initialize button
+  const btn = document.getElementById('wishlist-btn-{{ product.id }}');
+  if (!btn) return;
+  
+  const productId = parseInt(btn.dataset.productId);
+  
+  // Set initial state
+  if (isInWishlist(productId)) {
+    btn.classList.add('is-active');
+    btn.querySelector('.aurea-wishlist-btn__text').textContent = 'In Your Wishlist';
+  }
+  
+  // Handle click
+  btn.addEventListener('click', function() {
+    const product = {
+      id: productId,
+      handle: btn.dataset.productHandle,
+      title: btn.dataset.productTitle,
+      image: btn.dataset.productImage,
+      price: btn.dataset.productPrice
+    };
+    
+    if (isInWishlist(productId)) {
+      removeFromWishlist(productId);
+      btn.classList.remove('is-active');
+      btn.querySelector('.aurea-wishlist-btn__text').textContent = 'Add to Wishlist';
+    } else {
+      addToWishlist(product);
+      btn.classList.add('is-active');
+      btn.querySelector('.aurea-wishlist-btn__text').textContent = 'In Your Wishlist';
+      
+      // Optional: Show brief animation
+      btn.style.transform = 'scale(1.05)';
+      setTimeout(() => { btn.style.transform = ''; }, 200);
+    }
+  });
+})();
+</script>

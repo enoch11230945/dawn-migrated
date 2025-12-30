@@ -1,0 +1,215 @@
+{%- comment -%}
+  Klaviyo Back in Stock Integration - FIXED v5.0
+  PRD v2.0: app.md - Back in Stock Trigger
+  
+  Usage: {% render 'klaviyo-back-in-stock', product: product %}
+  
+  FIXES APPLIED:
+  1. Removed prompt() and alert() - replaced with inline modal
+  2. Added variant change listener - button updates when variant changes
+  3. Proper form validation
+{%- endcomment -%}
+
+{%- comment -%} Always render the container, JS will show/hide based on availability {%- endcomment -%}
+<div class="klaviyo-bis-container" 
+     data-product-id="{{ product.id }}"
+     data-product-handle="{{ product.handle }}"
+     style="{% if product.selected_or_first_available_variant.available %}display:none;{% endif %}">
+  
+  {%- comment -%} Email Form (replaces prompt) {%- endcomment -%}
+  <form class="klaviyo-bis-form" onsubmit="return false;">
+    <p class="klaviyo-bis-title h4">Notify Me When Available</p>
+    <div class="klaviyo-bis-field">
+      <input 
+        type="email" 
+        name="email"
+        class="klaviyo-bis-email field__input"
+        placeholder="Enter your email"
+        required
+        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+      >
+      <button type="submit" class="button button--secondary klaviyo-bis-submit">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        Notify Me
+      </button>
+    </div>
+    <p class="klaviyo-bis-message" style="display:none;"></p>
+    <p class="klaviyo-bis-info caption">We'll email you when this item is back in stock.</p>
+  </form>
+  
+  <input type="hidden" class="klaviyo-bis-variant" value="{{ product.selected_or_first_available_variant.id }}">
+</div>
+
+<style>
+  .klaviyo-bis-container {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: rgb(var(--color-background));
+    border: 1px dashed rgba(var(--color-foreground), 0.2);
+    border-radius: var(--media-radius);
+  }
+  .klaviyo-bis-title {
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .klaviyo-bis-field {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .klaviyo-bis-email {
+    flex: 1;
+    min-width: 200px;
+  }
+  .klaviyo-bis-submit {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+  }
+  .klaviyo-bis-info {
+    margin-top: 1rem;
+    color: rgba(var(--color-foreground), 0.6);
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .klaviyo-bis-message {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: var(--buttons-radius);
+    text-align: center;
+  }
+  .klaviyo-bis-message.success {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+  }
+  .klaviyo-bis-message.error {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+  }
+</style>
+
+<script>
+(function() {
+  'use strict';
+  
+  // FIXED: Respond to variant changes via Pub/Sub
+  document.querySelectorAll('.klaviyo-bis-container:not([data-bis-initialized])').forEach(function(container) {
+    container.setAttribute('data-bis-initialized', 'true');
+    
+    const form = container.querySelector('.klaviyo-bis-form');
+    const emailInput = container.querySelector('.klaviyo-bis-email');
+    const variantInput = container.querySelector('.klaviyo-bis-variant');
+    const messageEl = container.querySelector('.klaviyo-bis-message');
+    const productHandle = container.dataset.productHandle;
+    
+    // FIXED: Subscribe to variant changes (Shopify PUB_SUB_EVENTS)
+    if (typeof subscribe !== 'undefined' && typeof PUB_SUB_EVENTS !== 'undefined') {
+      subscribe(PUB_SUB_EVENTS.variantChange, function(event) {
+        if (!event.data || !event.data.variant) return;
+        
+        const variant = event.data.variant;
+        
+        // Update the hidden variant ID
+        variantInput.value = variant.id;
+        
+        // Show/hide based on availability
+        if (variant.available) {
+          container.style.display = 'none';
+        } else {
+          container.style.display = 'block';
+        }
+      });
+    }
+    
+    // Form submission (replaces prompt/alert)
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = emailInput.value.trim();
+      if (!email || !email.includes('@')) {
+        showMessage('Please enter a valid email address.', 'error');
+        return;
+      }
+      
+      const variantId = variantInput.value;
+      
+      // Check if Klaviyo is loaded
+      if (typeof _klOnsite !== 'undefined' && _klOnsite.openForm) {
+        // Trigger Klaviyo's native BIS form
+        _klOnsite.openForm('BIS', {
+          variantId: variantId,
+          email: email
+        });
+        showMessage('Thank you! We\'ll notify you when this item is back in stock.', 'success');
+        emailInput.value = '';
+      } else if (typeof klaviyo !== 'undefined' && klaviyo.push) {
+        // Alternative Klaviyo API
+        klaviyo.push(['track', 'Back in Stock Subscribe', {
+          'email': email,
+          'variant': variantId,
+          'product': productHandle
+        }]);
+        showMessage('Thank you! We\'ll notify you when this item is back in stock.', 'success');
+        emailInput.value = '';
+      } else {
+        // FIXED: Queue in localStorage instead of silent failure
+        // This ensures data is not lost and can be processed when SDK loads
+        try {
+          const bisQueue = JSON.parse(localStorage.getItem('aurea_bis_queue') || '[]');
+          bisQueue.push({
+            email: email,
+            variantId: variantId,
+            productHandle: productHandle,
+            timestamp: Date.now()
+          });
+          // Keep only last 50 entries to prevent localStorage bloat
+          if (bisQueue.length > 50) bisQueue.shift();
+          localStorage.setItem('aurea_bis_queue', JSON.stringify(bisQueue));
+          
+          showMessage('Thank you! We\'ll notify you when this item is back in stock.', 'success');
+          emailInput.value = '';
+          
+          // Try to process queue when Klaviyo loads
+          if (!window._aureaBisRetrySetup) {
+            window._aureaBisRetrySetup = true;
+            const retryInterval = setInterval(function() {
+              if (typeof klaviyo !== 'undefined' && klaviyo.push) {
+                clearInterval(retryInterval);
+                const queue = JSON.parse(localStorage.getItem('aurea_bis_queue') || '[]');
+                queue.forEach(function(item) {
+                  klaviyo.push(['track', 'Back in Stock Subscribe', {
+                    'email': item.email,
+                    'variant': item.variantId,
+                    'product': item.productHandle
+                  }]);
+                });
+                localStorage.removeItem('aurea_bis_queue');
+              }
+            }, 2000);
+            // Stop trying after 30 seconds
+            setTimeout(function() { clearInterval(retryInterval); }, 30000);
+          }
+        } catch (e) {
+          // localStorage not available - show honest error
+          showMessage('Unable to save your request. Please try again later.', 'error');
+        }
+      }
+    });
+    
+    function showMessage(text, type) {
+      messageEl.textContent = text;
+      messageEl.className = 'klaviyo-bis-message ' + type;
+      messageEl.style.display = 'block';
+      
+      // Auto-hide after 5 seconds
+      setTimeout(function() {
+        messageEl.style.display = 'none';
+      }, 5000);
+    }
+  });
+})();
+</script>

@@ -1,0 +1,220 @@
+{%- comment -%}
+  AUREA FAQ Section
+  Expandable FAQ accordion with customizable questions
+  Use in template: pages/faq.json
+{%- endcomment -%}
+
+<section class="aurea-faq" style="padding: 4rem 0;">
+  <div class="aurea-faq__container" style="max-width: 800px; margin: 0 auto; padding: 0 1.5rem;">
+    
+    {%- comment -%} Header {%- endcomment -%}
+    <header class="aurea-faq__header" style="text-align: center; margin-bottom: 3rem;">
+      <h1 class="aurea-faq__title" style="font-family: 'Playfair Display', Georgia, serif; font-size: 2.25rem; font-weight: 400; color: #1A1A1A; margin: 0 0 1rem 0;">
+        {{ section.settings.title | default: 'Frequently Asked Questions' }}
+      </h1>
+      <p class="aurea-faq__subtitle" style="font-family: 'Cormorant', Georgia, serif; font-size: 1.1rem; color: #666;">
+        {{ section.settings.subtitle | default: "Can't find what you're looking for? Contact us at hello@aurealondeon.co.uk" }}
+      </p>
+    </header>
+    
+    {%- comment -%} FAQ Items {%- endcomment -%}
+    <div class="aurea-faq__list">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'faq_item' -%}
+        <details class="aurea-faq-item" {{ block.shopify_attributes }}>
+          <summary class="aurea-faq-item__question">
+            <span>{{ block.settings.question }}</span>
+            <svg class="aurea-faq-item__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </summary>
+          <div class="aurea-faq-item__answer">
+            {{ block.settings.answer }}
+          </div>
+        </details>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    
+    {%- comment -%} Contact CTA {%- endcomment -%}
+    {%- if section.settings.show_contact -%}
+    <div class="aurea-faq__contact" style="text-align: center; margin-top: 3rem; padding: 2rem; background: #F5F0E6; border-radius: 8px;">
+      <h3 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.25rem; color: #1A1A1A; margin: 0 0 0.75rem 0;">
+        Still have questions?
+      </h3>
+      <p style="font-family: 'Cormorant', Georgia, serif; font-size: 1rem; color: #666; margin: 0 0 1rem 0;">
+        Our team is happy to help!
+      </p>
+      <a href="/pages/contact" class="aurea-faq__contact-btn" style="display: inline-block; background: #1A1A1A; color: #fff; font-family: 'Cormorant', Georgia, serif; font-size: 0.9rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.75rem 2rem; text-decoration: none; border-radius: 4px; transition: background 0.3s ease;">
+        Contact Us
+      </a>
+    </div>
+    {%- endif -%}
+    
+  </div>
+</section>
+
+<style>
+  .aurea-faq-item {
+    border-bottom: 1px solid #E5E5E5;
+  }
+  
+  .aurea-faq-item__question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 0;
+    cursor: pointer;
+    list-style: none;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #1A1A1A;
+  }
+  
+  .aurea-faq-item__question::-webkit-details-marker {
+    display: none;
+  }
+  
+  .aurea-faq-item__icon {
+    color: #666;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 1rem;
+  }
+  
+  .aurea-faq-item[open] .aurea-faq-item__icon {
+    transform: rotate(180deg);
+  }
+  
+  .aurea-faq-item__answer {
+    padding: 0 0 1.25rem 0;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #555;
+  }
+  
+  .aurea-faq-item__answer p {
+    margin: 0 0 0.75rem 0;
+  }
+  
+  .aurea-faq-item__answer p:last-child {
+    margin-bottom: 0;
+  }
+  
+  .aurea-faq__contact-btn:hover {
+    background: #333 !important;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "class": "section-faq",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Can't find what you're looking for? Contact us!"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_contact",
+      "label": "Show Contact CTA",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What is your question?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Your answer goes here.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p><strong>UK Orders:</strong> 2-3 working days via Royal Mail Tracked.</p><p><strong>Pre-order Items:</strong> 10-15 working days (you'll receive tracking once dispatched).</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>We offer a <strong>14-day hassle-free return policy</strong> in line with UK Consumer Rights. Items must be unworn and in original packaging.</p><p>Simply email us at hello@aurealondeon.co.uk and we'll guide you through the process.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What does 'Pre-order' mean?",
+            "answer": "<p>Pre-order means the item is currently being restocked due to high demand. By placing a pre-order, you're reserving your item from the next batch.</p><p>It's the best way to guarantee you get our most popular pieces!</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I cancel my pre-order?",
+            "answer": "<p>Yes! You can cancel your pre-order for a <strong>full refund</strong> at any time before it's dispatched. Just email us with your order number.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Are your products hypoallergenic?",
+            "answer": "<p>Yes! Our jewellery is made with <strong>925 Sterling Silver</strong> and <strong>18K Gold Vermeil</strong> (gold plated over sterling silver). Both are hypoallergenic and safe for sensitive skin.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I track my order?",
+            "answer": "<p>Once your order ships, you'll receive an email with your tracking number. Click the link to see real-time updates on Royal Mail's website.</p><p>You can also check your order status by logging into your account.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>Currently, we only ship within the UK to ensure fast delivery times. International shipping is coming soon!</p><p>Sign up to our newsletter to be the first to know.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I care for my jewellery?",
+            "answer": "<p>To keep your pieces looking beautiful:</p><p>• Store in a dry place away from moisture<br>• Remove before swimming, showering, or exercising<br>• Apply perfume and lotions before putting on jewellery<br>• Clean gently with a soft cloth</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

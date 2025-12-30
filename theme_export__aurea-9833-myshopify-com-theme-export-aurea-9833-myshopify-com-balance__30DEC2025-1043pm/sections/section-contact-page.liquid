@@ -1,0 +1,358 @@
+{%- comment -%}
+  AUREA Contact Page Section
+  Elegant contact form with store info
+{%- endcomment -%}
+
+<div class="aurea-contact page-width" style="padding: 4rem 2rem;">
+  
+  <div style="max-width: 1000px; margin: 0 auto;">
+    
+    {%- comment -%} Header {%- endcomment -%}
+    <div style="text-align: center; margin-bottom: 4rem;">
+      <p style="
+        font-family: 'Cormorant', Georgia, serif;
+        font-size: 0.85rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: #B8860B;
+        margin-bottom: 1rem;
+      ">{{ section.settings.preheading }}</p>
+      <h1 style="
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 400;
+        margin-bottom: 1rem;
+      ">{{ section.settings.heading }}</h1>
+      <p style="
+        font-family: 'Cormorant', Georgia, serif;
+        font-size: 1.1rem;
+        color: rgba(26,26,26,0.7);
+        max-width: 600px;
+        margin: 0 auto;
+      ">{{ section.settings.subheading }}</p>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;">
+      
+      {%- comment -%} Contact Form {%- endcomment -%}
+      <div>
+        <h2 style="
+          font-family: 'Playfair Display', Georgia, serif;
+          font-size: 1.5rem;
+          font-weight: 400;
+          margin-bottom: 2rem;
+        ">Send us a Message</h2>
+        
+        {% form 'contact', class: 'aurea-contact-form' %}
+          {% if form.posted_successfully? %}
+            <div style="
+              padding: 1.5rem;
+              background: #E8F5E9;
+              border: 1px solid #4CAF50;
+              margin-bottom: 2rem;
+              font-family: 'Cormorant', Georgia, serif;
+            ">
+              <p style="margin: 0; color: #2E7D32;">Thank you for your message. We'll respond within 24 hours.</p>
+            </div>
+          {% endif %}
+          
+          {% if form.errors %}
+            <div style="
+              padding: 1.5rem;
+              background: #FFEBEE;
+              border: 1px solid #F44336;
+              margin-bottom: 2rem;
+              font-family: 'Cormorant', Georgia, serif;
+            ">
+              {{ form.errors | default_errors }}
+            </div>
+          {% endif %}
+          
+          <div style="margin-bottom: 1.5rem;">
+            <label for="contact-name" style="
+              display: block;
+              font-family: 'Cormorant', Georgia, serif;
+              font-weight: 600;
+              font-size: 0.9rem;
+              margin-bottom: 0.5rem;
+            ">Name *</label>
+            <input 
+              type="text" 
+              id="contact-name" 
+              name="contact[name]"
+              required
+              style="
+                width: 100%;
+                padding: 1rem;
+                font-family: 'Cormorant', Georgia, serif;
+                font-size: 1rem;
+                border: 1px solid #D4D0CB;
+                background: #FFFFFF;
+              "
+            >
+          </div>
+          
+          <div style="margin-bottom: 1.5rem;">
+            <label for="contact-email" style="
+              display: block;
+              font-family: 'Cormorant', Georgia, serif;
+              font-weight: 600;
+              font-size: 0.9rem;
+              margin-bottom: 0.5rem;
+            ">Email *</label>
+            <input 
+              type="email" 
+              id="contact-email" 
+              name="contact[email]"
+              required
+              style="
+                width: 100%;
+                padding: 1rem;
+                font-family: 'Cormorant', Georgia, serif;
+                font-size: 1rem;
+                border: 1px solid #D4D0CB;
+                background: #FFFFFF;
+              "
+            >
+          </div>
+          
+          <div style="margin-bottom: 1.5rem;">
+            <label for="contact-subject" style="
+              display: block;
+              font-family: 'Cormorant', Georgia, serif;
+              font-weight: 600;
+              font-size: 0.9rem;
+              margin-bottom: 0.5rem;
+            ">Subject</label>
+            <select 
+              id="contact-subject" 
+              name="contact[subject]"
+              style="
+                width: 100%;
+                padding: 1rem;
+                font-family: 'Cormorant', Georgia, serif;
+                font-size: 1rem;
+                border: 1px solid #D4D0CB;
+                background: #FFFFFF;
+              "
+            >
+              <option value="General Inquiry">General Inquiry</option>
+              <option value="Order Status">Order Status</option>
+              <option value="Returns & Exchanges">Returns & Exchanges</option>
+              <option value="Custom Orders">Custom Orders</option>
+              <option value="Wholesale">Wholesale</option>
+            </select>
+          </div>
+          
+          <div style="margin-bottom: 1.5rem;">
+            <label for="contact-message" style="
+              display: block;
+              font-family: 'Cormorant', Georgia, serif;
+              font-weight: 600;
+              font-size: 0.9rem;
+              margin-bottom: 0.5rem;
+            ">Message *</label>
+            <textarea 
+              id="contact-message" 
+              name="contact[body]"
+              rows="6"
+              required
+              style="
+                width: 100%;
+                padding: 1rem;
+                font-family: 'Cormorant', Georgia, serif;
+                font-size: 1rem;
+                border: 1px solid #D4D0CB;
+                background: #FFFFFF;
+                resize: vertical;
+              "
+            ></textarea>
+          </div>
+          
+          <button 
+            type="submit"
+            class="aurea-contact-submit-btn"
+          >
+            Send Message
+          </button>
+        {% endform %}
+      </div>
+      
+      {%- comment -%} Store Info {%- endcomment -%}
+      <div>
+        <h2 style="
+          font-family: 'Playfair Display', Georgia, serif;
+          font-size: 1.5rem;
+          font-weight: 400;
+          margin-bottom: 2rem;
+        ">Get in Touch</h2>
+        
+        <div style="margin-bottom: 2rem;">
+          <h3 style="
+            font-family: 'Cormorant', Georgia, serif;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #B8860B;
+          ">Email</h3>
+          <p style="
+            font-family: 'Cormorant', Georgia, serif;
+            font-size: 1.1rem;
+          ">{{ section.settings.email }}</p>
+        </div>
+        
+        <div style="margin-bottom: 2rem;">
+          <h3 style="
+            font-family: 'Cormorant', Georgia, serif;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #B8860B;
+          ">Response Time</h3>
+          <p style="
+            font-family: 'Cormorant', Georgia, serif;
+            font-size: 1.1rem;
+          ">{{ section.settings.response_time }}</p>
+        </div>
+        
+        <div style="margin-bottom: 2rem;">
+          <h3 style="
+            font-family: 'Cormorant', Georgia, serif;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #B8860B;
+          ">Working Hours</h3>
+          <p style="
+            font-family: 'Cormorant', Georgia, serif;
+            font-size: 1.1rem;
+            line-height: 1.8;
+          ">{{ section.settings.working_hours }}</p>
+        </div>
+        
+        {%- comment -%} FAQ Teaser {%- endcomment -%}
+        <div style="
+          margin-top: 3rem;
+          padding: 2rem;
+          background: #F5F0E6;
+          border-left: 3px solid #D4AF37;
+        ">
+          <h3 style="
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+          ">Looking for quick answers?</h3>
+          <p style="
+            font-family: 'Cormorant', Georgia, serif;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: rgba(26,26,26,0.7);
+          ">Check our frequently asked questions for instant help.</p>
+          <a 
+            href="{{ section.settings.faq_link }}"
+            style="
+              font-family: 'Cormorant', Georgia, serif;
+              font-weight: 600;
+              color: #B8860B;
+              text-decoration: underline;
+              text-underline-offset: 3px;
+            "
+          >View FAQs →</a>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+  
+</div>
+
+<style>
+  @media (max-width: 768px) {
+    .aurea-contact > div > div:last-child {
+      grid-template-columns: 1fr !important;
+    }
+  }
+  
+  .aurea-contact-submit-btn {
+    width: 100%;
+    padding: 1.25rem 2rem;
+    font-family: 'Cormorant', Georgia, serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    background: #0D0D0D;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .aurea-contact-submit-btn:hover {
+    background: #D4AF37;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Contact Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text",
+      "id": "preheading",
+      "label": "Preheading",
+      "default": "Contact Us"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "We'd Love to Hear From You"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Have a question about your order, our products, or just want to say hello? We're here to help."
+    },
+    {
+      "type": "header",
+      "content": "Store Information"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "hello@aurea.co.uk"
+    },
+    {
+      "type": "text",
+      "id": "response_time",
+      "label": "Response Time",
+      "default": "We respond within 24 hours"
+    },
+    {
+      "type": "textarea",
+      "id": "working_hours",
+      "label": "Working Hours",
+      "default": "Monday - Friday: 9am - 5pm GMT\nSaturday - Sunday: Closed"
+    },
+    {
+      "type": "url",
+      "id": "faq_link",
+      "label": "FAQ Page Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Page"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,137 @@
+{%- comment -%}
+  AUREA Pre-Order Notice
+  Automatically displays pre-order messaging when product is out of stock
+  but "Continue selling when out of stock" is enabled.
+  
+  Usage: {% render 'aurea-preorder-notice', product: product %}
+{%- endcomment -%}
+
+{%- assign is_preorder = false -%}
+{%- assign variant = product.selected_or_first_available_variant -%}
+
+{%- comment -%} Check if this is a pre-order situation {%- endcomment -%}
+{%- if variant.inventory_management == 'shopify' -%}
+  {%- if variant.inventory_quantity <= 0 and variant.inventory_policy == 'continue' -%}
+    {%- assign is_preorder = true -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- if is_preorder -%}
+<style>
+  .aurea-preorder-notice {
+    background: linear-gradient(135deg, #FFF5E6 0%, #FFF8F0 100%);
+    border: 1px solid #F5D0A9;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    font-family: 'Cormorant', Georgia, serif;
+  }
+  
+  .aurea-preorder-notice__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .aurea-preorder-notice__icon {
+    width: 24px;
+    height: 24px;
+    color: #D4A574;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+  
+  .aurea-preorder-notice__title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #B8860B;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0;
+  }
+  
+  .aurea-preorder-notice__text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #5C4A32;
+    margin: 0;
+  }
+  
+  .aurea-preorder-notice__text strong {
+    color: #1A1A1A;
+  }
+  
+  .aurea-preorder-notice__dispatch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #B8860B;
+    color: #fff;
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 0.75rem;
+  }
+  
+  /* In-stock badge (opposite state) */
+  .aurea-instock-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 0.9rem;
+    color: #2E7D32;
+    margin: 0.5rem 0;
+  }
+  
+  .aurea-instock-badge__dot {
+    width: 8px;
+    height: 8px;
+    background: #4CAF50;
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+  }
+  
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+</style>
+
+<div class="aurea-preorder-notice">
+  <div class="aurea-preorder-notice__header">
+    <svg class="aurea-preorder-notice__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+    <h4 class="aurea-preorder-notice__title">🔥 High Demand Alert</h4>
+  </div>
+  <p class="aurea-preorder-notice__text">
+    Due to going viral on social media, our UK stock has just sold out!<br>
+    We are now accepting <strong>Pre-orders</strong> for the next batch. Place your order now to secure yours.
+  </p>
+  <span class="aurea-preorder-notice__dispatch">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M5 12h14M12 5l7 7-7 7"/>
+    </svg>
+    Dispatches in 10-15 working days
+  </span>
+</div>
+
+{%- else -%}
+
+{%- comment -%} Show in-stock badge when product is available {%- endcomment -%}
+{%- if variant.inventory_quantity > 0 -%}
+<div class="aurea-instock-badge">
+  <span class="aurea-instock-badge__dot"></span>
+  🇬🇧 In Stock – Dispatched within 24 hours
+</div>
+{%- endif -%}
+
+{%- endif -%}
