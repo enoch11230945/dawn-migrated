@@ -11,6 +11,15 @@ import { Component } from '@theme/component';
  * @extends {Component<Refs>}
  */
 class ProductTitle extends Component {
+  /** @type {ResizeObserver | undefined} */
+  resizeObserver;
+
+  /**
+   * Bound resize handler - FIXED (Linus): Must use arrow function to preserve reference
+   * for proper cleanup in disconnectedCallback
+   */
+  #boundResizeHandler = () => this.#calculateTruncation();
+
   constructor() {
     super();
   }
@@ -33,7 +42,7 @@ class ProductTitle extends Component {
       this.#calculateTruncation();
     } else {
       /** @type {Window} */
-      (window).addEventListener('resize', this.#handleResize.bind(this));
+      (window).addEventListener('resize', this.#boundResizeHandler);
       this.#calculateTruncation();
     }
   }
@@ -63,19 +72,13 @@ class ProductTitle extends Component {
     textElement.style.webkitLineClamp = String(maxLines);
   }
 
-  /**
-   * Handle window resize events
-   */
-  #handleResize() {
-    this.#calculateTruncation();
-  }
-
   disconnectedCallback() {
     super.disconnectedCallback();
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
-    window.removeEventListener('resize', this.#handleResize);
+    // FIXED (Linus): Now correctly removes the same function reference
+    window.removeEventListener('resize', this.#boundResizeHandler);
   }
 }
 
@@ -84,3 +87,4 @@ if (!customElements.get('product-title')) {
 }
 
 export default ProductTitle;
+
