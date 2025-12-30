@@ -5,7 +5,7 @@
         "footer_section": {
             "type": "footer",
             "blocks": {
-                "brand_group": {
+                "brand_column": {
                     "type": "group",
                     "settings": {
                         "content_direction": "column",
@@ -20,25 +20,31 @@
                         "brand_logo": {
                             "type": "logo",
                             "settings": {
-                                "max_width": 150
+                                "max_width": 140
                             }
                         },
-                        "brand_tagline": {
+                        "worldwide_text": {
                             "type": "text",
                             "settings": {
-                                "text": "<p>Discover timeless elegance with our exquisite jewellery collection. Crafted with love, designed to last.</p>",
+                                "text": "<p style=\"margin-top: 24px;\"><strong>WORLDWIDE SHIPPING</strong></p>",
                                 "width": "100%",
                                 "alignment": "left",
                                 "type_preset": "paragraph"
                             }
                         },
-                        "worldwide_shipping": {
+                        "divider_1": {
+                            "type": "_divider",
+                            "settings": {
+                                "width": 40
+                            }
+                        },
+                        "secure_text": {
                             "type": "text",
                             "settings": {
-                                "text": "<p><strong>WORLDWIDE SHIPPING</strong></p>",
+                                "text": "<p style=\"margin-top: 16px;\"><strong>SECURE PAYMENT</strong></p>",
                                 "width": "100%",
                                 "alignment": "left",
-                                "type_preset": "h6"
+                                "type_preset": "paragraph"
                             }
                         },
                         "payment_icons": {
@@ -50,12 +56,13 @@
                     },
                     "block_order": [
                         "brand_logo",
-                        "brand_tagline",
-                        "worldwide_shipping",
+                        "worldwide_text",
+                        "divider_1",
+                        "secure_text",
                         "payment_icons"
                     ]
                 },
-                "help_menu": {
+                "help_column": {
                     "type": "group",
                     "settings": {
                         "content_direction": "column",
@@ -89,7 +96,41 @@
                         "help_links"
                     ]
                 },
-                "collections_menu": {
+                "about_column": {
+                    "type": "group",
+                    "settings": {
+                        "content_direction": "column",
+                        "vertical_on_mobile": true,
+                        "horizontal_alignment": "flex-start",
+                        "vertical_alignment": "flex-start",
+                        "gap": 8,
+                        "width": "fill",
+                        "inherit_color_scheme": true
+                    },
+                    "blocks": {
+                        "about_heading": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<p><strong>EVERYTHING ABOUT AUREA</strong></p>",
+                                "width": "100%",
+                                "alignment": "left",
+                                "type_preset": "h6"
+                            }
+                        },
+                        "about_links": {
+                            "type": "menu",
+                            "settings": {
+                                "menu": "footer-about",
+                                "alignment": "left"
+                            }
+                        }
+                    },
+                    "block_order": [
+                        "about_heading",
+                        "about_links"
+                    ]
+                },
+                "collections_column": {
                     "type": "group",
                     "settings": {
                         "content_direction": "column",
@@ -123,7 +164,7 @@
                         "collections_links"
                     ]
                 },
-                "newsletter_group": {
+                "newsletter_column": {
                     "type": "group",
                     "settings": {
                         "content_direction": "column",
@@ -144,19 +185,22 @@
                                 "type_preset": "h6"
                             }
                         },
-                        "contact_text": {
+                        "contact_email": {
                             "type": "text",
                             "settings": {
-                                "text": "<p>CONTACT US: hello@aurea.com</p>",
+                                "text": "<p>CONTACT US: <a href=\"mailto:hello@yourdomain.com\">hello@yourdomain.com</a></p>",
                                 "width": "100%",
                                 "alignment": "left",
                                 "type_preset": "paragraph"
                             }
                         },
-                        "newsletter_form": {
-                            "type": "email-signup",
+                        "country_selector": {
+                            "type": "text",
                             "settings": {
-                                "width": "fill"
+                                "text": "<p>🇬🇧 United Kingdom (GBP £)</p>",
+                                "width": "100%",
+                                "alignment": "left",
+                                "type_preset": "paragraph"
                             }
                         },
                         "social_links": {
@@ -164,28 +208,36 @@
                             "settings": {
                                 "alignment": "left"
                             }
+                        },
+                        "trust_badge": {
+                            "type": "image",
+                            "settings": {
+                                "alignment": "left"
+                            }
                         }
                     },
                     "block_order": [
                         "newsletter_heading",
-                        "contact_text",
-                        "newsletter_form",
-                        "social_links"
+                        "contact_email",
+                        "country_selector",
+                        "social_links",
+                        "trust_badge"
                     ]
                 }
             },
             "block_order": [
-                "brand_group",
-                "help_menu",
-                "collections_menu",
-                "newsletter_group"
+                "brand_column",
+                "help_column",
+                "about_column",
+                "collections_column",
+                "newsletter_column"
             ],
             "settings": {
                 "section_width": "page-width",
-                "gap": 32,
+                "gap": 24,
                 "color_scheme": "scheme-1",
-                "padding-block-start": 48,
-                "padding-block-end": 24
+                "padding-block-start": 60,
+                "padding-block-end": 30
             }
         },
         "footer_utilities": {
