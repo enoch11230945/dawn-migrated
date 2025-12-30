@@ -223,6 +223,11 @@ class HeaderComponent extends Component {
       cancelAnimationFrame(this.#scrollRafId);
       this.#scrollRafId = null;
     }
+    // FIXED (Linus): Clear pending sticky animation timeout
+    if (this.#timeout !== null) {
+      clearTimeout(this.#timeout);
+      this.#timeout = null;
+    }
     document.body.style.setProperty('--header-height', '0px');
   }
 }

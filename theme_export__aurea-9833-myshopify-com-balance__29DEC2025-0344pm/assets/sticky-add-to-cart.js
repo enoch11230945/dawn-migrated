@@ -90,8 +90,12 @@ class StickyAddToCartComponent extends Component {
     this.#buyButtonsIntersectionObserver?.disconnect();
     this.#mainBottomObserver?.disconnect();
     this.#abortController.abort();
+    // FIXED (Linus): Clear both timeouts
     if (this.#animationTimeout) {
       clearTimeout(this.#animationTimeout);
+    }
+    if (this.#resetTimeout) {
+      clearTimeout(this.#resetTimeout);
     }
   }
 
@@ -260,7 +264,7 @@ class StickyAddToCartComponent extends Component {
     if (!variantTitleElement || !variantPicker) return;
 
     const selectedOptions = Array.from(variantPicker.querySelectorAll('input:checked'))
-      .map((option) => /** @type {HTMLInputElement} */ (option).value)
+      .map((option) => /** @type {HTMLInputElement} */(option).value)
       .filter((value) => value !== '')
       .join(' / ');
     if (!selectedOptions) return;
