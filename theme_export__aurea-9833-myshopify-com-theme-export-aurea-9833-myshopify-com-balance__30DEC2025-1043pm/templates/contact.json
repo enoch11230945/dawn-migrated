@@ -1,0 +1,27 @@
+{
+    "sections": {
+        "main": {
+            "type": "section-aurea-contact",
+            "settings": {
+                "title": "We'd Love to Hear From You",
+                "subtitle": "<p>Have a question about your order, materials, or just want to say hello? Our small studio team is here to help.</p>",
+                "show_hours": true,
+                "hours_title": "Customer Care Hours",
+                "hours_text": "Monday - Friday: 9am - 5pm (GMT)",
+                "show_email": true,
+                "email": "hello@aurea.co.uk",
+                "show_location": true,
+                "location": "London, United Kingdom",
+                "response_time": "Please allow 1-2 business days for a response.",
+                "show_order_number": true,
+                "button_text": "Send Message",
+                "success_message": "Thank you for reaching out! We've received your message and will get back to you within 24-48 hours.",
+                "show_faq_link": true,
+                "faq_url": "/pages/faq"
+            }
+        }
+    },
+    "order": [
+        "main"
+    ]
+}

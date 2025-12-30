@@ -1,245 +1,588 @@
 {%- comment -%}
-  AUREA Contact Section
-  Professional contact page with form and info
-  Use in template: pages/contact.json
+  AUREA Elegant Contact Page Section
+  Split layout with image on left, form on right
+  Warm, personal, professional feel
 {%- endcomment -%}
 
-<section class="aurea-contact" style="padding: 4rem 0;">
-  <div class="aurea-contact__container" style="max-width: 1000px; margin: 0 auto; padding: 0 1.5rem;">
+<section class="aurea-contact">
+  <div class="aurea-contact__container page-width">
     
-    {%- comment -%} Header {%- endcomment -%}
-    <header class="aurea-contact__header" style="text-align: center; margin-bottom: 3rem;">
-      <h1 style="font-family: 'Playfair Display', Georgia, serif; font-size: 2.25rem; font-weight: 400; color: #1A1A1A; margin: 0 0 1rem 0;">
-        {{ section.settings.title | default: 'Get in Touch' }}
-      </h1>
-      <p style="font-family: 'Cormorant', Georgia, serif; font-size: 1.1rem; color: #666; max-width: 500px; margin: 0 auto;">
-        {{ section.settings.subtitle | default: "We'd love to hear from you. Our team typically responds within 24 hours." }}
-      </p>
-    </header>
+    {%- comment -%} Left Side: Image {%- endcomment -%}
+    <div class="aurea-contact__image-side">
+      {%- if section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 800 | image_tag: 
+          loading: 'lazy',
+          class: 'aurea-contact__image',
+          alt: section.settings.image_alt | default: 'Contact AUREA'
+        }}
+      {%- else -%}
+        <div class="aurea-contact__image-placeholder">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+          <p>Add an image in Theme Editor</p>
+        </div>
+      {%- endif -%}
+    </div>
     
-    <div class="aurea-contact__grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;">
+    {%- comment -%} Right Side: Content + Form {%- endcomment -%}
+    <div class="aurea-contact__content-side">
       
-      {%- comment -%} Contact Form {%- endcomment -%}
-      <div class="aurea-contact__form-wrapper">
-        <h2 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.25rem; font-weight: 500; color: #1A1A1A; margin: 0 0 1.5rem 0;">
-          Send us a message
-        </h2>
+      {%- comment -%} Heading & Description {%- endcomment -%}
+      <div class="aurea-contact__header">
+        <h1 class="aurea-contact__title">{{ section.settings.title }}</h1>
+        <div class="aurea-contact__subtitle">{{ section.settings.subtitle }}</div>
+      </div>
+      
+      {%- comment -%} Trust Info {%- endcomment -%}
+      <div class="aurea-contact__trust">
+        {%- if section.settings.show_hours -%}
+          <div class="aurea-contact__info-item">
+            <span class="aurea-contact__info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </span>
+            <div class="aurea-contact__info-text">
+              <strong>{{ section.settings.hours_title }}</strong>
+              <span>{{ section.settings.hours_text }}</span>
+            </div>
+          </div>
+        {%- endif -%}
         
-        {%- form 'contact', class: 'aurea-contact-form' -%}
+        {%- if section.settings.show_email -%}
+          <div class="aurea-contact__info-item">
+            <span class="aurea-contact__info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </span>
+            <div class="aurea-contact__info-text">
+              <strong>Email Us Directly</strong>
+              <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>
+            </div>
+          </div>
+        {%- endif -%}
+        
+        {%- if section.settings.show_location -%}
+          <div class="aurea-contact__info-item">
+            <span class="aurea-contact__info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+            </span>
+            <div class="aurea-contact__info-text">
+              <strong>Location</strong>
+              <span>{{ section.settings.location }}</span>
+            </div>
+          </div>
+        {%- endif -%}
+        
+        {%- if section.settings.response_time != blank -%}
+          <p class="aurea-contact__response-time">{{ section.settings.response_time }}</p>
+        {%- endif -%}
+      </div>
+      
+      {%- comment -%} Contact Form (No Phone Field) {%- endcomment -%}
+      <div class="aurea-contact__form-wrapper">
+        {%- form 'contact', class: 'aurea-contact__form' -%}
           {%- if form.posted_successfully? -%}
-            <div class="aurea-contact-form__success" style="background: #E8F5E9; border: 1px solid #C8E6C9; padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-family: 'Cormorant', Georgia, serif; color: #2E7D32;">
-              ✓ Thank you for your message! We'll get back to you soon.
+            <div class="aurea-contact__success">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              <h3>Thank You! ✨</h3>
+              <p>{{ section.settings.success_message }}</p>
             </div>
-          {%- endif -%}
-          
-          {%- if form.errors -%}
-            <div class="aurea-contact-form__error" style="background: #FFEBEE; border: 1px solid #FFCDD2; padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-family: 'Cormorant', Georgia, serif; color: #C62828;">
-              {{ form.errors | default_errors }}
+          {%- else -%}
+            {%- if form.errors -%}
+              <div class="aurea-contact__error">
+                {{ form.errors | default_errors }}
+              </div>
+            {%- endif -%}
+            
+            <div class="aurea-contact__field-group">
+              <div class="aurea-contact__field">
+                <label for="contact-name" class="visually-hidden">Your Name</label>
+                <input 
+                  type="text" 
+                  id="contact-name" 
+                  name="contact[name]" 
+                  placeholder="Your Name *" 
+                  required
+                  class="aurea-contact__input"
+                >
+              </div>
+              
+              <div class="aurea-contact__field">
+                <label for="contact-email" class="visually-hidden">Email Address</label>
+                <input 
+                  type="email" 
+                  id="contact-email" 
+                  name="contact[email]" 
+                  placeholder="Email Address *" 
+                  required
+                  autocapitalize="off"
+                  class="aurea-contact__input"
+                >
+              </div>
             </div>
+            
+            {%- if section.settings.show_order_number -%}
+              <div class="aurea-contact__field">
+                <label for="contact-order" class="visually-hidden">Order Number (if applicable)</label>
+                <input 
+                  type="text" 
+                  id="contact-order" 
+                  name="contact[order_number]" 
+                  placeholder="Order Number (optional)"
+                  class="aurea-contact__input"
+                >
+              </div>
+            {%- endif -%}
+            
+            <div class="aurea-contact__field">
+              <label for="contact-message" class="visually-hidden">Your Message</label>
+              <textarea 
+                id="contact-message" 
+                name="contact[body]" 
+                placeholder="How can we help? *" 
+                required
+                rows="5"
+                class="aurea-contact__textarea"
+              ></textarea>
+            </div>
+            
+            <button type="submit" class="aurea-contact__submit">
+              {{ section.settings.button_text }}
+            </button>
           {%- endif -%}
-          
-          <div class="aurea-form-group" style="margin-bottom: 1.25rem;">
-            <label for="contact-name" style="display: block; font-family: 'Cormorant', Georgia, serif; font-size: 0.9rem; font-weight: 600; color: #333; margin-bottom: 0.5rem;">Name *</label>
-            <input type="text" name="contact[name]" id="contact-name" required style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #E5E5E5; border-radius: 4px; font-family: 'Cormorant', Georgia, serif; font-size: 1rem;">
-          </div>
-          
-          <div class="aurea-form-group" style="margin-bottom: 1.25rem;">
-            <label for="contact-email" style="display: block; font-family: 'Cormorant', Georgia, serif; font-size: 0.9rem; font-weight: 600; color: #333; margin-bottom: 0.5rem;">Email *</label>
-            <input type="email" name="contact[email]" id="contact-email" required style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #E5E5E5; border-radius: 4px; font-family: 'Cormorant', Georgia, serif; font-size: 1rem;">
-          </div>
-          
-          <div class="aurea-form-group" style="margin-bottom: 1.25rem;">
-            <label for="contact-subject" style="display: block; font-family: 'Cormorant', Georgia, serif; font-size: 0.9rem; font-weight: 600; color: #333; margin-bottom: 0.5rem;">Subject</label>
-            <select name="contact[subject]" id="contact-subject" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #E5E5E5; border-radius: 4px; font-family: 'Cormorant', Georgia, serif; font-size: 1rem; background: #fff;">
-              <option value="General Inquiry">General Inquiry</option>
-              <option value="Order Status">Order Status</option>
-              <option value="Returns & Refunds">Returns & Refunds</option>
-              <option value="Pre-order Question">Pre-order Question</option>
-              <option value="Product Question">Product Question</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          
-          <div class="aurea-form-group" style="margin-bottom: 1.25rem;">
-            <label for="contact-order" style="display: block; font-family: 'Cormorant', Georgia, serif; font-size: 0.9rem; font-weight: 600; color: #333; margin-bottom: 0.5rem;">Order Number (if applicable)</label>
-            <input type="text" name="contact[order_number]" id="contact-order" placeholder="#1001" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #E5E5E5; border-radius: 4px; font-family: 'Cormorant', Georgia, serif; font-size: 1rem;">
-          </div>
-          
-          <div class="aurea-form-group" style="margin-bottom: 1.5rem;">
-            <label for="contact-message" style="display: block; font-family: 'Cormorant', Georgia, serif; font-size: 0.9rem; font-weight: 600; color: #333; margin-bottom: 0.5rem;">Message *</label>
-            <textarea name="contact[body]" id="contact-message" rows="5" required style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #E5E5E5; border-radius: 4px; font-family: 'Cormorant', Georgia, serif; font-size: 1rem; resize: vertical;"></textarea>
-          </div>
-          
-          <button type="submit" style="width: 100%; background: #1A1A1A; color: #fff; font-family: 'Playfair Display', Georgia, serif; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 1rem 2rem; border: none; border-radius: 4px; cursor: pointer; transition: background 0.3s ease;">
-            Send Message
-          </button>
         {%- endform -%}
       </div>
       
-      {%- comment -%} Contact Info {%- endcomment -%}
-      <div class="aurea-contact__info">
-        <h2 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.25rem; font-weight: 500; color: #1A1A1A; margin: 0 0 1.5rem 0;">
-          Contact Information
-        </h2>
-        
-        <div class="aurea-contact-info-item" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
-          <div style="color: #B8860B; font-size: 1.25rem;">📧</div>
-          <div>
-            <h3 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; font-weight: 500; color: #1A1A1A; margin: 0 0 0.25rem 0;">Email</h3>
-            <p style="font-family: 'Cormorant', Georgia, serif; font-size: 1rem; color: #666; margin: 0;">
-              <a href="mailto:{{ section.settings.email | default: 'hello@aurealondeon.co.uk' }}" style="color: #666; text-decoration: underline;">
-                {{ section.settings.email | default: 'hello@aurealondeon.co.uk' }}
-              </a>
-            </p>
-          </div>
+      {%- comment -%} FAQ Link {%- endcomment -%}
+      {%- if section.settings.show_faq_link -%}
+        <div class="aurea-contact__faq-link">
+          <p>Looking for a quick answer? <a href="{{ section.settings.faq_url }}">Read our FAQs</a></p>
         </div>
-        
-        <div class="aurea-contact-info-item" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
-          <div style="color: #B8860B; font-size: 1.25rem;">📍</div>
-          <div>
-            <h3 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; font-weight: 500; color: #1A1A1A; margin: 0 0 0.25rem 0;">Address</h3>
-            <p style="font-family: 'Cormorant', Georgia, serif; font-size: 1rem; color: #666; margin: 0; line-height: 1.6;">
-              {{ section.settings.address | default: 'AUREA London<br>London, United Kingdom' }}
-            </p>
-          </div>
-        </div>
-        
-        <div class="aurea-contact-info-item" style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-          <div style="color: #B8860B; font-size: 1.25rem;">⏰</div>
-          <div>
-            <h3 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; font-weight: 500; color: #1A1A1A; margin: 0 0 0.25rem 0;">Business Hours</h3>
-            <p style="font-family: 'Cormorant', Georgia, serif; font-size: 1rem; color: #666; margin: 0; line-height: 1.6;">
-              {{ section.settings.hours | default: 'Mon - Fri: 9am - 5pm GMT<br>Weekend: Closed' }}
-            </p>
-          </div>
-        </div>
-        
-        {%- comment -%} Response Time Note {%- endcomment -%}
-        <div style="background: #F5F0E6; padding: 1.5rem; border-radius: 8px;">
-          <p style="font-family: 'Cormorant', Georgia, serif; font-size: 0.95rem; color: #333; margin: 0; line-height: 1.6;">
-            <strong>Response Time:</strong> We aim to respond to all enquiries within <strong>24 hours</strong> on business days. For urgent order issues, please include your order number.
-          </p>
-        </div>
-        
-        {%- comment -%} Social Links {%- endcomment -%}
-        {%- if section.settings.show_social -%}
-        <div style="margin-top: 2rem;">
-          <h3 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; font-weight: 500; color: #1A1A1A; margin: 0 0 1rem 0;">Follow Us</h3>
-          <div style="display: flex; gap: 1rem;">
-            {%- if section.settings.instagram -%}
-            <a href="{{ section.settings.instagram }}" target="_blank" style="color: #1A1A1A; font-size: 1.5rem;" aria-label="Instagram">
-              📸
-            </a>
-            {%- endif -%}
-            {%- if section.settings.tiktok -%}
-            <a href="{{ section.settings.tiktok }}" target="_blank" style="color: #1A1A1A; font-size: 1.5rem;" aria-label="TikTok">
-              🎵
-            </a>
-            {%- endif -%}
-            {%- if section.settings.facebook -%}
-            <a href="{{ section.settings.facebook }}" target="_blank" style="color: #1A1A1A; font-size: 1.5rem;" aria-label="Facebook">
-              📘
-            </a>
-            {%- endif -%}
-          </div>
-        </div>
-        {%- endif -%}
-        
-      </div>
+      {%- endif -%}
+      
     </div>
-    
   </div>
 </section>
 
 <style>
-  @media (max-width: 768px) {
-    .aurea-contact__grid {
-      grid-template-columns: 1fr !important;
-      gap: 3rem !important;
+  .aurea-contact {
+    padding: 60px 0 80px;
+    background: var(--aurea-cream, #FAF8F5);
+  }
+  
+  .aurea-contact__container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+  
+  @media screen and (max-width: 989px) {
+    .aurea-contact__container {
+      grid-template-columns: 1fr;
+      gap: 40px;
     }
   }
   
-  .aurea-contact-form button:hover {
-    background: #333 !important;
+  /* Left: Image */
+  .aurea-contact__image-side {
+    position: sticky;
+    top: 100px;
   }
   
-  .aurea-contact-form input:focus,
-  .aurea-contact-form select:focus,
-  .aurea-contact-form textarea:focus {
+  .aurea-contact__image {
+    width: 100%;
+    height: auto;
+    max-height: 700px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .aurea-contact__image-placeholder {
+    background: #E8E4DF;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: #999;
+  }
+  
+  .aurea-contact__image-placeholder svg {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+  
+  @media screen and (max-width: 989px) {
+    .aurea-contact__image-side {
+      position: static;
+      order: -1;
+    }
+    
+    .aurea-contact__image {
+      max-height: 400px;
+    }
+  }
+  
+  /* Right: Content */
+  .aurea-contact__content-side {
+    padding: 20px 0;
+  }
+  
+  .aurea-contact__header {
+    margin-bottom: 32px;
+  }
+  
+  .aurea-contact__title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: #1A1A1A;
+    margin: 0 0 16px;
+    letter-spacing: 0.02em;
+  }
+  
+  .aurea-contact__subtitle {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #555;
+  }
+  
+  /* Trust Info */
+  .aurea-contact__trust {
+    margin-bottom: 32px;
+    padding: 24px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    border: 1px solid #E8E4DF;
+  }
+  
+  .aurea-contact__info-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  
+  .aurea-contact__info-item:last-of-type {
+    margin-bottom: 0;
+  }
+  
+  .aurea-contact__info-icon {
+    color: #B8860B;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  
+  .aurea-contact__info-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 0.95rem;
+  }
+  
+  .aurea-contact__info-text strong {
+    color: #1A1A1A;
+    font-weight: 600;
+  }
+  
+  .aurea-contact__info-text span,
+  .aurea-contact__info-text a {
+    color: #555;
+  }
+  
+  .aurea-contact__info-text a:hover {
+    color: #B8860B;
+  }
+  
+  .aurea-contact__response-time {
+    margin: 16px 0 0;
+    padding-top: 16px;
+    border-top: 1px solid #E8E4DF;
+    font-size: 0.9rem;
+    color: #777;
+    font-style: italic;
+  }
+  
+  /* Form */
+  .aurea-contact__form-wrapper {
+    margin-bottom: 24px;
+  }
+  
+  .aurea-contact__field-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  
+  @media screen and (max-width: 599px) {
+    .aurea-contact__field-group {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .aurea-contact__field {
+    margin-bottom: 16px;
+  }
+  
+  .aurea-contact__input,
+  .aurea-contact__textarea {
+    width: 100%;
+    padding: 14px 16px;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 1rem;
+    border: 1px solid #D0D0D0;
+    border-radius: 4px;
+    background: #FFFFFF;
+    color: #1A1A1A;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .aurea-contact__input:focus,
+  .aurea-contact__textarea:focus {
     outline: none;
     border-color: #B8860B;
+    box-shadow: 0 0 0 2px rgba(184, 134, 11, 0.1);
+  }
+  
+  .aurea-contact__input::placeholder,
+  .aurea-contact__textarea::placeholder {
+    color: #999;
+  }
+  
+  .aurea-contact__textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+  
+  .aurea-contact__submit {
+    width: 100%;
+    padding: 16px 32px;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    background: #1A1A1A;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .aurea-contact__submit:hover {
+    background: #B8860B;
+  }
+  
+  /* Success Message */
+  .aurea-contact__success {
+    text-align: center;
+    padding: 40px 20px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    border: 1px solid #D4EDDA;
+  }
+  
+  .aurea-contact__success svg {
+    color: #28a745;
+    margin-bottom: 16px;
+  }
+  
+  .aurea-contact__success h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.5rem;
+    margin: 0 0 12px;
+    color: #1A1A1A;
+  }
+  
+  .aurea-contact__success p {
+    color: #555;
+    margin: 0;
+  }
+  
+  /* Error */
+  .aurea-contact__error {
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    background: #FFF5F5;
+    border: 1px solid #FC8181;
+    border-radius: 4px;
+    color: #C53030;
+    font-size: 0.9rem;
+  }
+  
+  /* FAQ Link */
+  .aurea-contact__faq-link {
+    text-align: center;
+    padding-top: 16px;
+    border-top: 1px solid #E8E4DF;
+  }
+  
+  .aurea-contact__faq-link p {
+    font-size: 0.95rem;
+    color: #777;
+    margin: 0;
+  }
+  
+  .aurea-contact__faq-link a {
+    color: #B8860B;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+  
+  .aurea-contact__faq-link a:hover {
+    color: #1A1A1A;
   }
 </style>
 
 {% schema %}
 {
-  "name": "Contact",
+  "name": "AUREA Contact",
   "tag": "section",
-  "class": "section-contact",
+  "class": "section",
   "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Contact image",
+      "info": "Recommended: A warm, lifestyle image of your products or studio"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "default": "Contact AUREA"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
     {
       "type": "text",
       "id": "title",
       "label": "Title",
-      "default": "Get in Touch"
+      "default": "We'd Love to Hear From You"
     },
     {
-      "type": "text",
+      "type": "richtext",
       "id": "subtitle",
       "label": "Subtitle",
-      "default": "We'd love to hear from you. Our team typically responds within 24 hours."
+      "default": "<p>Have a question about your order, materials, or just want to say hello? Our small studio team is here to help.</p>"
     },
     {
       "type": "header",
-      "content": "Contact Information"
+      "content": "Contact Info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hours",
+      "label": "Show business hours",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "hours_title",
+      "label": "Hours title",
+      "default": "Customer Care Hours"
+    },
+    {
+      "type": "text",
+      "id": "hours_text",
+      "label": "Hours text",
+      "default": "Monday - Friday: 9am - 5pm (GMT)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_email",
+      "label": "Show email address",
+      "default": true
     },
     {
       "type": "text",
       "id": "email",
-      "label": "Email Address",
-      "default": "hello@aurealondeon.co.uk"
-    },
-    {
-      "type": "html",
-      "id": "address",
-      "label": "Address (HTML allowed)",
-      "default": "AUREA London<br>London, United Kingdom"
-    },
-    {
-      "type": "html",
-      "id": "hours",
-      "label": "Business Hours (HTML allowed)",
-      "default": "Mon - Fri: 9am - 5pm GMT<br>Weekend: Closed"
-    },
-    {
-      "type": "header",
-      "content": "Social Media"
+      "label": "Email address",
+      "default": "hello@aurea.co.uk"
     },
     {
       "type": "checkbox",
-      "id": "show_social",
-      "label": "Show Social Links",
+      "id": "show_location",
+      "label": "Show location",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "location",
+      "label": "Location",
+      "default": "London, United Kingdom"
+    },
+    {
+      "type": "text",
+      "id": "response_time",
+      "label": "Response time note",
+      "default": "Please allow 1-2 business days for a response."
+    },
+    {
+      "type": "header",
+      "content": "Form"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_order_number",
+      "label": "Show order number field",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Submit button text",
+      "default": "Send Message"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "We've received your message and will get back to you within 24-48 hours."
+    },
+    {
+      "type": "header",
+      "content": "FAQ Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_faq_link",
+      "label": "Show FAQ link",
       "default": true
     },
     {
       "type": "url",
-      "id": "instagram",
-      "label": "Instagram URL"
-    },
-    {
-      "type": "url",
-      "id": "tiktok",
-      "label": "TikTok URL"
-    },
-    {
-      "type": "url",
-      "id": "facebook",
-      "label": "Facebook URL"
+      "id": "faq_url",
+      "label": "FAQ page URL"
     }
   ],
   "presets": [
     {
-      "name": "Contact"
+      "name": "AUREA Contact"
     }
   ]
 }
