@@ -1,0 +1,54 @@
+{%- comment -%}
+  AUREA Trust & Delivery Snippet
+  Compact version for use within other sections
+  Shows stock status, delivery estimate, and trust badges
+{%- endcomment -%}
+
+<div class="aurea-trust-delivery-snippet">
+  
+  {%- comment -%} Trust Badges Row {%- endcomment -%}
+  <div class="trust-badges-compact">
+    <div class="trust-badge-compact">
+      <span class="trust-badge-compact__icon">✓</span>
+      <span class="trust-badge-compact__text">Waterproof</span>
+    </div>
+    <div class="trust-badge-compact">
+      <span class="trust-badge-compact__icon">✓</span>
+      <span class="trust-badge-compact__text">Hypoallergenic</span>
+    </div>
+    <div class="trust-badge-compact">
+      <span class="trust-badge-compact__icon">✓</span>
+      <span class="trust-badge-compact__text">2-Year Warranty</span>
+    </div>
+  </div>
+  
+</div>
+
+<style>
+  .aurea-trust-delivery-snippet {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: #FAF8F5;
+    border-radius: 8px;
+  }
+  
+  .trust-badges-compact {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .trust-badge-compact {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: #555;
+  }
+  
+  .trust-badge-compact__icon {
+    color: #B8860B;
+    font-weight: bold;
+  }
+</style>
