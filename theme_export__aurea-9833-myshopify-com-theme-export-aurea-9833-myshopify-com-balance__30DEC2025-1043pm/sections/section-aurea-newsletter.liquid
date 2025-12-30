@@ -1,0 +1,176 @@
+{%- comment -%}
+  AUREA Newsletter Section
+  Email subscription with 10% off incentive
+{%- endcomment -%}
+
+<section class="aurea-newsletter" style="
+  background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
+  color: #FFFFFF;
+  padding: 5rem 2rem;
+">
+  <div class="page-width" style="max-width: 700px; margin: 0 auto; text-align: center;">
+    
+    <p style="
+      font-family: 'Cormorant', Georgia, serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #D4AF37;
+      margin-bottom: 1rem;
+    ">{{ section.settings.preheading }}</p>
+    
+    <h2 style="
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 400;
+      margin-bottom: 1rem;
+    ">{{ section.settings.heading }}</h2>
+    
+    <p style="
+      font-family: 'Cormorant', Georgia, serif;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 2rem;
+    ">{{ section.settings.subtitle }}</p>
+    
+    {%- form 'customer', class: 'aurea-newsletter__form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      
+      {%- if form.posted_successfully? -%}
+        <div class="aurea-newsletter__success" style="
+          background: rgba(212, 175, 55, 0.2);
+          border: 1px solid #D4AF37;
+          padding: 1.5rem;
+          border-radius: 4px;
+        ">
+          <p style="margin: 0; font-size: 1.1rem;">{{ section.settings.success_message }}</p>
+        </div>
+      {%- else -%}
+        <div style="
+          display: flex;
+          gap: 0;
+          max-width: 500px;
+          margin: 0 auto;
+        ">
+          <input 
+            type="email" 
+            name="contact[email]" 
+            placeholder="{{ section.settings.placeholder }}"
+            required
+            autocapitalize="off"
+            style="
+              flex: 1;
+              padding: 1rem 1.25rem;
+              font-family: 'Cormorant', Georgia, serif;
+              font-size: 1rem;
+              border: none;
+              background: #FFFFFF;
+              color: #1A1A1A;
+              outline: none;
+            "
+          >
+          <button 
+            type="submit"
+            style="
+              padding: 1rem 2rem;
+              font-family: 'Cormorant', Georgia, serif;
+              font-size: 0.9rem;
+              font-weight: 600;
+              letter-spacing: 0.1em;
+              text-transform: uppercase;
+              background: #D4AF37;
+              color: #1A1A1A;
+              border: none;
+              cursor: pointer;
+              transition: background 0.3s ease;
+              white-space: nowrap;
+            "
+          >
+            {{ section.settings.button_text }}
+          </button>
+        </div>
+        
+        <p style="
+          margin-top: 1rem;
+          font-size: 0.85rem;
+          color: rgba(255,255,255,0.5);
+        ">{{ section.settings.disclaimer }}</p>
+      {%- endif -%}
+    {%- endform -%}
+    
+  </div>
+</section>
+
+<style>
+  .aurea-newsletter__form button:hover {
+    background: #B8860B !important;
+    color: #FFFFFF !important;
+  }
+  
+  @media screen and (max-width: 599px) {
+    .aurea-newsletter__form > div {
+      flex-direction: column !important;
+    }
+    
+    .aurea-newsletter__form input,
+    .aurea-newsletter__form button {
+      width: 100% !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "AUREA Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "preheading",
+      "label": "Preheading",
+      "default": "Join the Aurea Club"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Get 10% OFF Your First Order"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Be the first to know about new arrivals, exclusive offers, and behind-the-scenes content from our London studio."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Email placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Welcome to Aurea! ✨ Check your inbox for your 10% discount code."
+    },
+    {
+      "type": "text",
+      "id": "disclaimer",
+      "label": "Disclaimer",
+      "default": "No spam, ever. Unsubscribe anytime."
+    }
+  ],
+  "presets": [
+    {
+      "name": "AUREA Newsletter"
+    }
+  ]
+}
+{% endschema %}

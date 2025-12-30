@@ -1,1 +1,389 @@
-{"sections":{"hero_main":{"type":"hero","blocks":{"group_hero":{"type":"group","name":"Hero Content","settings":{"content_direction":"column","vertical_on_mobile":true,"horizontal_alignment":"flex-start","vertical_alignment":"center","align_baseline":false,"horizontal_alignment_flex_direction_column":"flex-start","vertical_alignment_flex_direction_column":"center","gap":16,"width":"fill","custom_width":100,"width_mobile":"fill","custom_width_mobile":100,"height":"fit","custom_height":100,"inherit_color_scheme":true,"color_scheme":"","background_media":"none","video_position":"cover","background_image_position":"cover","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"toggle_overlay":false,"overlay_color":"#00000026","overlay_style":"solid","gradient_direction":"to top","link":"","open_in_new_tab":false,"placeholder":"","padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{"text_headline":{"type":"text","settings":{"text":"<h2>Timeless Connections<\/h2>","width":"100%","max_width":"normal","alignment":"left","type_preset":"h1","font":"var(--font-primary--family)","font_size":"1rem","line_height":"normal","letter_spacing":"normal","case":"none","wrap":"pretty","color":"var(--color-foreground)","background":false,"background_color":"#00000026","corner_radius":0,"padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}},"text_subheadline":{"type":"text","name":"Subheadline","settings":{"text":"<p>Jewelry that speaks your heart's language.<\/p>","width":"fit-content","max_width":"normal","alignment":"left","type_preset":"custom","font":"var(--font-primary--family)","font_size":"1.25rem","line_height":"normal","letter_spacing":"normal","case":"none","wrap":"pretty","color":"var(--color-foreground)","background":false,"background_color":"#00000026","corner_radius":0,"padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}},"button_cta":{"type":"button","name":"CTA Button","settings":{"label":"Shop Now","link":"shopify:\/\/collections\/all","open_in_new_tab":false,"style_class":"button","width":"fit-content","custom_width":100,"width_mobile":"fit-content","custom_width_mobile":100},"blocks":{}}},"block_order":["text_headline","text_subheadline","button_cta"]}},"block_order":["group_hero"],"settings":{"media_type_1":"image","image_1":"shopify:\/\/shop_images\/jewelry-natural-5.jpg","media_type_2":"image","stack_media_on_mobile":true,"custom_mobile_media":true,"media_type_1_mobile":"image","media_type_2_mobile":"image","link":"","open_in_new_tab":false,"content_direction":"column","vertical_on_mobile":true,"horizontal_alignment":"flex-start","vertical_alignment":"center","align_baseline":false,"horizontal_alignment_flex_direction_column":"flex-start","vertical_alignment_flex_direction_column":"center","gap":12,"section_width":"page-width","section_height":"large","section_height_custom":50,"color_scheme":"scheme-2","toggle_overlay":true,"overlay_color":"#0303037d","overlay_style":"gradient","gradient_direction":"to top","blurred_reflection":false,"reflection_opacity":75,"padding-block-start":22,"padding-block-end":64}},"trust_bar":{"type":"section-trust-bar","blocks":{"badge_1":{"type":"badge","settings":{"icon":"📦","text":"Royal Mail Tracked"}},"badge_2":{"type":"badge","settings":{"icon":"💧","text":"100% Waterproof"}},"badge_3":{"type":"badge","settings":{"icon":"♾️","text":"Lifetime Warranty"}},"badge_4":{"type":"badge","settings":{"icon":"🔒","text":"Secure Checkout"}}},"block_order":["badge_1","badge_2","badge_3","badge_4"],"settings":{}},"product_list":{"type":"product-list","blocks":{"static-header":{"type":"_product-list-content","name":"Header","static":true,"settings":{"content_direction":"row","vertical_on_mobile":true,"horizontal_alignment":"space-between","vertical_alignment":"flex-end","align_baseline":true,"horizontal_alignment_flex_direction_column":"flex-start","vertical_alignment_flex_direction_column":"center","gap":12,"width":"fill","custom_width":100,"width_mobile":"fill","custom_width_mobile":100,"height":"fit","custom_height":100,"inherit_color_scheme":true,"color_scheme":"","background_media":"none","video_position":"cover","background_image_position":"cover","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{"product_list_title":{"type":"_product-list-text","name":"Title","settings":{"text":"<h3>Featured Collection<\/h3>","width":"fit-content","max_width":"normal","alignment":"left","type_preset":"h3","font":"var(--font-body--family)","font_size":"1rem","line_height":"normal","letter_spacing":"normal","case":"none","wrap":"pretty","color":"var(--color-foreground)","background":false,"background_color":"#00000026","corner_radius":0,"padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}}},"block_order":["product_list_title"]},"static-product-card":{"type":"_product-card","name":"Product Card","static":true,"settings":{"product_card_gap":8,"inherit_color_scheme":true,"color_scheme":"","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{"product_card_gallery":{"type":"_product-card-gallery","name":"Media","settings":{"image_ratio":"portrait","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}},"product_card_group":{"type":"_product-card-group","name":"Details","settings":{"content_direction":"column","vertical_on_mobile":true,"horizontal_alignment":"flex-start","vertical_alignment":"center","align_baseline":false,"horizontal_alignment_flex_direction_column":"flex-start","vertical_alignment_flex_direction_column":"center","gap":0,"width":"fill","custom_width":100,"width_mobile":"fill","custom_width_mobile":100,"height":"fit","custom_height":100,"inherit_color_scheme":true,"color_scheme":"","background_media":"none","video_position":"cover","background_image_position":"cover","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"toggle_overlay":false,"overlay_color":"#00000026","overlay_style":"solid","gradient_direction":"to top","link":"","open_in_new_tab":false,"padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{"product_title":{"type":"text","name":"Title","settings":{"text":"<h5>{{ closest.product.title }}<\/h5>","width":"100%","max_width":"normal","alignment":"left","type_preset":"custom","font":"var(--font-body--family)","font_size":"1.25rem","line_height":"normal","letter_spacing":"normal","case":"none","wrap":"pretty","color":"var(--color-foreground)","background":false,"background_color":"#00000026","corner_radius":0,"padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}},"product_price":{"type":"price","name":"Price","settings":{"show_sale_price_first":true,"show_installments":false,"show_tax_info":false,"type_preset":"","width":"100%","alignment":"left","font":"var(--font-body--family)","font_size":"1rem","line_height":"normal","letter_spacing":"normal","case":"none","color":"var(--color-foreground)","padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}}},"block_order":["product_title","product_price"]}},"block_order":["product_card_gallery","product_card_group"]}},"settings":{"collection":"jewelry-example-products","layout_type":"grid","carousel_on_mobile":false,"max_products":4,"columns":4,"mobile_columns":"2","mobile_card_size":"60cqw","columns_gap":20,"rows_gap":36,"icons_style":"arrow","icons_shape":"none","section_width":"page-width","horizontal_alignment":"flex-start","gap":12,"color_scheme":"scheme-1","padding-block-start":72,"padding-block-end":72}},"gift_anatomy":{"type":"section-gift-anatomy","blocks":{"feature_1":{"type":"feature","settings":{"title":"18k Gold PVD Finish","subtitle":"Not cheap alloy"}},"feature_2":{"type":"feature","settings":{"title":"Premium Message Card","subtitle":"Heavyweight paper"}},"feature_3":{"type":"feature","settings":{"title":"Luxury Soft-Touch Box","subtitle":"Free upgrade"}},"feature_4":{"type":"feature","settings":{"title":"Lifetime Warranty","subtitle":"Will never tarnish"}}},"block_order":["feature_1","feature_2","feature_3","feature_4"],"settings":{"image":"shopify:\/\/shop_images\/jewelry-natural-1.jpg","preheading":"What's Inside","heading":"The Complete Gifting Experience","button_text":"Gift Her Now","button_link":"shopify:\/\/collections\/all"}},"17671233862de5a9f1":{"type":"_blocks","blocks":{"judge_me_reviews_review_widget_homepage_nHrwFp":{"type":"shopify:\/\/apps\/judge-me-reviews\/blocks\/review_widget_homepage\/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8","settings":{"product":"","review_data":"sample_data","max_width":1200}}},"block_order":["judge_me_reviews_review_widget_homepage_nHrwFp"],"settings":{"content_direction":"column","vertical_on_mobile":true,"horizontal_alignment":"flex-start","vertical_alignment":"center","align_baseline":false,"horizontal_alignment_flex_direction_column":"flex-start","vertical_alignment_flex_direction_column":"center","gap":12,"section_width":"page-width","section_height":"","section_height_custom":50,"color_scheme":"","background_media":"none","video_position":"cover","background_image_position":"cover","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"toggle_overlay":false,"overlay_color":"#00000026","overlay_style":"solid","gradient_direction":"to top","padding-block-start":0,"padding-block-end":0}},"section_aurea_testimonials_eBTjwY":{"type":"section-aurea-testimonials","blocks":{"testimonial_eqpbck":{"type":"testimonial","settings":{"rating":5,"quote":"Absolutely stunning! The quality is amazing and it arrived so quickly. I've already bought three pieces and get compliments every time I wear them.","author":"Sarah M.","location":"London, UK","verified":true}},"testimonial_tQj97L":{"type":"testimonial","settings":{"rating":5,"quote":"Beautiful jewellery at such great prices. The packaging was gorgeous too - perfect for gifting. Will definitely be ordering again!","author":"Emma T.","location":"Manchester, UK","verified":true}},"testimonial_TKhpGG":{"type":"testimonial","settings":{"rating":5,"quote":"I was hesitant to order online but the photos are accurate and the pieces are even prettier in person. Fast delivery and great customer service.","author":"Jessica L.","location":"Edinburgh, UK","verified":true}}},"block_order":["testimonial_eqpbck","testimonial_tQj97L","testimonial_TKhpGG"],"name":"Testimonials","settings":{"eyebrow":"Loved by Thousands","title":"What Our Customers Say","subtitle":"Real reviews from real customers","show_summary":true,"avg_rating":"4.9","total_reviews":"50+","recommend_percent":"98%"}},"homepage_faq":{"type":"section-homepage-faq","blocks":{"faq_1":{"type":"faq","settings":{"question":"How long does UK delivery take?","answer":"2-3 business days via Royal Mail Tracked. Orders before 2pm ship same day."}},"faq_2":{"type":"faq","settings":{"question":"Will it tarnish or turn green?","answer":"Never. Our 18k gold PVD coating is waterproof, sweatproof, and backed by a lifetime warranty."}},"faq_3":{"type":"faq","settings":{"question":"What if she doesn't like it?","answer":"30-day no-questions-asked returns. We'll even cover return postage."}},"faq_4":{"type":"faq","settings":{"question":"Can I add a personal message?","answer":"Yes! Every order includes a premium message card. Just add your note at checkout."}}},"block_order":["faq_1","faq_2","faq_3","faq_4"],"settings":{"preheading":"Questions?","heading":"We've Got Answers"}},"17671231938e13cadf":{"type":"_blocks","settings":{"content_direction":"column","vertical_on_mobile":true,"horizontal_alignment":"flex-start","vertical_alignment":"center","align_baseline":false,"horizontal_alignment_flex_direction_column":"flex-start","vertical_alignment_flex_direction_column":"center","gap":12,"section_width":"page-width","section_height":"","section_height_custom":50,"color_scheme":"","background_media":"none","video_position":"cover","background_image_position":"cover","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"toggle_overlay":false,"overlay_color":"#00000026","overlay_style":"solid","gradient_direction":"to top","padding-block-start":0,"padding-block-end":0}},"1767123778046dcf90":{"type":"_blocks","settings":{"content_direction":"column","vertical_on_mobile":true,"horizontal_alignment":"flex-start","vertical_alignment":"center","align_baseline":false,"horizontal_alignment_flex_direction_column":"flex-start","vertical_alignment_flex_direction_column":"center","gap":12,"section_width":"page-width","section_height":"","section_height_custom":50,"color_scheme":"","background_media":"none","video_position":"cover","background_image_position":"cover","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"toggle_overlay":false,"overlay_color":"#00000026","overlay_style":"solid","gradient_direction":"to top","padding-block-start":0,"padding-block-end":0}}},"order":["hero_main","trust_bar","product_list","gift_anatomy","17671233862de5a9f1","section_aurea_testimonials_eBTjwY","homepage_faq","17671231938e13cadf","1767123778046dcf90"]}
+{
+    "sections": {
+        "hero_main": {
+            "type": "hero",
+            "blocks": {
+                "group_hero": {
+                    "type": "group",
+                    "name": "Hero Content",
+                    "settings": {
+                        "content_direction": "column",
+                        "vertical_on_mobile": true,
+                        "horizontal_alignment": "flex-start",
+                        "vertical_alignment": "center",
+                        "gap": 16,
+                        "width": "fill"
+                    },
+                    "blocks": {
+                        "text_headline": {
+                            "type": "text",
+                            "settings": {
+                                "text": "<h2>Timeless Connections</h2>",
+                                "width": "100%",
+                                "alignment": "left",
+                                "type_preset": "h1"
+                            }
+                        },
+                        "text_subheadline": {
+                            "type": "text",
+                            "name": "Subheadline",
+                            "settings": {
+                                "text": "<p>Jewelry that speaks your heart's language.</p>",
+                                "width": "fit-content",
+                                "alignment": "left",
+                                "type_preset": "custom",
+                                "font_size": "1.25rem"
+                            }
+                        },
+                        "button_cta": {
+                            "type": "button",
+                            "name": "CTA Button",
+                            "settings": {
+                                "label": "Shop Now",
+                                "link": "shopify://collections/all",
+                                "style_class": "button",
+                                "width": "fit-content"
+                            }
+                        }
+                    },
+                    "block_order": [
+                        "text_headline",
+                        "text_subheadline",
+                        "button_cta"
+                    ]
+                }
+            },
+            "block_order": [
+                "group_hero"
+            ],
+            "settings": {
+                "media_type_1": "image",
+                "image_1": "shopify://shop_images/jewelry-natural-5.jpg",
+                "section_width": "page-width",
+                "section_height": "large",
+                "color_scheme": "scheme-2",
+                "toggle_overlay": true,
+                "overlay_color": "#0303037d",
+                "overlay_style": "gradient",
+                "gradient_direction": "to top",
+                "padding-block-start": 22,
+                "padding-block-end": 64
+            }
+        },
+        "trust_bar": {
+            "type": "section-trust-bar",
+            "blocks": {
+                "badge_1": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "📦",
+                        "text": "Royal Mail Tracked"
+                    }
+                },
+                "badge_2": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "💧",
+                        "text": "100% Waterproof"
+                    }
+                },
+                "badge_3": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "♾️",
+                        "text": "Lifetime Warranty"
+                    }
+                },
+                "badge_4": {
+                    "type": "badge",
+                    "settings": {
+                        "icon": "🔒",
+                        "text": "Secure Checkout"
+                    }
+                }
+            },
+            "block_order": [
+                "badge_1",
+                "badge_2",
+                "badge_3",
+                "badge_4"
+            ],
+            "settings": {}
+        },
+        "product_list": {
+            "type": "product-list",
+            "blocks": {
+                "static-header": {
+                    "type": "_product-list-content",
+                    "name": "Header",
+                    "static": true,
+                    "settings": {
+                        "content_direction": "row",
+                        "horizontal_alignment": "space-between",
+                        "vertical_alignment": "flex-end",
+                        "width": "fill"
+                    },
+                    "blocks": {
+                        "product_list_title": {
+                            "type": "_product-list-text",
+                            "name": "Title",
+                            "settings": {
+                                "text": "<h3>Featured Collection</h3>",
+                                "width": "fit-content",
+                                "alignment": "left",
+                                "type_preset": "h3"
+                            }
+                        }
+                    },
+                    "block_order": [
+                        "product_list_title"
+                    ]
+                },
+                "static-product-card": {
+                    "type": "_product-card",
+                    "name": "Product Card",
+                    "static": true,
+                    "settings": {
+                        "product_card_gap": 8
+                    },
+                    "blocks": {
+                        "product_card_gallery": {
+                            "type": "_product-card-gallery",
+                            "name": "Media",
+                            "settings": {
+                                "image_ratio": "portrait"
+                            }
+                        },
+                        "product_card_group": {
+                            "type": "_product-card-group",
+                            "name": "Details",
+                            "settings": {
+                                "content_direction": "column",
+                                "gap": 0,
+                                "width": "fill"
+                            },
+                            "blocks": {
+                                "product_title": {
+                                    "type": "text",
+                                    "name": "Title",
+                                    "settings": {
+                                        "text": "<h5>{{ closest.product.title }}</h5>",
+                                        "width": "100%",
+                                        "alignment": "left",
+                                        "type_preset": "custom",
+                                        "font_size": "1.25rem"
+                                    }
+                                },
+                                "product_price": {
+                                    "type": "price",
+                                    "name": "Price",
+                                    "settings": {
+                                        "show_sale_price_first": true,
+                                        "width": "100%",
+                                        "alignment": "left"
+                                    }
+                                }
+                            },
+                            "block_order": [
+                                "product_title",
+                                "product_price"
+                            ]
+                        }
+                    },
+                    "block_order": [
+                        "product_card_gallery",
+                        "product_card_group"
+                    ]
+                }
+            },
+            "settings": {
+                "collection": "jewelry-example-products",
+                "layout_type": "grid",
+                "max_products": 4,
+                "columns": 4,
+                "mobile_columns": "2",
+                "columns_gap": 20,
+                "rows_gap": 36,
+                "section_width": "page-width",
+                "color_scheme": "scheme-1",
+                "padding-block-start": 72,
+                "padding-block-end": 72
+            }
+        },
+        "gift_anatomy": {
+            "type": "section-gift-anatomy",
+            "blocks": {
+                "feature_1": {
+                    "type": "feature",
+                    "settings": {
+                        "title": "18k Gold PVD Finish",
+                        "subtitle": "Not cheap alloy"
+                    }
+                },
+                "feature_2": {
+                    "type": "feature",
+                    "settings": {
+                        "title": "Premium Message Card",
+                        "subtitle": "Heavyweight paper"
+                    }
+                },
+                "feature_3": {
+                    "type": "feature",
+                    "settings": {
+                        "title": "Luxury Soft-Touch Box",
+                        "subtitle": "Free upgrade"
+                    }
+                },
+                "feature_4": {
+                    "type": "feature",
+                    "settings": {
+                        "title": "Lifetime Warranty",
+                        "subtitle": "Will never tarnish"
+                    }
+                }
+            },
+            "block_order": [
+                "feature_1",
+                "feature_2",
+                "feature_3",
+                "feature_4"
+            ],
+            "settings": {
+                "image": "shopify://shop_images/jewelry-natural-1.jpg",
+                "preheading": "What's Inside",
+                "heading": "The Complete Gifting Experience",
+                "button_text": "Gift Her Now",
+                "button_link": "shopify://collections/all"
+            }
+        },
+        "testimonials": {
+            "type": "section-aurea-testimonials",
+            "blocks": {
+                "testimonial_1": {
+                    "type": "testimonial",
+                    "settings": {
+                        "rating": 5,
+                        "quote": "Absolutely stunning! The quality is amazing and it arrived so quickly. I've already bought three pieces and get compliments every time I wear them.",
+                        "author": "Sarah M.",
+                        "location": "London, UK",
+                        "verified": true
+                    }
+                },
+                "testimonial_2": {
+                    "type": "testimonial",
+                    "settings": {
+                        "rating": 5,
+                        "quote": "Beautiful jewellery at such great prices. The packaging was gorgeous too - perfect for gifting. Will definitely be ordering again!",
+                        "author": "Emma T.",
+                        "location": "Manchester, UK",
+                        "verified": true
+                    }
+                },
+                "testimonial_3": {
+                    "type": "testimonial",
+                    "settings": {
+                        "rating": 5,
+                        "quote": "I was hesitant to order online but the photos are accurate and the pieces are even prettier in person. Fast delivery and great customer service.",
+                        "author": "Jessica L.",
+                        "location": "Edinburgh, UK",
+                        "verified": true
+                    }
+                }
+            },
+            "block_order": [
+                "testimonial_1",
+                "testimonial_2",
+                "testimonial_3"
+            ],
+            "settings": {
+                "eyebrow": "Loved by Thousands",
+                "title": "What Our Customers Say",
+                "subtitle": "Real reviews from real customers",
+                "show_summary": true,
+                "avg_rating": "4.9",
+                "total_reviews": "50+",
+                "recommend_percent": "98%"
+            }
+        },
+        "homepage_faq": {
+            "type": "section-homepage-faq",
+            "blocks": {
+                "faq_1": {
+                    "type": "faq",
+                    "settings": {
+                        "question": "How long does UK delivery take?",
+                        "answer": "Since we are a small studio practicing sustainable small-batch restocking, our delivery time is usually 7-12 business days. We promise it's worth the wait! You can track your order every step of the way."
+                    }
+                },
+                "faq_2": {
+                    "type": "faq",
+                    "settings": {
+                        "question": "Will it tarnish or turn green?",
+                        "answer": "Never. We use high-quality Stainless Steel with 18K Gold PVD plating. This is far more durable than traditional gold plating. No green necks, no fading—guaranteed."
+                    }
+                },
+                "faq_3": {
+                    "type": "faq",
+                    "settings": {
+                        "question": "Can I wear it in the shower?",
+                        "answer": "Yes, go ahead! Our jewelry is designed for real life. It is waterproof, sweatproof, and perfume-safe. Wear it in the shower, the gym, or the ocean without worry."
+                    }
+                },
+                "faq_4": {
+                    "type": "faq",
+                    "settings": {
+                        "question": "Does it come in a gift box?",
+                        "answer": "Yes. Every piece is packed in our eco-friendly luxury box and a soft pouch. We don't include price tags in the package, so it's perfectly safe to send directly to your special someone."
+                    }
+                },
+                "faq_5": {
+                    "type": "faq",
+                    "settings": {
+                        "question": "Can I add a personal message?",
+                        "answer": "Absolutely! We believe in the personal touch. Just leave your note at checkout, and we will hand-write your message on a premium gift card for free."
+                    }
+                },
+                "faq_6": {
+                    "type": "faq",
+                    "settings": {
+                        "question": "What if she doesn't like it?",
+                        "answer": "We offer a 14-day return policy. If the piece isn't quite right, simply contact us within 14 days of receiving it for a hassle-free return or exchange."
+                    }
+                }
+            },
+            "block_order": [
+                "faq_1",
+                "faq_2",
+                "faq_3",
+                "faq_4",
+                "faq_5",
+                "faq_6"
+            ],
+            "settings": {
+                "preheading": "Questions?",
+                "heading": "We've Got Answers"
+            }
+        },
+        "newsletter": {
+            "type": "section-aurea-newsletter",
+            "settings": {
+                "preheading": "Join the Aurea Club",
+                "heading": "Get 10% OFF Your First Order",
+                "subtitle": "Be the first to know about new arrivals, exclusive offers, and behind-the-scenes content from our London studio.",
+                "placeholder": "Enter your email",
+                "button_text": "Subscribe",
+                "success_message": "Welcome to Aurea! ✨ Check your inbox for your 10% discount code.",
+                "disclaimer": "No spam, ever. Unsubscribe anytime."
+            }
+        }
+    },
+    "order": [
+        "hero_main",
+        "trust_bar",
+        "product_list",
+        "gift_anatomy",
+        "testimonials",
+        "homepage_faq",
+        "newsletter"
+    ]
+}
