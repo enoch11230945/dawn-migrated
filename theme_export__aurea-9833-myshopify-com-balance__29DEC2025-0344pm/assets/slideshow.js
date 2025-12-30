@@ -77,6 +77,9 @@ export class Slideshow extends Component {
   disconnectedCallback() {
     super.disconnectedCallback();
 
+    // Clear autoplay interval to prevent memory leak
+    this.suspend();
+
     if (this.#scroll) {
       const { scroller } = this.refs;
       scroller.removeEventListener('mousedown', this.#handleMouseDown);

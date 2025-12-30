@@ -121,4 +121,4 @@ class CartAPI {
 }
 
 // Export for use in other scripts
-window.CartAPI = Cart API;
+window.CartAPI = CartAPI;

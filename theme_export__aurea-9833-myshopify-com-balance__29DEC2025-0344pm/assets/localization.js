@@ -118,31 +118,33 @@ class LocalizationFormComponent extends Component {
   resizeLanguageInput() {
     const { languageInput } = this.refs;
 
+    // Modern browsers support field-sizing: content natively - skip JS fallback
     if (!languageInput || CSS.supports('field-sizing', 'content')) return;
 
-    // Hide all options except the selected option
-    for (const option of languageInput.options) {
+    // Collect options to modify (batch preparation - no DOM reads yet)
+    const optionsToRestore = [];
+    const options = Array.from(languageInput.options);
+
+    // Batch DOM writes: hide all unselected options
+    for (const option of options) {
       if (!option.selected) {
-        option.dataset.optionLabel = option.textContent || '';
+        const label = option.textContent || '';
+        optionsToRestore.push({ option, label });
         option.innerText = '';
       }
     }
 
-    // Calculate the width of the select element (which is based on the width of the widest option)
+    // Single DOM read: measure width with only selected option visible
     languageInput.style.width = 'fit-content';
-    const originalElementWidth = `${Math.ceil(languageInput.offsetWidth) + 1}px`;
+    const measuredWidth = languageInput.offsetWidth;
 
-    // Fix the width of the select element
-    if (languageInput.offsetWidth > 0) {
-      languageInput.style.width = originalElementWidth;
+    // Batch DOM writes: fix width and restore options
+    if (measuredWidth > 0) {
+      languageInput.style.width = `${Math.ceil(measuredWidth) + 1}px`;
     }
 
-    // Add back all option labels
-    for (const option of languageInput.options) {
-      if (option.dataset.optionLabel) {
-        option.textContent = option.dataset.optionLabel;
-        delete option.dataset.optionLabel;
-      }
+    for (const { option, label } of optionsToRestore) {
+      option.textContent = label;
     }
   }
 
@@ -221,35 +223,49 @@ class LocalizationFormComponent extends Component {
   }
 
   /**
-   * Highlights matching text in a string by wrapping it in <mark> tags.
+   * Highlights matching text in a string by wrapping non-matching parts in <mark> tags.
+   * Returns a DocumentFragment for safe DOM insertion (XSS-safe).
    *
    * @param {string | null} text - The text to highlight.
    * @param {string} searchValue - The search value to highlight.
-   * @returns {string} The text with matching parts wrapped in <mark> tags.
+   * @returns {DocumentFragment} A fragment with properly escaped text nodes.
    */
   #highlightMatches(text, searchValue) {
-    if (!text || !searchValue) return text ?? '';
+    const fragment = document.createDocumentFragment();
+
+    if (!text || !searchValue) {
+      fragment.appendChild(document.createTextNode(text ?? ''));
+      return fragment;
+    }
 
     const normalizedText = normalizeString(text);
     const normalizedSearch = normalizeString(searchValue);
     const startIndex = normalizedText.indexOf(normalizedSearch);
 
-    if (startIndex === -1) return text;
+    if (startIndex === -1) {
+      fragment.appendChild(document.createTextNode(text));
+      return fragment;
+    }
 
     const endIndex = startIndex + normalizedSearch.length;
     const before = text.slice(0, startIndex);
     const match = text.slice(startIndex, endIndex);
     const after = text.slice(endIndex);
 
-    let result = '';
+    // Non-matching parts get dimmed via <mark>
     if (before) {
-      result += `<mark>${before}</mark>`;
+      const markBefore = document.createElement('mark');
+      markBefore.textContent = before;
+      fragment.appendChild(markBefore);
     }
-    result += match;
+    // Matching part is plain text (highlighted by not being in <mark>)
+    fragment.appendChild(document.createTextNode(match));
     if (after) {
-      result += `<mark>${after}</mark>`;
+      const markAfter = document.createElement('mark');
+      markAfter.textContent = after;
+      fragment.appendChild(markAfter);
     }
-    return result;
+    return fragment;
   }
 
   /**
@@ -290,7 +306,9 @@ class LocalizationFormComponent extends Component {
           countryEl.removeAttribute('hidden');
           const countrySpan = countryEl.querySelector('.country');
           if (countrySpan) {
-            countrySpan.innerHTML = this.#highlightMatches(countrySpan.textContent, searchValue);
+            const originalText = countrySpan.textContent;
+            countrySpan.textContent = ''; // Clear safely
+            countrySpan.appendChild(this.#highlightMatches(originalText, searchValue));
           }
           countVisibleCountries++;
         } else {

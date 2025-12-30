@@ -1,0 +1,67 @@
+{%- comment -%}
+  AUREA Pre-Order Announcement Bar
+  Site-wide banner for pre-order notifications
+  
+  Usage: {% render 'aurea-preorder-bar', show: true, message: "Currently on Pre-order", dispatch_date: "15th January" %}
+{%- endcomment -%}
+
+{%- assign show_bar = show | default: false -%}
+{%- assign bar_message = message | default: "Currently on Pre-order" -%}
+{%- assign bar_date = dispatch_date | default: "10-15 working days" -%}
+
+{%- if show_bar -%}
+<style>
+  .aurea-preorder-bar {
+    background: linear-gradient(90deg, #B8860B 0%, #D4A574 50%, #B8860B 100%);
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+    color: #fff;
+    text-align: center;
+    padding: 0.75rem 1rem;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: -100% 0; }
+    100% { background-position: 100% 0; }
+  }
+  
+  .aurea-preorder-bar__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  
+  .aurea-preorder-bar__icon {
+    font-size: 1.1rem;
+  }
+  
+  .aurea-preorder-bar__message {
+    font-weight: 500;
+  }
+  
+  .aurea-preorder-bar__date {
+    background: rgba(255,255,255,0.2);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  
+  .aurea-preorder-bar__flag {
+    font-size: 1rem;
+  }
+</style>
+
+<div class="aurea-preorder-bar">
+  <div class="aurea-preorder-bar__content">
+    <span class="aurea-preorder-bar__icon">⏳</span>
+    <span class="aurea-preorder-bar__message">{{ bar_message }}</span>
+    <span class="aurea-preorder-bar__flag">🇬🇧</span>
+    <span class="aurea-preorder-bar__date">Delivery by {{ bar_date }}</span>
+  </div>
+</div>
+{%- endif -%}

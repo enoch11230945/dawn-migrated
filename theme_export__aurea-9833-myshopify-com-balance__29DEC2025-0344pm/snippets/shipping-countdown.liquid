@@ -163,7 +163,9 @@
     
     function formatDate(date) {
       const options = { day: 'numeric', month: 'short' };
-      return new Date(date).toLocaleDateString('en-GB', options);
+      // Use user's locale instead of hardcoded en-GB for proper internationalization
+      const locale = navigator.language || 'en-GB';
+      return new Date(date).toLocaleDateString(locale, options);
     }
     
     const dateDisplay = countdownEl.querySelector('.countdown-date');

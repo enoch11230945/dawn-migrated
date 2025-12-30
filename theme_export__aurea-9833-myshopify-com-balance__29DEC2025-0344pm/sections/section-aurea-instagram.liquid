@@ -1,0 +1,152 @@
+{%- comment -%}
+  AUREA Instagram Feed Section
+  Display Instagram posts as social proof
+  
+  Note: Due to Instagram API limitations, this uses a placeholder approach.
+  For real integration, use an app like Instafeed or embed from Instagram
+{%- endcomment -%}
+
+<section class="aurea-instagram" style="padding: 4rem 0;">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+    
+    {%- comment -%} Header {%- endcomment -%}
+    <header style="text-align: center; margin-bottom: 2.5rem;">
+      <p style="font-family: 'Cormorant', Georgia, serif; font-size: 1rem; color: #B8860B; letter-spacing: 0.15em; text-transform: uppercase; margin: 0 0 0.5rem 0;">
+        Follow Us
+      </p>
+      <h2 style="font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; font-weight: 400; color: #1A1A1A; margin: 0 0 0.5rem 0;">
+        {{ section.settings.title | default: '@aurealondeon' }}
+      </h2>
+      <p style="font-family: 'Cormorant', Georgia, serif; font-size: 1rem; color: #666;">
+        {{ section.settings.subtitle | default: 'Tag us in your photos for a chance to be featured' }}
+      </p>
+    </header>
+    
+    {%- comment -%} Grid {%- endcomment -%}
+    <div class="aurea-instagram__grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'image' -%}
+          <a 
+            href="{{ section.settings.instagram_url | default: 'https://instagram.com' }}"
+            target="_blank"
+            rel="noopener"
+            class="aurea-instagram__item"
+            style="aspect-ratio: 1; overflow: hidden; position: relative;"
+            {{ block.shopify_attributes }}
+          >
+            {%- if block.settings.image -%}
+              <img 
+                src="{{ block.settings.image | image_url: width: 400 }}"
+                alt="Instagram post"
+                loading="lazy"
+                style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;"
+              >
+            {%- else -%}
+              <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #F5F0E6 0%, #E8E4DE 100%); display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 2rem; opacity: 0.5;">📷</span>
+              </div>
+            {%- endif -%}
+            
+            {%- comment -%} Hover overlay {%- endcomment -%}
+            <div class="aurea-instagram__overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </div>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    
+    {%- comment -%} CTA {%- endcomment -%}
+    <div style="text-align: center; margin-top: 2rem;">
+      <a 
+        href="{{ section.settings.instagram_url | default: 'https://instagram.com' }}"
+        target="_blank"
+        rel="noopener"
+        style="display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'Cormorant', Georgia, serif; font-size: 1rem; color: #1A1A1A; text-decoration: none; padding: 0.75rem 1.5rem; border: 1px solid #1A1A1A; border-radius: 4px; transition: all 0.3s ease;"
+        onmouseover="this.style.background='#1A1A1A'; this.style.color='#fff';"
+        onmouseout="this.style.background='transparent'; this.style.color='#1A1A1A';"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+        </svg>
+        Follow @aurealondeon
+      </a>
+    </div>
+    
+  </div>
+</section>
+
+<style>
+  .aurea-instagram__item:hover img {
+    transform: scale(1.1);
+  }
+  
+  .aurea-instagram__item:hover .aurea-instagram__overlay {
+    opacity: 1;
+  }
+  
+  @media (max-width: 768px) {
+    .aurea-instagram__grid {
+      grid-template-columns: repeat(3, 1fr) !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Instagram Feed",
+  "tag": "section",
+  "class": "section-instagram",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Username Title",
+      "default": "@aurealondeon"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Tag us in your photos for a chance to be featured"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram Profile URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Instagram Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram Feed",
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

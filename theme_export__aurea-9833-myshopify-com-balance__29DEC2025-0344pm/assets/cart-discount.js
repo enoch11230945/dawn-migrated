@@ -125,9 +125,12 @@ class CartDiscount extends Component {
     event.preventDefault();
     event.stopPropagation();
 
+    // Allow MouseEvent (click) or KeyboardEvent with Enter key
+    const isValidMouseEvent = event instanceof MouseEvent;
+    const isValidKeyboardEvent = event instanceof KeyboardEvent && event.key === 'Enter';
+
     if (
-      (event instanceof KeyboardEvent && event.key !== 'Enter') ||
-      !(event instanceof MouseEvent) ||
+      (!isValidMouseEvent && !isValidKeyboardEvent) ||
       !(event.target instanceof HTMLElement) ||
       typeof this.dataset.sectionId !== 'string'
     ) {

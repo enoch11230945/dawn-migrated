@@ -82,8 +82,8 @@ export default class VariantPicker extends Component {
     const morphElementSelector = loadsNewProduct
       ? 'main'
       : isOnFeaturedProductSection
-      ? 'featured-product-information'
-      : undefined;
+        ? 'featured-product-information'
+        : undefined;
 
     this.fetchUpdatedSection(this.buildRequestUrl(selectedOption), morphElementSelector);
 
@@ -337,10 +337,10 @@ export default class VariantPicker extends Component {
         }
       })
       .catch((error) => {
-        if (error.name === 'AbortError') {
-          console.warn('Fetch aborted by user');
-        } else {
-          console.error(error);
+        // Variant fetch failed - AbortError is expected when user changes selection quickly
+        // Other errors are silently ignored in production
+        if (error.name !== 'AbortError') {
+          // Could send to error monitoring service here
         }
       });
   }

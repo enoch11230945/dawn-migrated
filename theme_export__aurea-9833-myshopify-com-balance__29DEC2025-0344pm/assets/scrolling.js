@@ -252,6 +252,16 @@ export class Scroller {
   );
 
   /**
+   * Destroys the Scroller instance and removes event listeners
+   * Call this when the element is being removed to prevent memory leaks
+   */
+  destroy() {
+    this.element.removeEventListener('scroll', this.#handleScroll);
+    this.#handleScrollEnd.cancel();
+    this.#reset();
+  }
+
+  /**
    * Sets the scroll snap behavior of the element.
    * @param {boolean} value - Whether to enable scroll snap.
    */
@@ -259,13 +269,6 @@ export class Scroller {
     // Changing the snap behavior will trigger a scroll event, which we should ignore
     this.#ignore = true;
     this.element.style.setProperty('scroll-snap-type', value ? `${this.axis} mandatory` : 'none');
-  }
-
-  /**
-   * Destroys the Scroller instance.
-   */
-  destroy() {
-    this.element.removeEventListener('scroll', this.#handleScroll);
   }
 }
 
@@ -342,25 +345,25 @@ export function scrollIntoView(element, { ancestor, behavior = 'smooth', block =
   const scrollTop =
     ancestor.scrollHeight > ancestor.clientHeight
       ? calculateScrollOffset(
-          block,
-          ancestorRect.top,
-          ancestor.clientHeight,
-          elemRect.top,
-          elemRect.height,
-          ancestor.scrollTop
-        )
+        block,
+        ancestorRect.top,
+        ancestor.clientHeight,
+        elemRect.top,
+        elemRect.height,
+        ancestor.scrollTop
+      )
       : ancestor.scrollTop;
 
   const scrollLeft =
     ancestor.scrollWidth > ancestor.clientWidth
       ? calculateScrollOffset(
-          inline,
-          ancestorRect.left,
-          ancestor.clientWidth,
-          elemRect.left,
-          elemRect.width,
-          ancestor.scrollLeft
-        )
+        inline,
+        ancestorRect.left,
+        ancestor.clientWidth,
+        elemRect.left,
+        elemRect.width,
+        ancestor.scrollLeft
+      )
       : ancestor.scrollLeft;
 
   ancestor.scrollTo({ top: scrollTop, left: scrollLeft, behavior });

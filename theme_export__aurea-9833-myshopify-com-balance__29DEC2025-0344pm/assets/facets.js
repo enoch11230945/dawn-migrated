@@ -27,7 +27,7 @@ class FacetsFormComponent extends Component {
    * @returns {URLSearchParams} The processed URL parameters
    */
   createURLParameters(formData = new FormData(this.refs.facetsForm)) {
-    let newParameters = new URLSearchParams(/** @type any */ (formData));
+    let newParameters = new URLSearchParams(/** @type any */(formData));
 
     if (newParameters.get('filter.v.price.gte') === '') newParameters.delete('filter.v.price.gte');
     if (newParameters.get('filter.v.price.lte') === '') newParameters.delete('filter.v.price.lte');
@@ -154,9 +154,14 @@ class FacetInputsComponent extends Component {
 
   /**
    * Handles mouseover events on facet labels
+   * Prefetches filter results to speed up user interactions
    * @param {MouseEvent} event - The mouseover event
    */
   prefetchPage = debounce((event) => {
+    // Respect data-saver preference to avoid wasting bandwidth on metered connections
+    // @ts-ignore - saveData is not in TypeScript definitions yet
+    if (navigator.connection?.saveData) return;
+
     if (!(event.target instanceof HTMLElement)) return;
 
     const form = this.closest('form');
@@ -181,7 +186,7 @@ class FacetInputsComponent extends Component {
     if (inputElement.checked) url.searchParams.delete(inputElement.name, inputElement.value);
 
     sectionRenderer.getSectionHTML(this.sectionId, true, url);
-  }, 200);
+  }, 500); // Increased from 200ms to reduce network noise on rapid mouse movements
 
   cancelPrefetchPage = () => this.prefetchPage.cancel();
 

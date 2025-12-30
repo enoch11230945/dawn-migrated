@@ -60,25 +60,29 @@ export class DragZoomWrapper extends HTMLElement {
   }
 
   /**
-   * Override parent zoom dialog's close method to include reset functionality
+   * Listen to parent zoom dialog's close event to reset zoom state
+   * FIXED (Linus): Use event listener instead of method override for cleaner architecture
    */
   #setupDialogCloseListener() {
     // Find the parent zoom dialog component
     const zoomDialog = /** @type {ZoomDialog} */ (this.closest('zoom-dialog'));
-    if (!zoomDialog || typeof zoomDialog.close !== 'function') return;
+    if (!zoomDialog) return;
 
-    // Store reference to original close method
-    const originalClose = zoomDialog.close.bind(zoomDialog);
+    // Find the actual dialog element inside zoom-dialog
+    const dialogElement = zoomDialog.querySelector('dialog');
+    if (!dialogElement) return;
 
-    // Override the close method to include zoom reset
-    zoomDialog.close = async (...args) => {
-      // Reset zoom state before closing
+    // Use the dialog's native close event
+    dialogElement.addEventListener('close', () => {
       this.#resetZoom();
+    }, { signal: this.#controller.signal });
 
-      // Call original close method
-      return await originalClose(...args);
-    };
+    // Also listen for cancel event (e.g., Escape key)
+    dialogElement.addEventListener('cancel', () => {
+      this.#resetZoom();
+    }, { signal: this.#controller.signal });
   }
+
 
   #initEventListeners() {
     if (this.#initialized) return;

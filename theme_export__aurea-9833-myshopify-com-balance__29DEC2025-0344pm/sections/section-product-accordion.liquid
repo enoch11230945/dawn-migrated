@@ -9,7 +9,11 @@
     <details class="aurea-accordion-item" {{ block.shopify_attributes }}>
       <summary class="aurea-accordion-summary">
         <span class="aurea-accordion-title">{{ block.settings.title }}</span>
-        <span class="aurea-accordion-icon">+</span>
+        <span class="aurea-accordion-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </span>
       </summary>
       <div class="aurea-accordion-content">
         {{ block.settings.content }}
@@ -46,16 +50,17 @@
     font-weight: 500;
     color: #1A1A1A;
     letter-spacing: 0.02em;
+    text-transform: uppercase;
   }
 
   .aurea-accordion-icon {
-    font-size: 1.25rem;
     color: #666;
     transition: transform 0.2s ease;
+    display: flex;
   }
 
   .aurea-accordion-item[open] .aurea-accordion-icon {
-    transform: rotate(45deg);
+    transform: rotate(90deg);
   }
 
   .aurea-accordion-content {
@@ -112,15 +117,15 @@
         {
           "type": "accordion_item",
           "settings": {
-            "title": "Description",
-            "content": "<p>This Love Knot necklace represents the unbreakable bond between soulmates.</p>"
+            "title": "Quality & Details",
+            "content": "<p>Our rings are crafted with precision and care, featuring high-quality materials that ensure lasting beauty.</p><ul><li>18kt Yellow Gold Vermeil</li><li>925 Sterling Silver base</li><li>Hypoallergenic and nickel-free</li></ul>"
           }
         },
         {
           "type": "accordion_item",
           "settings": {
-            "title": "Materials",
-            "content": "<ul><li>316L Surgical Stainless Steel</li><li>18k Gold PVD Coating</li><li>AAAA Grade Cubic Zirconia</li></ul>"
+            "title": "Properties of Black Obsidian",
+            "content": "<p><strong>Black Obsidian | Stone of Strength</strong></p><p>This formidable stone is renowned for its strength and resilience. The deep, lustrous black surface reflects a powerful energy that aids in protection and grounding.</p>"
           }
         },
         {

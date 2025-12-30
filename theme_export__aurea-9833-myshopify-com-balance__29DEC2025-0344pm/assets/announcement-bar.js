@@ -31,6 +31,17 @@ export class AnnouncementBar extends Component {
     this.play();
   }
 
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    this.removeEventListener('mouseenter', this.suspend);
+    this.removeEventListener('mouseleave', this.resume);
+    document.removeEventListener('visibilitychange', this.#handleVisibilityChange);
+
+    // Clear interval to prevent zombie timers
+    this.suspend();
+  }
+
   next() {
     this.current += 1;
   }

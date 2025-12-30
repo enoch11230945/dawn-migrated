@@ -115,7 +115,7 @@ export class Component extends DeclarativeShadowElement {
       }
 
       return acc;
-    }, /** @type {Set<Element>} */ (new Set()));
+    }, /** @type {Set<Element>} */(new Set()));
 
     for (const ref of elements) {
       const refName = ref.getAttribute('ref') ?? '';
@@ -230,18 +230,18 @@ function registerEventListeners() {
         const proxiedEvent =
           event.target !== element
             ? new Proxy(event, {
-                get(target, property) {
-                  if (property === 'target') return element;
+              get(target, property) {
+                if (property === 'target') return element;
 
-                  const value = Reflect.get(target, property);
+                const value = Reflect.get(target, property);
 
-                  if (typeof value === 'function') {
-                    return value.bind(target);
-                  }
+                if (typeof value === 'function') {
+                  return value.bind(target);
+                }
 
-                  return value;
-                },
-              })
+                return value;
+              },
+            })
             : event;
 
         const value = element.getAttribute(attribute) ?? '';
@@ -270,8 +270,8 @@ function registerEventListeners() {
             if (data) args.unshift(parseData(data));
 
             callback.call(instance, ...args);
-          } catch (error) {
-            console.error(error);
+          } catch {
+            // Event handler error - silently ignored in production
           }
         }
       },
@@ -309,8 +309,8 @@ function parseData(str) {
 
   return delimiter === '?'
     ? Object.fromEntries(
-        Array.from(new URLSearchParams(data).entries()).map(([key, value]) => [key, parseValue(value)])
-      )
+      Array.from(new URLSearchParams(data).entries()).map(([key, value]) => [key, parseValue(value)])
+    )
     : parseValue(data);
 }
 
@@ -329,7 +329,15 @@ function parseValue(str) {
   if (str === 'false') return false;
 
   const maybeNumber = Number(str);
-  if (!isNaN(maybeNumber) && str.trim() !== '') return maybeNumber;
+  if (!isNaN(maybeNumber) && str.trim() !== '') {
+    // FIXED: Prevent precision loss for large Shopify IDs (product/variant IDs)
+    // JavaScript can only safely represent integers up to 2^53 (Number.MAX_SAFE_INTEGER)
+    // If the number exceeds this, keep it as a string to prevent data corruption
+    if (Number.isInteger(maybeNumber) && !Number.isSafeInteger(maybeNumber)) {
+      return str;
+    }
+    return maybeNumber;
+  }
 
   return str;
 }

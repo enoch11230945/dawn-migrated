@@ -12,17 +12,25 @@ export class RecentlyViewed {
    * @param {string} productId - The ID of the product to add.
    */
   static addProduct(productId) {
-    let viewedProducts = this.getProducts();
+    try {
+      let viewedProducts = this.getProducts();
 
-    viewedProducts = viewedProducts.filter((/** @type {string} */ id) => id !== productId);
-    viewedProducts.unshift(productId);
-    viewedProducts = viewedProducts.slice(0, this.#MAX_PRODUCTS);
+      viewedProducts = viewedProducts.filter((/** @type {string} */ id) => id !== productId);
+      viewedProducts.unshift(productId);
+      viewedProducts = viewedProducts.slice(0, this.#MAX_PRODUCTS);
 
-    localStorage.setItem(this.#STORAGE_KEY, JSON.stringify(viewedProducts));
+      localStorage.setItem(this.#STORAGE_KEY, JSON.stringify(viewedProducts));
+    } catch (e) {
+      // localStorage may be full or disabled - fail silently
+    }
   }
 
   static clearProducts() {
-    localStorage.removeItem(this.#STORAGE_KEY);
+    try {
+      localStorage.removeItem(this.#STORAGE_KEY);
+    } catch (e) {
+      // Ignore errors
+    }
   }
 
   /**
@@ -30,6 +38,14 @@ export class RecentlyViewed {
    * @returns {string[]} The list of viewed products.
    */
   static getProducts() {
-    return JSON.parse(localStorage.getItem(this.#STORAGE_KEY) || '[]');
+    try {
+      const stored = localStorage.getItem(this.#STORAGE_KEY);
+      if (!stored) return [];
+      const parsed = JSON.parse(stored);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      // Return empty array on parse error instead of crashing
+      return [];
+    }
   }
 }

@@ -34,6 +34,8 @@ class LocalPickup extends Component {
 
     this.disconnectedCallback = () => {
       closestSection?.removeEventListener(ThemeEvents.variantUpdate, variantUpdated);
+      // Abort any pending fetch to prevent orphaned requests
+      this.#activeFetch?.abort();
     };
   }
 

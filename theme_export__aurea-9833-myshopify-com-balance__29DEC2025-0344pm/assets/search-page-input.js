@@ -1,5 +1,4 @@
 import { Component } from '@theme/component';
-import { debounce } from '@theme/utilities';
 
 /**
  * A custom element that allows the user to clean a search input.
@@ -17,13 +16,14 @@ class SearchPageInputComponent extends Component {
    *
    * @param {KeyboardEvent} event - The keyboard event.
    */
-  handleKeyDown = debounce((event) => {
+  handleKeyDown = (event) => {
+    // Key events should respond immediately - no debounce for good UX
     const value = this.refs.searchPageInput.value.trim();
 
     if (event.key === 'Escape' && value === '') {
       this.#submitEmptySearch();
     }
-  }, 100);
+  };
 
   #submitEmptySearch() {
     const searchInput = this.refs.searchPageInput;

@@ -1,4 +1,7 @@
 class ThemePerformance {
+  /** @type {boolean} */
+  #isSupported = typeof performance !== 'undefined' && typeof performance.mark === 'function';
+
   /**
    * @param {string} metricPrefix
    */
@@ -8,9 +11,10 @@ class ThemePerformance {
 
   /**
    * @param {string} benchmarkName
-   * @returns {PerformanceMark}
+   * @returns {PerformanceMark | null}
    */
   createStartingMarker(benchmarkName) {
+    if (!this.#isSupported) return null;
     const metricName = `${this.metricPrefix}:${benchmarkName}`;
     return performance.mark(`${metricName}:start`);
   }
@@ -21,6 +25,7 @@ class ThemePerformance {
    * @returns {void}
    */
   measureFromEvent(benchmarkName, event) {
+    if (!this.#isSupported) return;
     const metricName = `${this.metricPrefix}:${benchmarkName}`;
     performance.mark(`${metricName}:start`, {
       startTime: event.timeStamp,
@@ -36,6 +41,7 @@ class ThemePerformance {
    * @returns {void}
    */
   measureFromMarker(startMarker) {
+    if (!this.#isSupported || !startMarker) return;
     const metricName = startMarker.name.replace(/:start$/, '');
     const endMarker = performance.mark(`${metricName}:end`);
 
@@ -48,6 +54,10 @@ class ThemePerformance {
    * @returns {void}
    */
   measure(benchmarkName, callback) {
+    if (!this.#isSupported) {
+      callback();
+      return;
+    }
     const metricName = `${this.metricPrefix}:${benchmarkName}`;
     performance.mark(`${metricName}:start`);
 

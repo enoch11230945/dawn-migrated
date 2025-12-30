@@ -1,0 +1,53 @@
+{%- comment -%}
+  AUREA Made-to-Order Notice
+  Displays a notice for made-to-order products with estimated delivery time
+  
+  Usage: {% render 'aurea-made-to-order', delivery_time: '8-16 working days' %}
+{%- endcomment -%}
+
+{%- assign delivery_time = delivery_time | default: '8-16 working days' -%}
+
+<style>
+  .aurea-made-to-order {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: #faf8f5;
+    border: 1px solid #E8E4DF;
+    border-radius: 4px;
+    margin: 1rem 0;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 0.9rem;
+    color: #1A1A1A;
+  }
+  
+  .aurea-made-to-order__icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    color: #B8860B;
+  }
+  
+  .aurea-made-to-order__label {
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+  }
+  
+  .aurea-made-to-order__time {
+    color: #666;
+  }
+</style>
+
+<div class="aurea-made-to-order">
+  <svg class="aurea-made-to-order__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="1" y="3" width="15" height="13" rx="1"/>
+    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+    <circle cx="5.5" cy="18.5" r="2.5"/>
+    <circle cx="18.5" cy="18.5" r="2.5"/>
+  </svg>
+  <span class="aurea-made-to-order__label">Made-to-Order:</span>
+  <span class="aurea-made-to-order__time">Arrives in {{ delivery_time }}</span>
+</div>

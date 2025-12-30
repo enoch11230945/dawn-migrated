@@ -1,0 +1,95 @@
+{%- comment -%}
+  AUREA Back to Top Button
+  Smooth scroll back to top button
+  
+  Usage: {% render 'aurea-back-to-top' %}
+  Place in theme.liquid before </body>
+{%- endcomment -%}
+
+<style>
+  .aurea-back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 48px;
+    height: 48px;
+    background: #1A1A1A;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 9999;
+  }
+  
+  .aurea-back-to-top.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  .aurea-back-to-top:hover {
+    background: #B8860B;
+    transform: translateY(-4px);
+  }
+  
+  .aurea-back-to-top svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    .aurea-back-to-top {
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 44px;
+      height: 44px;
+    }
+  }
+</style>
+
+<button type="button" class="aurea-back-to-top" id="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <polyline points="18 15 12 9 6 15"></polyline>
+  </svg>
+</button>
+
+<script>
+(function() {
+  const btn = document.getElementById('back-to-top');
+  if (!btn) return;
+  
+  const SHOW_THRESHOLD = 400;
+  let ticking = false;
+  
+  function updateVisibility() {
+    if (window.scrollY > SHOW_THRESHOLD) {
+      btn.classList.add('is-visible');
+    } else {
+      btn.classList.remove('is-visible');
+    }
+    ticking = false;
+  }
+  
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(updateVisibility);
+      ticking = true;
+    }
+  }, { passive: true });
+  
+  btn.addEventListener('click', function() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+})();
+</script>

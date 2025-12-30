@@ -109,7 +109,7 @@ export class OverflowList extends DeclarativeShadowElement {
     // Add event listener for reflow requests
     this.addEventListener(
       'reflow',
-      /** @param {CustomEvent<{lastVisibleElement?: HTMLElement}>} event */ (event) => {
+      /** @param {CustomEvent<{lastVisibleElement?: HTMLElement}>} event */(event) => {
         this.#reflowItems(0, event.detail.lastVisibleElement);
       }
     );
@@ -141,7 +141,7 @@ export class OverflowList extends DeclarativeShadowElement {
     return typeof Theme?.utilities?.scheduler?.schedule === 'function'
       ? Theme.utilities.scheduler.schedule
       : /** @param {FrameRequestCallback} callback */ (callback) =>
-          requestAnimationFrame(() => setTimeout(callback, 0));
+        requestAnimationFrame(() => setTimeout(callback, 0));
   }
 
   #scheduled = false;
@@ -293,14 +293,21 @@ export class OverflowList extends DeclarativeShadowElement {
 
     lastVisibleElement?.style.setProperty('order', '-1');
 
-    const moreSlotRect = moreSlot.getBoundingClientRect();
+    // OPTIMIZATION: Batch all DOM reads after writes are complete
+    // This allows the browser to do a single layout calculation for all measurements
+    const moreSlotTop = moreSlot.getBoundingClientRect().top;
 
-    elements.forEach((element) => {
-      const elementRect = element.getBoundingClientRect();
+    // Pre-calculate all element rects in a single pass (browser optimizes this)
+    const elementRects = elements.map(element => ({
+      element,
+      rect: element.getBoundingClientRect()
+    }));
 
-      if (elementRect.top > moreSlotRect.top) {
+    // Now process the pre-calculated rects without triggering additional layouts
+    for (const { element, rect } of elementRects) {
+      if (rect.top > moreSlotTop) {
         if (!overflowingElements.length) {
-          placeholderWidth = elementRect.width;
+          placeholderWidth = rect.width;
         }
 
         hasOverflow = true;
@@ -308,7 +315,7 @@ export class OverflowList extends DeclarativeShadowElement {
       } else {
         visibleElements.push(element);
       }
-    });
+    }
 
     if (hasOverflow) {
       moreSlot.style.removeProperty('order');

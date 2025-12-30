@@ -8,8 +8,10 @@ import VariantPicker from '@theme/variant-picker';
 export class QuickAddComponent extends Component {
   /** @type {AbortController | null} */
   #abortController = null;
-  /** @type {Map<string, Element>} */
+  /** @type {Map<string, Element>} - LRU cache with size limit */
   #cachedContent = new Map();
+  /** Maximum number of cached product pages to prevent memory bloat */
+  static #MAX_CACHE_SIZE = 10;
   /** @type {AbortController} */
   #cartUpdateAbortController = new AbortController();
 
@@ -100,6 +102,11 @@ export class QuickAddComponent extends Component {
       if (html) {
         const gridElement = html.querySelector('[data-product-grid-content]');
         if (gridElement) {
+          // LRU eviction: if cache is full, remove oldest entry (first key in Map iteration order)
+          if (this.#cachedContent.size >= QuickAddComponent.#MAX_CACHE_SIZE) {
+            const oldestKey = this.#cachedContent.keys().next().value;
+            if (oldestKey) this.#cachedContent.delete(oldestKey);
+          }
           // Cache the cloned element to avoid modifying the original
           productGrid = /** @type {Element} */ (gridElement.cloneNode(true));
           this.#cachedContent.set(currentUrl, productGrid);

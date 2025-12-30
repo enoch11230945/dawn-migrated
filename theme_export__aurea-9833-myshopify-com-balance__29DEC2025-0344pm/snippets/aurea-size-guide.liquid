@@ -170,6 +170,32 @@
   .aurea-size-tip strong {
     color: #B8860B;
   }
+  
+  /* Ring Size Table Highlight Column (matches Moon Magic style) */
+  .aurea-size-table__highlight {
+    background: #C9A9A6 !important;
+    color: #fff !important;
+  }
+  
+  .aurea-size-table thead .aurea-size-table__highlight {
+    background: #B89B98 !important;
+  }
+  
+  .aurea-size-panel__intro {
+    text-align: center;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+  }
+  
+  .aurea-size-table--ring {
+    font-size: 0.9rem;
+  }
+  
+  .aurea-size-table--ring tbody tr:nth-child(odd) {
+    background: #faf8f5;
+  }
 </style>
 
 <button type="button" class="aurea-size-guide-trigger" data-open-size-guide>
@@ -240,20 +266,26 @@
     
     {%- comment -%} Ring Sizes {%- endcomment -%}
     <div class="aurea-size-panel" data-panel="ring">
-      <table class="aurea-size-table">
+      <p class="aurea-size-panel__intro">At Aurea, we use US and Canadian sizes.</p>
+      <table class="aurea-size-table aurea-size-table--ring">
         <thead>
           <tr>
-            <th>UK Size</th>
-            <th>US Size</th>
             <th>Diameter (mm)</th>
+            <th class="aurea-size-table__highlight">US & Canada Size</th>
+            <th>Europe</th>
+            <th>UK & Australia</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>J</td><td>5</td><td>15.7</td></tr>
-          <tr><td>L</td><td>6</td><td>16.5</td></tr>
-          <tr><td>N</td><td>7</td><td>17.3</td></tr>
-          <tr><td>P</td><td>8</td><td>18.1</td></tr>
-          <tr><td>R</td><td>9</td><td>19.0</td></tr>
+          <tr><td>14.1</td><td class="aurea-size-table__highlight">3</td><td>46</td><td>F</td></tr>
+          <tr><td>14.9</td><td class="aurea-size-table__highlight">4</td><td>48</td><td>H</td></tr>
+          <tr><td>15.7</td><td class="aurea-size-table__highlight">5</td><td>50</td><td>J</td></tr>
+          <tr><td>16.5</td><td class="aurea-size-table__highlight">6</td><td>52</td><td>L</td></tr>
+          <tr><td>17.3</td><td class="aurea-size-table__highlight">7</td><td>54</td><td>N</td></tr>
+          <tr><td>18.1</td><td class="aurea-size-table__highlight">8</td><td>57</td><td>P</td></tr>
+          <tr><td>18.9</td><td class="aurea-size-table__highlight">9</td><td>60</td><td>R</td></tr>
+          <tr><td>19.8</td><td class="aurea-size-table__highlight">10</td><td>62</td><td>T</td></tr>
+          <tr><td>20.6</td><td class="aurea-size-table__highlight">11</td><td>64</td><td>V</td></tr>
         </tbody>
       </table>
       <div class="aurea-size-tip">

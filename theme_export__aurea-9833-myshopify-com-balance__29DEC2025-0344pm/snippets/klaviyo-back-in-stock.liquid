@@ -145,6 +145,7 @@
           email: email
         });
         showMessage('Thank you! We\'ll notify you when this item is back in stock.', 'success');
+        emailInput.value = '';
       } else if (typeof klaviyo !== 'undefined' && klaviyo.push) {
         // Alternative Klaviyo API
         klaviyo.push(['track', 'Back in Stock Subscribe', {
@@ -153,13 +154,50 @@
           'product': productHandle
         }]);
         showMessage('Thank you! We\'ll notify you when this item is back in stock.', 'success');
+        emailInput.value = '';
       } else {
-        // Fallback: Log for manual collection
-        console.log('[AUREA] BIS email collected:', email, 'for variant:', variantId);
-        showMessage('Thank you! We\'ll notify you when this item is back in stock.', 'success');
+        // FIXED: Queue in localStorage instead of silent failure
+        // This ensures data is not lost and can be processed when SDK loads
+        try {
+          const bisQueue = JSON.parse(localStorage.getItem('aurea_bis_queue') || '[]');
+          bisQueue.push({
+            email: email,
+            variantId: variantId,
+            productHandle: productHandle,
+            timestamp: Date.now()
+          });
+          // Keep only last 50 entries to prevent localStorage bloat
+          if (bisQueue.length > 50) bisQueue.shift();
+          localStorage.setItem('aurea_bis_queue', JSON.stringify(bisQueue));
+          
+          showMessage('Thank you! We\'ll notify you when this item is back in stock.', 'success');
+          emailInput.value = '';
+          
+          // Try to process queue when Klaviyo loads
+          if (!window._aureaBisRetrySetup) {
+            window._aureaBisRetrySetup = true;
+            const retryInterval = setInterval(function() {
+              if (typeof klaviyo !== 'undefined' && klaviyo.push) {
+                clearInterval(retryInterval);
+                const queue = JSON.parse(localStorage.getItem('aurea_bis_queue') || '[]');
+                queue.forEach(function(item) {
+                  klaviyo.push(['track', 'Back in Stock Subscribe', {
+                    'email': item.email,
+                    'variant': item.variantId,
+                    'product': item.productHandle
+                  }]);
+                });
+                localStorage.removeItem('aurea_bis_queue');
+              }
+            }, 2000);
+            // Stop trying after 30 seconds
+            setTimeout(function() { clearInterval(retryInterval); }, 30000);
+          }
+        } catch (e) {
+          // localStorage not available - show honest error
+          showMessage('Unable to save your request. Please try again later.', 'error');
+        }
       }
-      
-      emailInput.value = '';
     });
     
     function showMessage(text, type) {

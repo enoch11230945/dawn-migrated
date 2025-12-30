@@ -174,8 +174,9 @@ class CartItemsComponent extends Component {
 
         this.#updateCartQuantitySelectorButtonStates();
       })
-      .catch((error) => {
-        console.error(error);
+      .catch(() => {
+        // Cart update failed - silently reset UI state
+        resetShimmer(this);
       })
       .finally(() => {
         this.#enableCartItems();

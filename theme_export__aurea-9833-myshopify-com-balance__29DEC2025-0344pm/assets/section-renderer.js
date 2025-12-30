@@ -5,6 +5,11 @@ import { morph } from '@theme/morph';
  */
 class SectionRenderer {
   /**
+   * Maximum cache size to prevent memory bloat during SPA navigation
+   */
+  static #MAX_CACHE_SIZE = 50;
+
+  /**
    * The cache of section HTML
    * @type {Map<string, string>}
    */
@@ -85,6 +90,9 @@ class SectionRenderer {
 
     pendingPromise = fetch(sectionUrl).then((response) => {
       return response.text();
+    }).catch(() => {
+      // Return empty string on network error - let caller handle gracefully
+      return '';
     });
 
     this.#pendingPromises.set(sectionUrl, pendingPromise);
@@ -92,7 +100,15 @@ class SectionRenderer {
     const sectionHTML = await pendingPromise;
     this.#pendingPromises.delete(sectionUrl);
 
-    this.#cache.set(sectionUrl, sectionHTML);
+    // Only cache non-empty responses
+    if (sectionHTML) {
+      // LRU eviction: if cache is full, remove oldest entry
+      if (this.#cache.size >= SectionRenderer.#MAX_CACHE_SIZE) {
+        const oldestKey = this.#cache.keys().next().value;
+        if (oldestKey) this.#cache.delete(oldestKey);
+      }
+      this.#cache.set(sectionUrl, sectionHTML);
+    }
     return sectionHTML;
   }
 

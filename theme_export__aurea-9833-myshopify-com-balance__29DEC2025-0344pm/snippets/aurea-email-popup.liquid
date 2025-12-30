@@ -1,0 +1,331 @@
+{%- comment -%}
+  AUREA Email Popup
+  Exit-intent or timed popup to capture visitor emails
+  Offers discount code in exchange for subscription
+  
+  Usage: {% render 'aurea-email-popup' %}
+  Place in theme.liquid before </body>
+{%- endcomment -%}
+
+{%- comment -%} Only show if customer not logged in and hasn't dismissed {%- endcomment -%}
+{%- unless customer -%}
+
+<style>
+  .aurea-popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 99999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .aurea-popup-overlay.is-visible {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+  }
+  
+  .aurea-popup {
+    position: relative;
+    background: #fff;
+    max-width: 500px;
+    width: 90%;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  
+  .aurea-popup-overlay.is-visible .aurea-popup {
+    transform: scale(1);
+  }
+  
+  .aurea-popup__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    z-index: 10;
+    padding: 0.5rem;
+    transition: color 0.2s ease;
+  }
+  
+  .aurea-popup__close:hover {
+    color: #1A1A1A;
+  }
+  
+  .aurea-popup__image {
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(135deg, #F5F0E6 0%, #E8E4DE 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .aurea-popup__icon {
+    font-size: 4rem;
+  }
+  
+  .aurea-popup__content {
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .aurea-popup__title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: #1A1A1A;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .aurea-popup__discount {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #B8860B;
+    margin: 0.5rem 0;
+  }
+  
+  .aurea-popup__text {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 0 0 1.5rem 0;
+  }
+  
+  .aurea-popup__form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .aurea-popup__input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1px solid #E5E5E5;
+    border-radius: 4px;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 1rem;
+    text-align: center;
+  }
+  
+  .aurea-popup__input:focus {
+    outline: none;
+    border-color: #B8860B;
+  }
+  
+  .aurea-popup__submit {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background: #1A1A1A;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .aurea-popup__submit:hover {
+    background: #333;
+  }
+  
+  .aurea-popup__note {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 0.8rem;
+    color: #999;
+    margin-top: 1rem;
+  }
+  
+  .aurea-popup__success {
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .aurea-popup__success-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .aurea-popup__success-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.5rem;
+    color: #2E7D32;
+    margin: 0 0 0.75rem 0;
+  }
+  
+  .aurea-popup__success-code {
+    display: inline-block;
+    background: #F5F0E6;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #B8860B;
+    letter-spacing: 0.1em;
+    margin: 0.5rem 0;
+  }
+  
+  @media (max-width: 480px) {
+    .aurea-popup__image {
+      height: 120px;
+    }
+    .aurea-popup__title {
+      font-size: 1.5rem;
+    }
+    .aurea-popup__discount {
+      font-size: 2rem;
+    }
+  }
+</style>
+
+<div class="aurea-popup-overlay" id="aurea-email-popup">
+  <div class="aurea-popup">
+    <button type="button" class="aurea-popup__close" aria-label="Close popup">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    
+    <div class="aurea-popup__image">
+      <span class="aurea-popup__icon">💎</span>
+    </div>
+    
+    <div class="aurea-popup__content" id="popup-form-content">
+      <h2 class="aurea-popup__title">Get 10% Off</h2>
+      <p class="aurea-popup__discount">Your First Order</p>
+      <p class="aurea-popup__text">
+        Join our VIP list for exclusive access to new arrivals, special offers, and styling tips.
+      </p>
+      
+      {%- form 'customer', class: 'aurea-popup__form', id: 'aurea-popup-form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter,popup">
+        <input 
+          type="email" 
+          name="contact[email]" 
+          class="aurea-popup__input" 
+          placeholder="Enter your email address"
+          required
+          autocomplete="email"
+        >
+        <button type="submit" class="aurea-popup__submit">
+          Yes, I want 10% off!
+        </button>
+      {%- endform -%}
+      
+      <p class="aurea-popup__note">
+        By subscribing, you agree to receive marketing emails. Unsubscribe anytime.
+      </p>
+    </div>
+    
+    <div class="aurea-popup__success" id="popup-success-content" style="display: none;">
+      <span class="aurea-popup__success-icon">🎉</span>
+      <h2 class="aurea-popup__success-title">You're In!</h2>
+      <p class="aurea-popup__text">Use this code at checkout:</p>
+      <span class="aurea-popup__success-code">WELCOME10</span>
+      <p class="aurea-popup__text" style="margin-top: 1rem;">
+        Check your inbox for a welcome email with more exclusive offers!
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const popup = document.getElementById('aurea-email-popup');
+  if (!popup) return;
+  
+  const POPUP_STORAGE_KEY = 'aurea_popup_dismissed';
+  const POPUP_DELAY = 5000; // Show after 5 seconds
+  const POPUP_EXPIRY_DAYS = 7; // Don't show again for 7 days
+  
+  // Check if popup was recently dismissed
+  function wasRecentlyDismissed() {
+    const dismissed = localStorage.getItem(POPUP_STORAGE_KEY);
+    if (!dismissed) return false;
+    
+    const dismissedDate = new Date(parseInt(dismissed));
+    const now = new Date();
+    const daysDiff = (now - dismissedDate) / (1000 * 60 * 60 * 24);
+    
+    return daysDiff < POPUP_EXPIRY_DAYS;
+  }
+  
+  // Show popup
+  function showPopup() {
+    if (wasRecentlyDismissed()) return;
+    popup.classList.add('is-visible');
+    document.body.style.overflow = 'hidden';
+  }
+  
+  // Hide popup
+  function hidePopup() {
+    popup.classList.remove('is-visible');
+    document.body.style.overflow = '';
+    localStorage.setItem(POPUP_STORAGE_KEY, Date.now().toString());
+  }
+  
+  // Close button
+  popup.querySelector('.aurea-popup__close').addEventListener('click', hidePopup);
+  
+  // Click outside to close
+  popup.addEventListener('click', function(e) {
+    if (e.target === popup) hidePopup();
+  });
+  
+  // Escape key to close
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && popup.classList.contains('is-visible')) {
+      hidePopup();
+    }
+  });
+  
+  // Form submission
+  const form = document.getElementById('aurea-popup-form');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      // Show success message after short delay (form still submits)
+      setTimeout(function() {
+        document.getElementById('popup-form-content').style.display = 'none';
+        document.getElementById('popup-success-content').style.display = 'block';
+        
+        // Auto-close after showing success
+        setTimeout(hidePopup, 4000);
+      }, 500);
+    });
+  }
+  
+  // Trigger: Time-based
+  setTimeout(showPopup, POPUP_DELAY);
+  
+  // Trigger: Exit intent (desktop only)
+  if (window.innerWidth > 768) {
+    document.addEventListener('mouseout', function(e) {
+      if (e.clientY < 10 && !wasRecentlyDismissed() && !popup.classList.contains('is-visible')) {
+        showPopup();
+      }
+    });
+  }
+})();
+</script>
+
+{%- endunless -%}

@@ -117,7 +117,8 @@ class PricePerItemComponent extends Component {
       this.#priceBreaks.find((pb) => quantity >= pb.quantity) ?? this.#priceBreaks[this.#priceBreaks.length - 1];
 
     if (priceBreak) {
-      this.refs.pricePerItemText.innerHTML = `${this.dataset.atText} ${priceBreak.price}/${this.dataset.eachText}`;
+      // Use textContent instead of innerHTML for security (even for trusted data)
+      this.refs.pricePerItemText.textContent = `${this.dataset.atText} ${priceBreak.price}/${this.dataset.eachText}`;
     }
   }
 

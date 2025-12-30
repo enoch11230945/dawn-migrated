@@ -1,0 +1,185 @@
+{%- comment -%}
+  AUREA Recently Viewed Products
+  Tracks and displays recently viewed products using localStorage
+  
+  Usage: {% render 'aurea-recently-viewed', product: product, show_products: true %}
+  
+  On product page: Call with product to track viewing
+  On any page: Call with show_products: true to display the section
+{%- endcomment -%}
+
+{%- comment -%} Track this product view {%- endcomment -%}
+{%- if product -%}
+<script>
+(function() {
+  const STORAGE_KEY = 'aurea_recently_viewed';
+  const MAX_ITEMS = 8;
+  
+  const currentProduct = {
+    id: {{ product.id | json }},
+    handle: {{ product.handle | json }},
+    title: {{ product.title | json }},
+    image: {{ product.featured_image | image_url: width: 300 | json }},
+    price: {{ product.price | money | json }},
+    compare_price: {{ product.compare_at_price | money | json }},
+    has_sale: {{ product.compare_at_price | json }} > {{ product.price | json }}
+  };
+  
+  try {
+    let viewed = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    
+    // Remove if already exists (move to front)
+    viewed = viewed.filter(p => p.id !== currentProduct.id);
+    
+    // Add to beginning
+    viewed.unshift(currentProduct);
+    
+    // Limit to MAX_ITEMS
+    viewed = viewed.slice(0, MAX_ITEMS);
+    
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(viewed));
+  } catch (e) {
+    // Storage not available
+  }
+})();
+</script>
+{%- endif -%}
+
+{%- comment -%} Display recently viewed section {%- endcomment -%}
+{%- if show_products -%}
+<section class="aurea-recently-viewed" id="recently-viewed-section" style="padding: 4rem 0; display: none;">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+    
+    <header style="text-align: center; margin-bottom: 2rem;">
+      <h2 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.75rem; font-weight: 400; color: #1A1A1A; margin: 0 0 0.5rem 0;">
+        {{ title | default: 'Recently Viewed' }}
+      </h2>
+      <p style="font-family: 'Cormorant', Georgia, serif; font-size: 1rem; color: #666;">
+        Pick up where you left off
+      </p>
+    </header>
+    
+    <div class="aurea-recently-viewed__grid" id="recently-viewed-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">
+      {%- comment -%} Products populated by JavaScript {%- endcomment -%}
+    </div>
+    
+  </div>
+</section>
+
+<style>
+  .recently-viewed-card {
+    text-decoration: none;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  
+  .recently-viewed-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    transform: translateY(-4px);
+  }
+  
+  .recently-viewed-card__image {
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #F5F0E6;
+    position: relative;
+  }
+  
+  .recently-viewed-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  
+  .recently-viewed-card:hover img {
+    transform: scale(1.05);
+  }
+  
+  .recently-viewed-card__sale {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #C62828;
+    color: #fff;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.6rem;
+    border-radius: 2px;
+  }
+  
+  .recently-viewed-card__info {
+    padding: 1rem;
+  }
+  
+  .recently-viewed-card__title {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 0.95rem;
+    color: #1A1A1A;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.4;
+  }
+  
+  .recently-viewed-card__price {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #B8860B;
+  }
+  
+  .recently-viewed-card__compare-price {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 0.9rem;
+    color: #999;
+    text-decoration: line-through;
+    margin-left: 0.5rem;
+  }
+</style>
+
+<script>
+(function() {
+  const STORAGE_KEY = 'aurea_recently_viewed';
+  const section = document.getElementById('recently-viewed-section');
+  const grid = document.getElementById('recently-viewed-grid');
+  
+  if (!section || !grid) return;
+  
+  try {
+    const viewed = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    
+    // Don't show if current product is in the list, to avoid redundancy
+    const currentProductId = {{ product.id | default: 0 | json }};
+    const filtered = viewed.filter(p => p.id !== currentProductId);
+    
+    if (filtered.length === 0) return;
+    
+    // Show section
+    section.style.display = 'block';
+    
+    // Render products
+    grid.innerHTML = filtered.slice(0, 4).map(product => `
+      <a href="/products/${product.handle}" class="recently-viewed-card">
+        <div class="recently-viewed-card__image">
+          ${product.image ? `<img src="${product.image}" alt="${product.title}" loading="lazy">` : ''}
+          ${product.has_sale ? '<span class="recently-viewed-card__sale">Sale</span>' : ''}
+        </div>
+        <div class="recently-viewed-card__info">
+          <h3 class="recently-viewed-card__title">${product.title}</h3>
+          <div>
+            <span class="recently-viewed-card__price">${product.price}</span>
+            ${product.has_sale && product.compare_price ? `<span class="recently-viewed-card__compare-price">${product.compare_price}</span>` : ''}
+          </div>
+        </div>
+      </a>
+    `).join('');
+  } catch (e) {
+    // Storage not available
+  }
+})();
+</script>
+{%- endif -%}

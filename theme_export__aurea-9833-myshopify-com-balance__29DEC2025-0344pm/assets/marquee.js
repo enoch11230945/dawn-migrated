@@ -202,10 +202,13 @@ class MarqueeComponent extends Component {
 
     if (!marqueeItems[0]) return;
 
+    // Use DocumentFragment to batch DOM insertions and reduce reflows
+    const fragment = document.createDocumentFragment();
     for (let i = 0; i < numberOfCopies - 1; i++) {
       const clone = marqueeItems[0].cloneNode(true);
-      content.appendChild(clone);
+      fragment.appendChild(clone);
     }
+    content.appendChild(fragment);
   }
 
   /**

@@ -23,6 +23,7 @@ class HeaderDrawer extends Component {
   disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListener('keyup', this.#onKeyUp);
+    this.#cleanupAnimatedElementListeners();
   }
 
   /**
@@ -138,6 +139,16 @@ class HeaderDrawer extends Component {
     const allAnimated = this.querySelectorAll('.menu-drawer__animated-element');
     allAnimated.forEach((element) => {
       element.addEventListener('animationend', removeWillChangeOnAnimationEnd);
+    });
+  }
+
+  /**
+   * Remove animationend event listeners from all animated elements to prevent memory leaks
+   */
+  #cleanupAnimatedElementListeners() {
+    const allAnimated = this.querySelectorAll('.menu-drawer__animated-element');
+    allAnimated.forEach((element) => {
+      element.removeEventListener('animationend', removeWillChangeOnAnimationEnd);
     });
   }
 

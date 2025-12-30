@@ -44,7 +44,7 @@ export class AddToCartComponent extends Component {
     super.disconnectedCallback();
 
     if (this.#resetTimeouts) {
-      this.#resetTimeouts.forEach(/** @param {number} timeoutId */ (timeoutId) => clearTimeout(timeoutId));
+      this.#resetTimeouts.forEach(/** @param {number} timeoutId */(timeoutId) => clearTimeout(timeoutId));
     }
     this.removeEventListener('pointerenter', this.#preloadImage);
   }
@@ -136,7 +136,7 @@ export class AddToCartComponent extends Component {
     }
 
     // Clear all existing timeouts
-    this.#resetTimeouts.forEach(/** @param {number} timeoutId */ (timeoutId) => clearTimeout(timeoutId));
+    this.#resetTimeouts.forEach(/** @param {number} timeoutId */(timeoutId) => clearTimeout(timeoutId));
     this.#resetTimeouts = [];
 
     if (addToCartButton.dataset.added !== 'true') {
@@ -250,8 +250,8 @@ class ProductFormComponent extends Component {
       const cart = await response.json();
 
       return this.#updateCartQuantityFromData(cart);
-    } catch (error) {
-      console.error('Failed to fetch cart quantity:', error);
+    } catch {
+      // Silent failure - return 0 quantity on error
       return 0;
     }
   }
@@ -442,8 +442,8 @@ class ProductFormComponent extends Component {
           );
         }
       })
-      .catch((error) => {
-        console.error(error);
+      .catch(() => {
+        // Add to cart failed - UI error handling should be done elsewhere
       })
       .finally(() => {
         cartPerformance.measureFromEvent('add:user-action', event);
@@ -492,7 +492,7 @@ class ProductFormComponent extends Component {
     } else if (currentElement && !newElement) {
       currentElement.remove();
     } else if (!currentElement && newElement && insertReferenceElement) {
-      insertReferenceElement.insertAdjacentElement('beforebegin', /** @type {Element} */ (newElement.cloneNode(true)));
+      insertReferenceElement.insertAdjacentElement('beforebegin', /** @type {Element} */(newElement.cloneNode(true)));
     }
   }
 

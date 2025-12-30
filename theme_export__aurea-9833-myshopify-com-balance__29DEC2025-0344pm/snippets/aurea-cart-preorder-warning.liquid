@@ -1,0 +1,127 @@
+{%- comment -%}
+  AUREA Cart Pre-order Warning
+  Displays a warning for pre-order items in the cart
+  Also shows the mixed order policy if cart contains both in-stock and pre-order items
+  
+  Usage: {% render 'aurea-cart-preorder-warning', cart: cart %}
+  Place this in cart.liquid, cart-drawer.liquid, or cart-items.liquid
+{%- endcomment -%}
+
+{%- assign has_preorder = false -%}
+{%- assign has_instock = false -%}
+{%- assign preorder_items = '' -%}
+
+{%- comment -%} Scan all cart items to determine status {%- endcomment -%}
+{%- for item in cart.items -%}
+  {%- assign variant = item.variant -%}
+  
+  {%- if variant.inventory_management == 'shopify' -%}
+    {%- if variant.inventory_quantity <= 0 and variant.inventory_policy == 'continue' -%}
+      {%- assign has_preorder = true -%}
+      {%- assign preorder_items = preorder_items | append: item.product.title | append: ', ' -%}
+    {%- else -%}
+      {%- assign has_instock = true -%}
+    {%- endif -%}
+  {%- else -%}
+    {%- assign has_instock = true -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- comment -%} Remove trailing comma from preorder_items {%- endcomment -%}
+{%- assign preorder_items = preorder_items | strip | remove_last: ', ' -%}
+
+<style>
+  .aurea-cart-warning {
+    background: #FFF8E1;
+    border: 1px solid #F5D0A9;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Cormorant', Georgia, serif;
+  }
+  
+  .aurea-cart-warning__header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #B8860B;
+    margin-bottom: 0.5rem;
+  }
+  
+  .aurea-cart-warning__icon {
+    font-size: 1.1rem;
+  }
+  
+  .aurea-cart-warning__text {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #5C4A32;
+    margin: 0;
+  }
+  
+  .aurea-cart-warning__text strong {
+    color: #1A1A1A;
+  }
+  
+  .aurea-cart-warning--mixed {
+    background: linear-gradient(135deg, #FFF8E1 0%, #E8F5E9 100%);
+    border-color: #C5E1A5;
+  }
+  
+  /* Per-item label for cart line items */
+  .aurea-cart-item-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    margin-top: 0.35rem;
+  }
+  
+  .aurea-cart-item-label--preorder {
+    background: #FFF3E0;
+    color: #B8860B;
+    border: 1px solid #F5D0A9;
+  }
+  
+  .aurea-cart-item-label--instock {
+    background: #E8F5E9;
+    color: #2E7D32;
+    border: 1px solid #C8E6C9;
+  }
+</style>
+
+{%- if has_preorder -%}
+  {%- if has_preorder and has_instock -%}
+    {%- comment -%} MIXED ORDER: Both pre-order and in-stock items {%- endcomment -%}
+    <div class="aurea-cart-warning aurea-cart-warning--mixed">
+      <div class="aurea-cart-warning__header">
+        <span class="aurea-cart-warning__icon">📦</span>
+        Mixed Order Notice
+      </div>
+      <p class="aurea-cart-warning__text">
+        Your cart contains both <strong>in-stock</strong> and <strong>pre-order</strong> items.<br>
+        <strong>Shipping Policy:</strong> Your entire order will be shipped together once all items are ready (approx. 10-15 working days).<br>
+        <em>Thank you for your patience – it will be worth the wait! ✨</em>
+      </p>
+    </div>
+  {%- else -%}
+    {%- comment -%} PRE-ORDER ONLY: All items are pre-order {%- endcomment -%}
+    <div class="aurea-cart-warning">
+      <div class="aurea-cart-warning__header">
+        <span class="aurea-cart-warning__icon">⏳</span>
+        Pre-order Items in Cart
+      </div>
+      <p class="aurea-cart-warning__text">
+        Some items in your cart are currently being restocked due to high demand.<br>
+        <strong>Estimated Dispatch:</strong> 10-15 working days from order date.<br>
+        You will receive tracking info once your order ships.
+      </p>
+    </div>
+  {%- endif -%}
+{%- endif -%}

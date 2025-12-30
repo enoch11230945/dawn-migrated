@@ -244,19 +244,39 @@ export function normalizeString(str) {
 }
 
 /**
- * Format a money value
+ * Format a money value string, normalizing decimal separators
+ * Uses heuristics to handle various European and international formats
  * @param {string} value The value to format
- * @returns {string} The formatted value
+ * @returns {string} The normalized numeric string (with . as decimal separator)
  */
 export function formatMoney(value) {
-  let valueWithNoSpaces = value.replace(' ', '');
-  if (valueWithNoSpaces.indexOf(',') === -1) return valueWithNoSpaces;
-  if (valueWithNoSpaces.indexOf(',') < valueWithNoSpaces.indexOf('.')) return valueWithNoSpaces.replace(',', '');
-  if (valueWithNoSpaces.indexOf('.') < valueWithNoSpaces.indexOf(','))
-    return valueWithNoSpaces.replace('.', '').replace(',', '.');
-  if (valueWithNoSpaces.indexOf(',') !== -1) return valueWithNoSpaces.replace(',', '.');
+  if (!value || typeof value !== 'string') return value || '';
 
-  return valueWithNoSpaces;
+  let valueWithNoSpaces = value.replace(/\s/g, '');
+
+  // If no comma, just return as-is
+  if (valueWithNoSpaces.indexOf(',') === -1) return valueWithNoSpaces;
+
+  // If comma comes before period (e.g., "1,234.56"), comma is thousands separator
+  if (valueWithNoSpaces.indexOf(',') < valueWithNoSpaces.indexOf('.'))
+    return valueWithNoSpaces.replace(/,/g, '');
+
+  // If period comes before comma (e.g., "1.234,56"), period is thousands separator
+  if (valueWithNoSpaces.indexOf('.') < valueWithNoSpaces.indexOf(','))
+    return valueWithNoSpaces.replace(/\./g, '').replace(',', '.');
+
+  // If only comma exists, check context - if there are 3 digits after comma, it's thousands
+  // Otherwise it's decimal separator
+  const commaIndex = valueWithNoSpaces.lastIndexOf(',');
+  const digitsAfterComma = valueWithNoSpaces.length - commaIndex - 1;
+
+  if (digitsAfterComma === 3 && !valueWithNoSpaces.includes('.')) {
+    // Likely thousands separator (e.g., "1,234" meaning 1234)
+    return valueWithNoSpaces.replace(',', '');
+  }
+
+  // Default: treat comma as decimal separator (e.g., "12,50" meaning 12.50)
+  return valueWithNoSpaces.replace(',', '.');
 }
 
 /**
@@ -315,7 +335,7 @@ export function onAnimationEnd(elements, callback, options = { subtree: true }) 
     }
 
     return acc;
-  }, /** @type {Promise<Animation>[]} */ ([]));
+  }, /** @type {Promise<Animation>[]} */([]));
 
   return Promise.allSettled(animationPromises).then(callback);
 }
@@ -650,8 +670,14 @@ class Scheduler {
   };
 
   flush = () => {
+    // Execute all tasks synchronously within this animation frame
+    // This ensures proper batching and consistent timing
     for (const task of this.#queue) {
-      setTimeout(task, 0);
+      try {
+        task();
+      } catch {
+        // Catch errors to prevent breaking the queue, but don't log in production
+      }
     }
 
     this.#queue.clear();

@@ -1,0 +1,329 @@
+{%- comment -%}
+  AUREA Quick View Modal
+  Quick product preview without leaving collection page
+  
+  Usage: Add data-quick-view="{{ product.handle }}" to product card buttons
+  And include {% render 'aurea-quick-view' %} in theme.liquid before </body>
+{%- endcomment -%}
+
+<style>
+  .aurea-quickview-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 99999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .aurea-quickview-overlay.is-active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+  }
+  
+  .aurea-quickview {
+    position: relative;
+    background: #fff;
+    max-width: 900px;
+    width: 95%;
+    max-height: 90vh;
+    border-radius: 8px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  
+  .aurea-quickview-overlay.is-active .aurea-quickview {
+    transform: scale(1);
+  }
+  
+  .aurea-quickview__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+  }
+  
+  .aurea-quickview__close:hover {
+    transform: scale(1.1);
+  }
+  
+  .aurea-quickview__image {
+    aspect-ratio: 1;
+    background: #F5F0E6;
+    overflow: hidden;
+  }
+  
+  .aurea-quickview__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .aurea-quickview__content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-y: auto;
+  }
+  
+  .aurea-quickview__title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #1A1A1A;
+    margin: 0 0 0.75rem 0;
+  }
+  
+  .aurea-quickview__price {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #B8860B;
+    margin: 0 0 1rem 0;
+  }
+  
+  .aurea-quickview__price--compare {
+    color: #999;
+    text-decoration: line-through;
+    font-weight: 400;
+    margin-left: 0.75rem;
+  }
+  
+  .aurea-quickview__description {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #555;
+    margin: 0 0 1.5rem 0;
+    max-height: 100px;
+    overflow: hidden;
+  }
+  
+  .aurea-quickview__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .aurea-quickview__btn--primary {
+    width: 100%;
+    padding: 1rem;
+    background: #1A1A1A;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+  }
+  
+  .aurea-quickview__btn--primary:hover {
+    background: #333;
+  }
+  
+  .aurea-quickview__btn--secondary {
+    width: 100%;
+    padding: 0.875rem;
+    background: transparent;
+    color: #1A1A1A;
+    border: 1px solid #1A1A1A;
+    border-radius: 4px;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 0.9rem;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    transition: all 0.3s ease;
+  }
+  
+  .aurea-quickview__btn--secondary:hover {
+    background: #1A1A1A;
+    color: #fff;
+  }
+  
+  .aurea-quickview__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    grid-column: 1 / -1;
+  }
+  
+  .aurea-quickview__spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #E5E5E5;
+    border-top-color: #B8860B;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  @media (max-width: 768px) {
+    .aurea-quickview {
+      grid-template-columns: 1fr;
+      max-height: 85vh;
+    }
+    
+    .aurea-quickview__image {
+      height: 250px;
+    }
+    
+    .aurea-quickview__content {
+      padding: 1.5rem;
+    }
+  }
+</style>
+
+<div class="aurea-quickview-overlay" id="quickview-overlay">
+  <div class="aurea-quickview" id="quickview-modal">
+    <button type="button" class="aurea-quickview__close" id="quickview-close" aria-label="Close quick view">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    
+    <div class="aurea-quickview__loading" id="quickview-loading">
+      <div class="aurea-quickview__spinner"></div>
+    </div>
+    
+    <div class="aurea-quickview__image" id="quickview-image" style="display: none;">
+      <img src="" alt="" id="quickview-img">
+    </div>
+    
+    <div class="aurea-quickview__content" id="quickview-content" style="display: none;">
+      <h2 class="aurea-quickview__title" id="quickview-title"></h2>
+      <p class="aurea-quickview__price" id="quickview-price"></p>
+      <div class="aurea-quickview__description" id="quickview-description"></div>
+      <div class="aurea-quickview__actions">
+        <a href="" class="aurea-quickview__btn--primary" id="quickview-add-link">View Full Details</a>
+        <a href="" class="aurea-quickview__btn--secondary" id="quickview-product-link">See All Options</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const overlay = document.getElementById('quickview-overlay');
+  const modal = document.getElementById('quickview-modal');
+  const closeBtn = document.getElementById('quickview-close');
+  const loading = document.getElementById('quickview-loading');
+  const imageContainer = document.getElementById('quickview-image');
+  const content = document.getElementById('quickview-content');
+  const img = document.getElementById('quickview-img');
+  const title = document.getElementById('quickview-title');
+  const price = document.getElementById('quickview-price');
+  const description = document.getElementById('quickview-description');
+  const addLink = document.getElementById('quickview-add-link');
+  const productLink = document.getElementById('quickview-product-link');
+  
+  function openQuickView(handle) {
+    overlay.classList.add('is-active');
+    document.body.style.overflow = 'hidden';
+    loading.style.display = 'flex';
+    imageContainer.style.display = 'none';
+    content.style.display = 'none';
+    
+    // Fetch product data
+    fetch(`/products/${handle}.json`)
+      .then(r => r.json())
+      .then(data => {
+        const product = data.product;
+        
+        // Populate modal
+        img.src = product.images[0]?.src || '';
+        img.alt = product.title;
+        title.textContent = product.title;
+        
+        const variant = product.variants[0];
+        let priceHTML = `£${(variant.price / 100).toFixed(2)}`;
+        if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+          priceHTML += `<span class="aurea-quickview__price--compare">£${(variant.compare_at_price / 100).toFixed(2)}</span>`;
+        }
+        price.innerHTML = priceHTML;
+        
+        // Strip HTML and truncate description
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = product.body_html || '';
+        description.textContent = tempDiv.textContent.trim().substring(0, 200) + '...';
+        
+        addLink.href = `/products/${handle}`;
+        productLink.href = `/products/${handle}`;
+        
+        // Show content
+        loading.style.display = 'none';
+        imageContainer.style.display = 'block';
+        content.style.display = 'flex';
+      })
+      .catch(() => {
+        closeQuickView();
+      });
+  }
+  
+  function closeQuickView() {
+    overlay.classList.remove('is-active');
+    document.body.style.overflow = '';
+  }
+  
+  // Close button
+  closeBtn.addEventListener('click', closeQuickView);
+  
+  // Click outside
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) closeQuickView();
+  });
+  
+  // Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && overlay.classList.contains('is-active')) {
+      closeQuickView();
+    }
+  });
+  
+  // Listen for quick view triggers
+  document.addEventListener('click', function(e) {
+    const trigger = e.target.closest('[data-quick-view]');
+    if (trigger) {
+      e.preventDefault();
+      openQuickView(trigger.dataset.quickView);
+    }
+  });
+  
+  // Expose globally for external use
+  window.openQuickView = openQuickView;
+})();
+</script>
