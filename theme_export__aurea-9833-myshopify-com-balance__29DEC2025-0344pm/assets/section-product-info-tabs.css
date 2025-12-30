@@ -1,0 +1,207 @@
+/* Section: Product Info Tabs */
+
+.product-info-tabs {
+    padding-top: var(--section-padding-top, 40px);
+    padding-bottom: var(--section-padding-bottom, 40px);
+}
+
+/* Tab Navigation */
+.product-info-tabs__nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0;
+    border-bottom: 1px solid rgba(var(--color-foreground-rgb, 0, 0, 0), 0.1);
+    margin-bottom: 0;
+}
+
+.product-info-tabs__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.2rem 1.5rem;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(var(--color-foreground-rgb, 0, 0, 0), 0.6);
+    cursor: pointer;
+    transition: color 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    margin-bottom: -1px;
+}
+
+.product-info-tabs__tab:hover {
+    color: rgb(var(--color-foreground-rgb, 0, 0, 0));
+}
+
+.product-info-tabs__tab--active {
+    color: var(--active-tab-color, #C45E30);
+    border-bottom-color: var(--active-tab-color, #C45E30);
+}
+
+.product-info-tabs__tab-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+}
+
+.product-info-tabs__tab--active .product-info-tabs__tab-icon {
+    opacity: 1;
+}
+
+.product-info-tabs__tab-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Tab Panels */
+.product-info-tabs__panels {
+    padding-top: 2rem;
+}
+
+.product-info-tabs__panel {
+    animation: tabFadeIn 0.4s ease forwards;
+}
+
+.product-info-tabs__panel[hidden] {
+    display: none;
+}
+
+@keyframes tabFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.product-info-tabs__content {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+    color: rgba(var(--color-foreground-rgb, 0, 0, 0), 0.8);
+}
+
+.product-info-tabs__content h2,
+.product-info-tabs__content h3,
+.product-info-tabs__content h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: rgb(var(--color-foreground-rgb, 0, 0, 0));
+}
+
+.product-info-tabs__content p {
+    margin-bottom: 1rem;
+}
+
+.product-info-tabs__content ul,
+.product-info-tabs__content ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.product-info-tabs__content li {
+    margin-bottom: 0.5rem;
+}
+
+/* Optional Image */
+.product-info-tabs__image {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.product-info-tabs__img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--media-radius, 8px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Empty State */
+.product-info-tabs__empty {
+    padding: 3rem;
+    text-align: center;
+    background: rgba(var(--color-foreground-rgb, 0, 0, 0), 0.03);
+    border-radius: var(--media-radius, 8px);
+    color: rgba(var(--color-foreground-rgb, 0, 0, 0), 0.5);
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 749px) {
+    .product-info-tabs__nav {
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        flex-wrap: nowrap;
+        padding-bottom: 1px;
+    }
+
+    .product-info-tabs__nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .product-info-tabs__tab {
+        flex-shrink: 0;
+        padding: 1rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+
+    .product-info-tabs__tab-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .product-info-tabs__panels {
+        padding-top: 1.5rem;
+    }
+
+    .product-info-tabs__content {
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+}
+
+/* Left alignment option */
+[data-tab-alignment="left"] .product-info-tabs__nav {
+    justify-content: flex-start;
+}
+
+/* Stretch alignment option */
+[data-tab-alignment="stretch"] .product-info-tabs__nav {
+    justify-content: stretch;
+}
+
+[data-tab-alignment="stretch"] .product-info-tabs__tab {
+    flex: 1;
+    justify-content: center;
+}
+
+/* Focus states for accessibility */
+.product-info-tabs__tab:focus-visible {
+    outline: 2px solid var(--active-tab-color, #C45E30);
+    outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .product-info-tabs__panel {
+        animation: none;
+    }
+
+    .product-info-tabs__tab {
+        transition: none;
+    }
+}
