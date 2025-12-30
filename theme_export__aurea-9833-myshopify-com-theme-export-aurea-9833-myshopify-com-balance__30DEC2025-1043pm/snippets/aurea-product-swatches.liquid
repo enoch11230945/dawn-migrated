@@ -1,0 +1,142 @@
+{%- comment -%}
+  AUREA Product Card Color Swatches
+  Shows color variant swatches below product title/price
+  
+  Usage: {% render 'aurea-product-swatches', product: product %}
+{%- endcomment -%}
+
+{%- liquid
+  # Find color option
+  assign color_option = nil
+  assign color_option_index = nil
+  
+  for option in product.options_with_values
+    assign option_name_lower = option.name | downcase
+    if option_name_lower == 'color' or option_name_lower == 'colour' or option_name_lower == 'metal'
+      assign color_option = option
+      assign color_option_index = forloop.index0
+      break
+    endif
+  endfor
+-%}
+
+{%- if color_option and color_option.values.size > 1 -%}
+  <div class="aurea-swatches">
+    {%- for value in color_option.values -%}
+      {%- liquid
+        assign value_lower = value | downcase
+        
+        # Map color names to hex codes
+        if value_lower == 'gold' or value_lower contains 'gold'
+          assign swatch_color = '#D4AF37'
+          assign swatch_border = '#C9A227'
+        elsif value_lower == 'rose gold' or value_lower contains 'rose'
+          assign swatch_color = '#E6B8A2'
+          assign swatch_border = '#D9A892'
+        elsif value_lower == 'silver' or value_lower contains 'silver'
+          assign swatch_color = '#C0C0C0'
+          assign swatch_border = '#A8A8A8'
+        elsif value_lower == 'white' or value_lower contains 'white'
+          assign swatch_color = '#FFFFFF'
+          assign swatch_border = '#E0E0E0'
+        elsif value_lower == 'black' or value_lower contains 'black'
+          assign swatch_color = '#1A1A1A'
+          assign swatch_border = '#000000'
+        elsif value_lower == 'platinum' or value_lower contains 'platinum'
+          assign swatch_color = '#E5E4E2'
+          assign swatch_border = '#D0CFCD'
+        else
+          assign swatch_color = '#CCCCCC'
+          assign swatch_border = '#BBBBBB'
+        endif
+        
+        # Find variant with this color to get the URL
+        assign variant_for_color = nil
+        for variant in product.variants
+          assign variant_color = variant.options[color_option_index]
+          if variant_color == value
+            assign variant_for_color = variant
+            break
+          endif
+        endfor
+        
+        # Check if this is the selected variant
+        assign is_selected = false
+        if product.selected_or_first_available_variant.options[color_option_index] == value
+          assign is_selected = true
+        endif
+      -%}
+      
+      <a 
+        href="{{ variant_for_color.url | default: product.url }}"
+        class="aurea-swatch{% if is_selected %} aurea-swatch--selected{% endif %}"
+        style="--swatch-color: {{ swatch_color }}; --swatch-border: {{ swatch_border }};"
+        title="{{ value }}"
+        aria-label="{{ value }}"
+      >
+        <span class="aurea-swatch__color"></span>
+      </a>
+    {%- endfor -%}
+    
+    {%- comment -%} Selected color label {%- endcomment -%}
+    <span class="aurea-swatches__label">
+      {{ product.selected_or_first_available_variant.options[color_option_index] | default: color_option.values.first }}
+    </span>
+  </div>
+{%- endif -%}
+
+<style>
+  .aurea-swatches {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  
+  .aurea-swatch {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 2px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+    text-decoration: none;
+  }
+  
+  .aurea-swatch:hover,
+  .aurea-swatch--selected {
+    border-color: var(--swatch-border);
+  }
+  
+  .aurea-swatch__color {
+    width: 100%;
+    height: 100%;
+    background: var(--swatch-color);
+    border: 1px solid var(--swatch-border);
+    border-radius: 2px;
+  }
+  
+  .aurea-swatches__label {
+    margin-left: 4px;
+    font-family: var(--font-body--family, 'Montserrat', sans-serif);
+    font-size: 0.8rem;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  /* Mobile */
+  @media screen and (max-width: 749px) {
+    .aurea-swatch {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .aurea-swatches__label {
+      font-size: 0.75rem;
+    }
+  }
+</style>

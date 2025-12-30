@@ -87,6 +87,12 @@
   {%- endif -%}
 </product-price>
 
+{%- comment -%} AUREA: Color Swatches (only on product cards) {%- endcomment -%}
+{%- if template.name != 'product' -%}
+  {% render 'aurea-product-swatches', product: product_resource %}
+{%- endif -%}
+
+
 {% # theme-check-disable %}
 {% stylesheet %}
   .tax-note:empty {

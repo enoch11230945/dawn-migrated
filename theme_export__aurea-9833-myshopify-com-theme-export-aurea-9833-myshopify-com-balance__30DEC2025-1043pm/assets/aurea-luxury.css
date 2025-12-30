@@ -1129,3 +1129,32 @@ header-menu {
     color: var(--aurea-gold-dark, #B8860B);
     font-size: 1.1rem;
 }
+
+/* ============================================
+   20. AUREA PRODUCT CARD ENHANCEMENTS
+   Premium badge & swatch system
+   ============================================ */
+
+/* "From" price prefix */
+.aurea-price-from {
+    font-weight: 400;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+/* Product card container - ensure position relative for badges */
+.product-card,
+product-card {
+    position: relative;
+}
+
+.product-card .card-gallery,
+product-card .card-gallery {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Enhanced card gallery for badge positioning */
+.card-gallery {
+    position: relative;
+}

@@ -86,7 +86,7 @@
       <span class="price price-range price--large">{{ price_min }} - {{ price_max }}</span>
     </span>
   {% else %}
-    {% comment %} Standard pricing display {% endcomment %}
+  {% comment %} Standard pricing display {% endcomment %}
     {% if show_sale_price_first == false and show_compare_price %}
       <span role="group">
         <span class="visually-hidden">{{ 'content.price_regular' | t }}&nbsp;</span>
@@ -94,12 +94,22 @@
       </span>
     {% endif %}
 
+    {%- comment -%} AUREA: Add "From" prefix for products with variant price range {%- endcomment -%}
+    {%- liquid
+      assign show_from_prefix = false
+      if is_product_card and product_resource.price_varies
+        assign show_from_prefix = true
+      endif
+    -%}
+
     {% if show_compare_price %}
       <span role="group">
         <span class="visually-hidden">{{ 'content.price_sale' | t }}&nbsp;</span>
+        {% if show_from_prefix %}<span class="aurea-price-from">From </span>{% endif %}
         <span class="price">{{ price | default: '&nbsp;' }}</span>
       </span>
     {% else %}
+      {% if show_from_prefix %}<span class="aurea-price-from">From </span>{% endif %}
       <span class="price">{{ price | default: '&nbsp;' }}</span>
     {% endif %}
 

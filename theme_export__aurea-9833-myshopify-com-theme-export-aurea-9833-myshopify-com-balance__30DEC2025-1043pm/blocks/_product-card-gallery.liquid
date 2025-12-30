@@ -4,6 +4,9 @@
 
 {% capture children %}
   {% unless product == blank %}
+    {%- comment -%} AUREA Enhanced Badges (ENGRAVE ME, NEW, Partnership, PERSONALISE) {%- endcomment -%}
+    {% render 'aurea-product-badges', product: product %}
+    
     <div
       class="product-badges product-badges--{{ settings.badge_position }}"
       style="
@@ -31,6 +34,7 @@
     {% endif %}
   {% endunless %}
 {% endcapture %}
+
 
 {% render 'card-gallery', children: children %}
 

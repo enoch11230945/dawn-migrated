@@ -1,0 +1,222 @@
+{%- comment -%}
+  AUREA Enhanced Product Card Badges
+  Includes: Custom badges, partnership logos, personalisation tag, color swatches
+  
+  Usage: {% render 'aurea-product-badges', product: product %}
+{%- endcomment -%}
+
+{%- liquid
+  # Badge configuration from product metafields
+  assign show_engrave_badge = product.metafields.custom.engrave_me | default: false
+  assign show_new_badge = product.metafields.custom.is_new | default: false
+  assign partnership_text = product.metafields.custom.partnership_text | default: ''
+  assign partnership_logo = product.metafields.custom.partnership_logo | default: null
+  assign show_personalise = product.metafields.custom.personalise | default: false
+  
+  # Fallback: Check tags for badges
+  if show_engrave_badge == false
+    for tag in product.tags
+      if tag == 'engrave' or tag == 'engrave-me' or tag == 'Engrave Me'
+        assign show_engrave_badge = true
+        break
+      endif
+    endfor
+  endif
+  
+  if show_new_badge == false
+    assign product_published_days = product.published_at | date: '%s' | plus: 0
+    assign now = 'now' | date: '%s' | plus: 0
+    assign days_ago = now | minus: product_published_days | divided_by: 86400
+    if days_ago < 30
+      assign show_new_badge = true
+    endif
+    
+    for tag in product.tags
+      if tag == 'new' or tag == 'New' or tag == 'NEW'
+        assign show_new_badge = true
+        break
+      endif
+    endfor
+  endif
+  
+  if show_personalise == false
+    for tag in product.tags
+      if tag == 'personalise' or tag == 'Personalise' or tag == 'personalize' or tag == 'custom'
+        assign show_personalise = true
+        break
+      endif
+    endfor
+  endif
+  
+  # Partnership info from tags
+  if partnership_text == blank
+    for tag in product.tags
+      assign tag_lower = tag | downcase
+      if tag_lower contains 'partner:'
+        assign partnership_text = tag | remove: 'partner:' | remove: 'Partner:'
+      endif
+    endfor
+  endif
+-%}
+
+{%- comment -%} Top-Left Badges: ENGRAVE ME, NEW {%- endcomment -%}
+<div class="aurea-badges aurea-badges--top-left">
+  {%- if show_engrave_badge -%}
+    <span class="aurea-badge aurea-badge--dark">ENGRAVE ME</span>
+  {%- endif -%}
+  
+  {%- if show_new_badge -%}
+    <span class="aurea-badge aurea-badge--coral">NEW</span>
+  {%- endif -%}
+</div>
+
+{%- comment -%} Top-Right Badge: Partnership Logo {%- endcomment -%}
+{%- if partnership_text != blank or partnership_logo -%}
+  <div class="aurea-badges aurea-badges--top-right">
+    <div class="aurea-partnership">
+      <span class="aurea-partnership__label">IN PARTNERSHIP WITH</span>
+      {%- if partnership_logo -%}
+        <img 
+          src="{{ partnership_logo | image_url: width: 100 }}" 
+          alt="{{ partnership_text }}" 
+          class="aurea-partnership__logo"
+          loading="lazy"
+        >
+      {%- elsif partnership_text != blank -%}
+        <span class="aurea-partnership__name">{{ partnership_text }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{%- comment -%} Bottom-Left Badge: PERSONALISE {%- endcomment -%}
+{%- if show_personalise -%}
+  <div class="aurea-badges aurea-badges--bottom-left">
+    <span class="aurea-badge aurea-badge--outline">PERSONALISE</span>
+  </div>
+{%- endif -%}
+
+<style>
+  /* AUREA Enhanced Badges */
+  .aurea-badges {
+    position: absolute;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .aurea-badges--top-left {
+    top: 12px;
+    left: 12px;
+    flex-direction: row;
+  }
+  
+  .aurea-badges--top-right {
+    top: 12px;
+    right: 12px;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  
+  .aurea-badges--bottom-left {
+    bottom: 12px;
+    left: 12px;
+  }
+  
+  /* Badge Base */
+  .aurea-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    font-family: var(--font-body--family, 'Montserrat', sans-serif);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  
+  /* Badge Variants */
+  .aurea-badge--dark {
+    background: #1A1A2E;
+    color: #fff;
+  }
+  
+  .aurea-badge--coral {
+    background: transparent;
+    color: #E8A87C;
+    font-weight: 500;
+  }
+  
+  .aurea-badge--outline {
+    background: rgba(255, 255, 255, 0.85);
+    color: #1A1A1A;
+    font-weight: 500;
+    backdrop-filter: blur(4px);
+  }
+  
+  .aurea-badge--gold {
+    background: linear-gradient(135deg, #D4AF37 0%, #F4E5BA 50%, #D4AF37 100%);
+    color: #1A1A2E;
+  }
+  
+  /* Partnership Widget */
+  .aurea-partnership {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
+  }
+  
+  .aurea-partnership__label {
+    font-family: var(--font-body--family, 'Montserrat', sans-serif);
+    font-size: 0.55rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: #666;
+    text-transform: uppercase;
+  }
+  
+  .aurea-partnership__logo {
+    max-width: 80px;
+    max-height: 30px;
+    object-fit: contain;
+  }
+  
+  .aurea-partnership__name {
+    font-family: 'Brush Script MT', cursive;
+    font-size: 1rem;
+    color: #E8A87C;
+  }
+  
+  /* Mobile Responsive */
+  @media screen and (max-width: 749px) {
+    .aurea-badge {
+      padding: 4px 8px;
+      font-size: 0.6rem;
+    }
+    
+    .aurea-badges--top-left,
+    .aurea-badges--top-right,
+    .aurea-badges--bottom-left {
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+    }
+    
+    .aurea-partnership {
+      padding: 6px 8px;
+    }
+    
+    .aurea-partnership__logo {
+      max-width: 60px;
+    }
+  }
+</style>
